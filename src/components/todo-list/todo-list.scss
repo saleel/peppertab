@@ -1,0 +1,24 @@
+.todo-list {
+  min-width: 300px;
+
+  &__items {
+    height: 300px;
+    overflow-y: scroll;
+  }
+
+  &__create {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #F7F6F3;
+  }
+
+  &__create-input {
+    padding: 10px;
+    width: 100%;
+    font-size: 1.1rem;
+
+    &:focus, &:hover {
+      outline-color: #FEF4F2;
+    }
+  }
+}
