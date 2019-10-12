@@ -1,11 +1,15 @@
-@import "~bulma/bulma.sass";
+@import "~tailwindcss/dist/base";
+@import "~tailwindcss/dist/components";
+@import "~tailwindcss/dist/utilities";
+@import '~pretty-checkbox/src/pretty-checkbox.scss';
+@import url('https://fonts.googleapis.com/css?family=Muli:300,400,500&display=swap');
 
 html, body {
 	height: 100%;
 	width: 100%;
 	padding: 0;
 	margin: 0;
-	background: #FAFAFA;
+	background:#F7F6F3;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
 	font-weight: 400;
 	font-size: 14px;

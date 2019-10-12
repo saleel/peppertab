@@ -33,7 +33,7 @@ class TodoStore {
     const { isCompleted } = todo;
 
     const existingTodo = await this.db.get(id);
-    console.log(existingTodo);
+
     await this.db.put({
       ...existingTodo,
       isCompleted,
