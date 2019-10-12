@@ -1,0 +1,12 @@
+.card {
+  background-color: #ffffff;
+  border-radius: 5px;
+  box-shadow: rgba(84, 70, 35, 0.15) 0px 2px 8px, rgba(84, 70, 35, 0.15) 0px 1px 3px; 
+  overflow: hidden;
+
+  &__title {
+    font-size: 2.5rem;
+    padding: 1.5rem;
+    font-weight: 500;
+  }
+}
