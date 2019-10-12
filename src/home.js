@@ -26,7 +26,7 @@ function Home() {
         <Time />
       </div>
 
-      <div className="flex flex-row container mx-auto">
+      <div className="home__widgets">
         <div className="p-2 flex-1">
           <Card title="Notes" />
         </div>

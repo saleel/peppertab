@@ -3,28 +3,27 @@
 
 import React from 'react';
 import PropTypes from 'proptypes';
-import PouchDB from 'pouchdb';
-import replicationStream from 'pouchdb-replication-stream';
-import load from 'pouchdb-load';
+// import PouchDB from 'pouchdb';
+// import replicationStream from 'pouchdb-replication-stream';
+// import load from 'pouchdb-load';
 import StoreContext from './store-context';
-import AuthContext from '../auth-context';
-import { TODO_FILENAME } from './store-constants';
+// import AuthContext from '../auth-context';
 import TodoStore from '../../model/todo-store';
 
 
-PouchDB.plugin({
-  loadIt: load.load,
-});
-PouchDB.plugin(replicationStream.plugin);
+// PouchDB.plugin({
+//   loadIt: load.load,
+// });
+// PouchDB.plugin(replicationStream.plugin);
 
-PouchDB.adapter('writableStream', replicationStream.adapters.writableStream);
-const MemoryStream = window.memorystream;
+// PouchDB.adapter('writableStream', replicationStream.adapters.writableStream);
+// const MemoryStream = window.memorystream;
 
 
 function StoreContextProvider({ children }) {
-  const { userSession } = React.useContext(AuthContext);
+  // const { userSession } = React.useContext(AuthContext);
   // userSession.loadUserData();
-  const db = new PouchDB('local');
+  // const db = new PouchDB('local');
   const todoStore = new TodoStore();
 
   // async function syncDb() {
