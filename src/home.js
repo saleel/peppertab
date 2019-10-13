@@ -3,7 +3,7 @@ import Time from './components/time';
 import TodoList from './components/todo-list';
 import './home.scss';
 import AuthContext from './contexts/auth-context';
-import Card from './components/card';
+import Notes from './components/notes/notes';
 
 
 function Home() {
@@ -28,7 +28,7 @@ function Home() {
 
       <div className="home__widgets">
         <div className="p-2 flex-1">
-          <Card title="Notes" />
+          <Notes />
         </div>
 
         <div className="p-2">

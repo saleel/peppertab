@@ -1,21 +1,27 @@
 .todo-list {
   min-width: 300px;
+  height: 100%;
+  position: relative;
+  display: block;
 
   &__items {
-    height: 300px;
+    height: calc(100% - 5rem);
     overflow-y: scroll;
   }
 
   &__create {
-    margin-top: 1rem;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
     padding: 1rem;
     background-color: #F7F6F3;
   }
 
   &__create-input {
-    padding: 10px;
+    padding: 0.75rem;
     width: 100%;
     font-size: 1.1rem;
+    line-height: 1rem;
 
     &:focus, &:hover {
       outline-color: #FEF4F2;

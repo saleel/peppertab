@@ -9,6 +9,7 @@ import PropTypes from 'proptypes';
 import StoreContext from './store-context';
 // import AuthContext from '../auth-context';
 import TodoStore from '../../model/todo-store';
+import NoteStore from '../../model/note-store';
 
 
 // PouchDB.plugin({
@@ -25,6 +26,7 @@ function StoreContextProvider({ children }) {
   // userSession.loadUserData();
   // const db = new PouchDB('local');
   const todoStore = new TodoStore();
+  const noteStore = new NoteStore();
 
   // async function syncDb() {
   //   // Create remote DB
@@ -61,7 +63,7 @@ function StoreContextProvider({ children }) {
   // }, 30000);
 
   return (
-    <StoreContext.Provider value={{ todoStore }}>
+    <StoreContext.Provider value={{ todoStore, noteStore }}>
       {children}
     </StoreContext.Provider>
   );
