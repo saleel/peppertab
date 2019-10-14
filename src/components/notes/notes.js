@@ -80,7 +80,7 @@ function Notes() {
             }
 
             return (
-              <button type="button" className={className} onClick={() => onListItemClick(note)}>
+              <button key={note.id} type="button" className={className} onClick={() => onListItemClick(note)}>
                 <div className="notes__list-item-title">{title}</div>
                 <div className="notes__list-item-date">{new Date(note.createdAt).toDateString()}</div>
               </button>

@@ -4,6 +4,7 @@ import TodoList from './components/todo-list';
 import './home.scss';
 import AuthContext from './contexts/auth-context';
 import Notes from './components/notes/notes';
+import Weather from './components/weather';
 
 
 function Home() {
@@ -24,6 +25,7 @@ function Home() {
 
       <div className="home__time">
         <Time />
+        <Weather />
       </div>
 
       <div className="home__widgets">

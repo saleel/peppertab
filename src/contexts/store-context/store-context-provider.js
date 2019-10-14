@@ -10,6 +10,7 @@ import StoreContext from './store-context';
 // import AuthContext from '../auth-context';
 import TodoStore from '../../model/todo-store';
 import NoteStore from '../../model/note-store';
+import GeneralStore from '../../model/general-store';
 
 
 // PouchDB.plugin({
@@ -27,6 +28,7 @@ function StoreContextProvider({ children }) {
   // const db = new PouchDB('local');
   const todoStore = new TodoStore();
   const noteStore = new NoteStore();
+  const generalStore = new GeneralStore();
 
   // async function syncDb() {
   //   // Create remote DB
@@ -63,7 +65,7 @@ function StoreContextProvider({ children }) {
   // }, 30000);
 
   return (
-    <StoreContext.Provider value={{ todoStore, noteStore }}>
+    <StoreContext.Provider value={{ generalStore, todoStore, noteStore }}>
       {children}
     </StoreContext.Provider>
   );

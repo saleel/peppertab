@@ -1,0 +1,13 @@
+.weather {
+	font-size: 1.1rem;
+
+	&__temperature {
+		padding: 3px;
+	}
+
+	&__city {
+		padding: 3px;
+		font-weight: 500;
+	}
+
+}

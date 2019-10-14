@@ -1,6 +1,4 @@
 .time {
-	padding: 1rem;
-
   &__hours {
     display: inline;
 		font-size: 4rem;
@@ -10,7 +8,6 @@
   &__seconds {
     display: inline-block;
     font-size: 1.5rem;
-		padding: 0 5px;
-		width: 3rem;
+		width: 2rem;
   }
 }

@@ -14,7 +14,9 @@
 
 	&__time {
 		position: absolute;
-		top: 1rem;
+		top: 0;
 		right: 0;
+		padding: 1rem 2rem;
+		text-align: right;
 	}
 }
