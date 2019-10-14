@@ -10,9 +10,11 @@ class TodoStore {
 
   /**
    * @param {Todo} todo
+   * @returns {Promise<Todo>} todo
    */
   async createTodo(todo) {
-    await this.db.post(todo);
+    const response = await this.db.post(todo);
+    return this.db.get(response.id);
   }
 
   /**
@@ -22,7 +24,15 @@ class TodoStore {
     const { rows } = await this.db.allDocs({ include_docs: true });
     return rows
       .map((row) => new Todo({ ...row.doc, id: row.id }))
-      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+      .sort((a, b) => {
+        // Sort completed items to end
+        const completedDiff = Number(a.isCompleted) - Number(b.isCompleted);
+        if (completedDiff !== 0) {
+          return completedDiff;
+        }
+
+        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+      });
   }
 
   /**

@@ -7,4 +7,13 @@
     background-color: #FEF4F2;
     cursor: default;
   }
+
+  &--completed {
+    opacity: 0.8;
+
+    .todo-item__title {
+      text-decoration: line-through;
+      font-style: oblique;
+    }
+  }
 }

@@ -13,8 +13,13 @@ import Todo from '../../model/todo';
 function TodoItem(props) {
   const { todo, onCompleteClick } = props;
 
+  let className = 'todo-item';
+  if (todo.isCompleted) {
+    className += ' todo-item--completed';
+  }
+
   return (
-    <div className="todo-item">
+    <div className={className}>
 
       <div className="pretty p-svg p-curve">
         <input

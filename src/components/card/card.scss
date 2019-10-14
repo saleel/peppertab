@@ -11,6 +11,14 @@
     line-height: 2rem;
   }
 
+  &__actions {
+    float: right;
+
+    > * {
+      padding: 0 5px;
+    }
+  }
+
   &__content {
     height: calc(100% - 5rem); // (line-height + padding * 2) of .title
   }

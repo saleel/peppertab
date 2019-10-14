@@ -1,13 +1,16 @@
 .notes {
   min-width: 300px;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 
   &__list {
+    position: relative;
     background-color: #F7F6F3;
     width: 30%;
+    border-right: 1px solid #E6E6E6;
     height: 100%;
     overflow-y: scroll;
-    border-right: 1px solid #E6E6E6;
     padding-bottom: 0.5rem;
   }
 
@@ -20,10 +23,6 @@
     &--active {
       background-color: #E6E6E6;
     }
-
-    &:focus, &:active {
-      outline: none;
-    }
   }
 
   &__list-item-title {
@@ -35,13 +34,22 @@
     font-size: 0.8rem;
   }
 
+  &__btn-delete {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 0.75rem;
+  }
+
   &__editor {
+    position: relative;
+    background-color: #F7F6F3;
     width: 70%;
     height: 100%;
   }
 
   .ck-content {
-    background-color: #F7F6F3;
+    flex-grow: 1;
     outline: none;
     height: 100%;
 

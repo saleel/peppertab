@@ -39,6 +39,15 @@ class NoteStore {
       content,
     });
   }
+
+
+  /**
+   * @param {string} id
+   */
+  async deleteNote(id) {
+    const existingNote = await this.db.get(id);
+    await this.db.remove(existingNote);
+  }
 }
 
 

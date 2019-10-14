@@ -1,6 +1,8 @@
 // @ts-check
 
 import React from 'react';
+import EyeIcon from '@iconscout/react-unicons/icons/uil-eye';
+import EyeSlashIcon from '@iconscout/react-unicons/icons/uil-eye-slash';
 import StoreContext from '../../contexts/store-context';
 import useStore from '../../hooks/use-store';
 import './todo-list.scss';
@@ -14,6 +16,7 @@ function TodoList() {
   const [todos, { reFetch }] = useStore(() => todoStore.findTodos(), []);
 
   const [newTodo, setNewTodo] = React.useState({ title: '' });
+  const [showCompleted, setShowCompleted] = React.useState(false);
 
 
   /**
@@ -47,12 +50,29 @@ function TodoList() {
   }
 
 
+  const actions = [
+    showCompleted && (
+      <button key="completed" type="button" onClick={() => setShowCompleted(false)}>
+        <EyeSlashIcon size="20" color="#383530" />
+      </button>
+    ),
+    !showCompleted && (
+      <button key="completed" type="button" onClick={() => setShowCompleted(true)}>
+        <EyeIcon size="20" color="#383530" />
+      </button>
+    ),
+  ].filter(Boolean);
+
+
+  const filteredTodos = showCompleted ? todos : todos.filter((t) => !t.isCompleted);
+
+
   return (
-    <Card title="Todos" className="todo-list">
+    <Card title="Todos" className="todo-list" actions={actions}>
       <>
 
         <div className="todo-list__items">
-          {todos.map((todo) => (
+          {filteredTodos.map((todo) => (
             <TodoItem
               key={todo.id}
               todo={todo}

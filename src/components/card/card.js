@@ -5,13 +5,21 @@ import PropTypes from 'proptypes';
 import './card.scss';
 
 
-function Card({ children, title, className }) {
+function Card(props) {
+  const {
+    children, actions, title, className, contentClassName,
+  } = props;
+
   return (
     <div className={`card ${className}`}>
       <div className="card__title">
         {title}
+
+        <div className="card__actions">
+          {actions}
+        </div>
       </div>
-      <div className="card__content">
+      <div className={`card__content ${contentClassName}`}>
         {children}
       </div>
     </div>
@@ -21,12 +29,16 @@ function Card({ children, title, className }) {
 
 Card.propTypes = {
   children: PropTypes.node.isRequired,
+  actions: PropTypes.arrayOf(PropTypes.node),
   title: PropTypes.string.isRequired,
   className: PropTypes.string,
+  contentClassName: PropTypes.string,
 };
 
 Card.defaultProps = {
   className: '',
+  contentClassName: '',
+  actions: [],
 };
 
 
