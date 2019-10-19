@@ -1,11 +1,11 @@
 // @ts-check
-import PouchDB from 'pouchdb';
 import Todo from './todo';
+import Store from './store';
 
 
-class TodoStore {
+class TodoStore extends Store {
   constructor() {
-    this.db = new PouchDB('todos');
+    super('todos');
   }
 
   /**
@@ -14,7 +14,10 @@ class TodoStore {
    */
   async createTodo(todo) {
     const response = await this.db.post(todo);
-    return this.db.get(response.id);
+    const created = this.db.get(response.id);
+
+    this.emitter.emit('change', new Date());
+    return created;
   }
 
   /**
@@ -48,6 +51,10 @@ class TodoStore {
       ...existingTodo,
       isCompleted,
     });
+    const updated = this.db.get(id);
+
+    this.emitter.emit('change', new Date());
+    return updated;
   }
 }
 

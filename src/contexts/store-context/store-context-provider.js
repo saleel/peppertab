@@ -1,71 +1,82 @@
-/* eslint-disable react/no-this-in-sfc */
 // @ts-check
 
 import React from 'react';
 import PropTypes from 'proptypes';
-// import PouchDB from 'pouchdb';
-// import replicationStream from 'pouchdb-replication-stream';
-// import load from 'pouchdb-load';
 import StoreContext from './store-context';
-// import AuthContext from '../auth-context';
 import TodoStore from '../../model/todo-store';
 import NoteStore from '../../model/note-store';
 import GeneralStore from '../../model/general-store';
-
-
-// PouchDB.plugin({
-//   loadIt: load.load,
-// });
-// PouchDB.plugin(replicationStream.plugin);
-
-// PouchDB.adapter('writableStream', replicationStream.adapters.writableStream);
-// const MemoryStream = window.memorystream;
+// import { syncDb } from './utils';
+import AuthContext from '../auth-context';
+import { debounce } from '../../utils';
 
 
 function StoreContextProvider({ children }) {
-  // const { userSession } = React.useContext(AuthContext);
-  // userSession.loadUserData();
-  // const db = new PouchDB('local');
+  const { userSession } = React.useContext(AuthContext);
+
+  const isUserLoggedIn = userSession.isUserSignedIn();
+
+  const [isSyncing, setIsSyncing] = React.useState(false);
+  const [lastSyncTime, setLastSyncTime] = React.useState();
+
+
   const todoStore = new TodoStore();
   const noteStore = new NoteStore();
   const generalStore = new GeneralStore();
 
-  // async function syncDb() {
-  //   // Create remote DB
-  //   const remoteDb = new PouchDB('remote');
-  //   const response = await userSession.getFile('db.json', {
-  //     decrypt: true,
-  //   });
-  //   remoteDb.loadIt(response || '{}');
-  //   console.log('loaded remote');
 
-  //   // Sync remote db with local db
-  //   await db.sync(remoteDb);
-  //   console.log('sync remote');
+  async function syncDb(store) {
+    if (!isUserLoggedIn) {
+      return;
+    }
 
-  //   // Dump remotedb and then push upload to gaia
-  //   const stream = new MemoryStream();
-  //   let dbDump = '';
-  //   stream.on('data', (chunk) => {
-  //     dbDump += chunk.toString();
-  //   });
-  //   await remoteDb.dump(stream);
-  //   console.log('dump remote');
+    try {
+      setIsSyncing(true);
 
-  //   await userSession.putFile('db.json', dbDump, { encrypt: true });
-  //   console.log('upload remote');
-  // }
+      // Get backup from blockstacks
+      const fileName = `${store.name}-db.json`;
+      const dump = await userSession.getFile(fileName, { decrypt: true });
 
-  // setInterval(async () => {
-  //   try {
-  //     await syncDb();
-  //   } catch (e) {
-  //     console.warn(e);
-  //   }
-  // }, 30000);
+      // Restore dump
+      store.restore(dump);
+
+      // Dump the synced DB
+      const dbDump = await store.dump();
+
+      // Push db dump back to blockstacks
+      await userSession.putFile(fileName, dbDump, { encrypt: true });
+
+      setLastSyncTime(new Date());
+      setIsSyncing(false);
+    } catch (e) {
+      console.error('Error occured in sync');
+      throw (e);
+    }
+  }
+
+
+  todoStore.on('change', debounce(() => syncDb(todoStore), 3000));
+  noteStore.on('change', debounce(() => syncDb(noteStore), 3000));
+
+
+  // Sync once on page load
+  React.useEffect(() => {
+    syncDb(todoStore);
+    syncDb(noteStore);
+  }, []);
+
+
+  const value = {
+    generalStore,
+    todoStore,
+    noteStore,
+    isSyncing,
+    lastSyncTime,
+  };
+
 
   return (
-    <StoreContext.Provider value={{ generalStore, todoStore, noteStore }}>
+    <StoreContext.Provider value={value}>
       {children}
     </StoreContext.Provider>
   );

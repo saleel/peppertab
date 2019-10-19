@@ -1,11 +1,11 @@
 // @ts-check
-import PouchDB from 'pouchdb';
 import Note from './note';
+import Store from './store';
 
 
-class NoteStore {
+class NoteStore extends Store {
   constructor() {
-    this.db = new PouchDB('notes');
+    super('notes');
   }
 
   /**
@@ -18,6 +18,8 @@ class NoteStore {
       createdAt: new Date(),
       updatedAt: new Date(),
     });
+
+    this.emitter.emit('change', new Date());
     return this.db.get(response.id);
   }
 
@@ -51,6 +53,7 @@ class NoteStore {
       updatedAt: new Date(),
     });
 
+    this.emitter.emit('change', new Date());
     return this.db.get(id);
   }
 
@@ -61,6 +64,7 @@ class NoteStore {
   async deleteNote(id) {
     const existingNote = await this.db.get(id);
     await this.db.remove(existingNote);
+    this.emitter.emit('change', new Date());
   }
 }
 

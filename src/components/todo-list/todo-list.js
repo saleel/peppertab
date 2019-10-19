@@ -12,11 +12,18 @@ import Card from '../card';
 
 
 function TodoList() {
-  const { todoStore } = React.useContext(StoreContext);
+  const { todoStore, lastSyncTime } = React.useContext(StoreContext);
   const [todos, { reFetch }] = useStore(() => todoStore.findTodos(), []);
 
   const [newTodo, setNewTodo] = React.useState({ title: '' });
   const [showCompleted, setShowCompleted] = React.useState(false);
+
+
+  React.useEffect(() => {
+    if (lastSyncTime) {
+      reFetch();
+    }
+  }, [lastSyncTime]);
 
 
   /**

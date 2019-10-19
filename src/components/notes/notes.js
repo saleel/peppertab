@@ -13,7 +13,7 @@ import HtmlEditor from '../html-editor/html-editor';
 
 
 function Notes() {
-  const { noteStore } = React.useContext(StoreContext);
+  const { noteStore, lastSyncTime } = React.useContext(StoreContext);
   const [notes, { reFetch }] = useStore(() => noteStore.findNotes());
 
   const editorEl = React.useRef(null);
@@ -30,6 +30,40 @@ function Notes() {
   async function updateActiveNoteContent() {
     await noteStore.updateNote(activeNote.id, activeNote);
   }
+
+
+  React.useEffect(() => {
+    if (lastSyncTime) {
+      reFetch();
+    }
+  }, [lastSyncTime]);
+
+
+  // Create a new note if there are no notes
+  React.useEffect(() => {
+    if (!notes) return;
+
+    if (notes.length === 0) {
+      createNoteAndSetActive();
+    }
+
+    // Set first note as active if none present
+    if (!activeNote || !notes.find((n) => n.id === activeNote.id)) {
+      setActiveNote(notes[0]);
+    }
+  }, [notes]);
+
+
+  // Save the data to store when user stops typing for half second
+  React.useEffect(() => {
+    if (!activeNote || !isEditing) return;
+
+    const timer = setTimeout(() => {
+      updateActiveNoteContent();
+    }, 500);
+
+    return () => { clearTimeout(timer); }; // eslint-disable-line consistent-return
+  }, [activeNote]);
 
 
   /**
@@ -64,33 +98,6 @@ function Notes() {
       reFetch();
     }
   }
-
-
-  // Create a new note if there are no notes
-  React.useEffect(() => {
-    if (!notes) return;
-
-    if (notes.length === 0) {
-      createNoteAndSetActive();
-    }
-
-    // Set first note as active if none present
-    if (!activeNote || !notes.find((n) => n.id === activeNote.id)) {
-      setActiveNote(notes[0]);
-    }
-  }, [notes]);
-
-
-  // Save the data to store when user stops typing for half second
-  React.useEffect(() => {
-    if (!activeNote || !isEditing) return;
-
-    const timer = setTimeout(() => {
-      updateActiveNoteContent();
-    }, 500);
-
-    return () => { clearTimeout(timer); }; // eslint-disable-line consistent-return
-  }, [activeNote]);
 
 
   const actions = [

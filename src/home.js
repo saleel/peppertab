@@ -32,7 +32,7 @@ function Home() {
       </div>
 
       <div className="home__tips">
-        {!isLoggedIn && (
+        {!isLoggedIn() && (
           <Tips
             message="Login to sync your data securely"
             actionText="Login"

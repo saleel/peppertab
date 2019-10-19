@@ -27,7 +27,7 @@ function Weather() {
     <div className="weather">
 
       <span className="weather__temperature">
-        {temperature}
+        {temperature.toFixed(1)}
         {'°C '}
         {sky}
       </span>
