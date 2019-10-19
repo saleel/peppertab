@@ -1,15 +1,15 @@
 // @ts-check
 
 import React from 'react';
-import CKEditor from '@ckeditor/ckeditor5-react';
-import BalloonEditor from '@ckeditor/ckeditor5-build-balloon';
 import TrashIcon from '@iconscout/react-unicons/icons/uil-trash';
 import PlusIcon from '@iconscout/react-unicons/icons/uil-plus';
 import StoreContext from '../../contexts/store-context';
 import useStore from '../../hooks/use-store';
-import './notes.scss';
 import Note from '../../model/note';
 import Card from '../card';
+import { getNoteTitle } from './notes.utils';
+import './notes.scss';
+import HtmlEditor from '../html-editor/html-editor';
 
 
 function Notes() {
@@ -21,26 +21,23 @@ function Notes() {
   const [isEditing, setIsEditing] = React.useState(false);
 
 
-  function createDefaultNote() {
-    return noteStore.createNote(new Note({ content: '<h1>New note</h1>' }));
+  async function createNoteAndSetActive() {
+    const createdNote = await noteStore.createNote(new Note({ content: '' }));
+    setActiveNote(createdNote);
+    return reFetch();
+  }
+
+  async function updateActiveNoteContent() {
+    await noteStore.updateNote(activeNote.id, activeNote);
   }
 
 
   /**
    * @param {Note} note
    */
-  function getTitle(note) {
-    const tmpNote = document.createElement('DIV');
-    tmpNote.innerHTML = note.content;
-    const text = tmpNote.textContent || tmpNote.innerText || 'Untitled';
-    return text.slice(0, 10);
-  }
-
-
-  /**
-   * @param {Note} note
-   */
-  function onListItemClick(note) {
+  async function onListItemClick(note) {
+    await updateActiveNoteContent();
+    reFetch();
     setActiveNote(note);
   }
 
@@ -52,8 +49,7 @@ function Notes() {
 
 
   async function onCreateClick() {
-    await createDefaultNote();
-    reFetch();
+    await createNoteAndSetActive();
 
     if (editorEl.current.editor) {
       editorEl.current.editor.editing.view.focus();
@@ -75,28 +71,26 @@ function Notes() {
     if (!notes) return;
 
     if (notes.length === 0) {
-      createDefaultNote().then(() => reFetch());
-    } else {
+      createNoteAndSetActive();
+    }
+
+    // Set first note as active if none present
+    if (!activeNote || !notes.find((n) => n.id === activeNote.id)) {
       setActiveNote(notes[0]);
     }
   }, [notes]);
 
 
-  // Save the data to store when user stops typing for one second
+  // Save the data to store when user stops typing for half second
   React.useEffect(() => {
     if (!activeNote || !isEditing) return;
 
     const timer = setTimeout(() => {
-      noteStore.updateNote(activeNote.id, activeNote).then(() => reFetch());
+      updateActiveNoteContent();
     }, 500);
 
     return () => { clearTimeout(timer); }; // eslint-disable-line consistent-return
   }, [activeNote]);
-
-
-  if (!notes || !activeNote) {
-    return null;
-  }
 
 
   const actions = [
@@ -109,7 +103,7 @@ function Notes() {
 
   function renderNoteListItem(note) {
     const isActiveNote = activeNote.id === note.id;
-    const title = isActiveNote ? getTitle(activeNote) : getTitle(note);
+    const title = isActiveNote ? getNoteTitle(activeNote) : getNoteTitle(note);
 
     let className = 'notes__list-item';
     if (isActiveNote) {
@@ -125,6 +119,11 @@ function Notes() {
   }
 
 
+  if (!notes || !activeNote) {
+    return null;
+  }
+
+
   return (
     <Card title="Notes" className="notes" contentClassName="flex flex-row" actions={actions}>
 
@@ -134,10 +133,9 @@ function Notes() {
 
       <div className="notes__editor">
         <>
-          <CKEditor
+          <HtmlEditor
             ref={editorEl}
             className="notes__editor"
-            editor={BalloonEditor}
             data={activeNote.content}
             onChange={onEditoreChange}
             onFocus={() => { setIsEditing(true); }}

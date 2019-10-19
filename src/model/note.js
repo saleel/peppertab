@@ -2,11 +2,11 @@
 
 class Note {
   /**
-   * @param {{ id?: string, content: string; createdAt?: Date; }} props
+   * @param {{ id?: string, content: string; createdAt?: Date; updatedAt?: Date; }} props
    */
   constructor(props) {
     const {
-      id, content, createdAt = new Date(),
+      id, content, createdAt, updatedAt,
     } = props;
 
     if (id !== undefined) {
@@ -15,6 +15,7 @@ class Note {
 
     this.content = content;
     this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
 }
 

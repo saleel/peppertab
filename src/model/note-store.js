@@ -10,9 +10,15 @@ class NoteStore {
 
   /**
    * @param {Note} note
+   * @returns {Promise<Note>} Note created
    */
   async createNote(note) {
-    await this.db.post(note);
+    const response = await this.db.post({
+      ...note,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+    return this.db.get(response.id);
   }
 
   /**
@@ -28,16 +34,24 @@ class NoteStore {
   /**
    * @param {string} id
    * @param {Note} note
+   * @returns {Promise<Note>} Note created
    */
   async updateNote(id, note) {
     const { content } = note;
 
     const existingNote = await this.db.get(id);
 
+    if (existingNote.content === content) {
+      return existingNote; // Nothing to update
+    }
+
     await this.db.put({
       ...existingNote,
       content,
+      updatedAt: new Date(),
     });
+
+    return this.db.get(id);
   }
 
 
