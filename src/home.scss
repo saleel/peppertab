@@ -2,12 +2,16 @@
 	min-height: 100%;
 	width: 100%;
 	padding: 2rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
 
 	&__widgets {
+		width: 75%;
 		max-width: 1000px;
 		height: 500px;
 		margin: 0 auto;
-		margin-top: 20rem;
 		display: flex;
 		flex-direction: row;
 	}
