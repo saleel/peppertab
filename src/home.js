@@ -5,19 +5,12 @@ import './home.scss';
 import AuthContext from './contexts/auth-context';
 import Notes from './components/notes/notes';
 import Weather from './components/weather';
+import Tips from './components/tips';
+import Footer from './components/footer';
 
 
 function Home() {
-  const { login, userSession } = React.useContext(AuthContext);
-
-  if (!userSession.isUserSignedIn() && userSession.isSignInPending()) {
-    userSession.handlePendingSignIn()
-      .then((userData) => {
-        if (!userData.username) {
-          throw new Error('This app requires a username.');
-        }
-      });
-  }
+  const { login, isLoggedIn } = React.useContext(AuthContext);
 
 
   return (
@@ -38,7 +31,21 @@ function Home() {
         </div>
       </div>
 
-      <button onClick={login} type="button">Login</button>
+      <div className="home__tips">
+        {!isLoggedIn && (
+          <Tips
+            message="Login to sync your data securely"
+            actionText="Login"
+            onAction={login}
+          />
+        )}
+      </div>
+
+
+      <div className="home__footer">
+        <Footer />
+      </div>
+
     </div>
   );
 }

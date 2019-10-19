@@ -16,11 +16,30 @@ function AuthContextProvider({ children }) {
     userSession.redirectToSignIn();
   }
 
+  function logout() {
+    userSession.signUserOut('/');
+  }
+
+
+  React.useEffect(() => {
+    if (!userSession.isUserSignedIn() && userSession.isSignInPending()) {
+      userSession.handlePendingSignIn()
+        .then((userData) => {
+          if (!userData.username) {
+            throw new Error('This app requires a username.');
+          }
+        });
+    }
+  }, [userSession]);
+
+
   const actions = {
     isLoggedIn,
     login,
+    logout,
     userSession,
   };
+
 
   return (
     <AuthContext.Provider value={actions}>

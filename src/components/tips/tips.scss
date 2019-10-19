@@ -1,0 +1,22 @@
+.tips {
+
+  border-radius: 5px;
+  background-color: rgb(238, 228, 208);
+  padding: 3px;
+
+  &__message {
+    padding: 0.4rem 0.5rem;
+  }
+  
+  &__btn-action {
+    font-weight: 500;
+    background-color: rgb(252, 202, 192);
+    padding: 0 1rem;
+    line-height: 2rem;
+    border-radius: 3px;
+
+    &:hover {
+      background-color: rgb(253, 192, 180);
+    }
+  }
+}
