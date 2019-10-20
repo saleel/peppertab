@@ -44,7 +44,7 @@ function Footer() {
         </span>
       )}
 
-      {!isSyncing && lastSyncDistance && (
+      {!isSyncing && !syncError && lastSyncDistance && (
         <>
           <span>Last synced </span>
           <span>{lastSyncDistance}</span>
