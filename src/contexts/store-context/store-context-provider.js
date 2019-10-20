@@ -26,9 +26,7 @@ function StoreContextProvider({ children }) {
 
 
   async function syncDb(store) {
-    if (!isUserLoggedIn || isSyncing) {
-      return;
-    }
+    if (!isUserLoggedIn || isSyncing) return;
 
     if (!window.navigator.onLine) return;
 
@@ -67,7 +65,7 @@ function StoreContextProvider({ children }) {
   React.useEffect(() => {
     syncDb(todoStore);
     syncDb(noteStore);
-  }, [window.navigator.onLine]);
+  }, []);
 
 
   const value = {

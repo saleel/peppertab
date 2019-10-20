@@ -12,23 +12,23 @@ function useStore(promise, defaultValue, dependenies = []) {
   const [isFetching, setIsFetching] = React.useState(false);
   const [error, setError] = React.useState();
 
-  let didCancel = false;
+  const didCancel = React.useRef();
 
   async function fetch() {
     setIsFetching(true);
 
     try {
       const data = await promise();
-      if (!didCancel) {
+      if (!didCancel.current) {
         setResult(data);
       }
     } catch (e) {
-      if (!didCancel) {
+      if (!didCancel.current) {
         console.error('Error on fetching data', e);
         setError(e);
       }
     }
-    if (!didCancel) {
+    if (!didCancel.current) {
       setIsFetching(false);
     }
   }
@@ -36,7 +36,7 @@ function useStore(promise, defaultValue, dependenies = []) {
   React.useEffect(() => {
     fetch();
     return () => {
-      didCancel = true;
+      didCancel.current = true;
     };
   }, dependenies);
 
