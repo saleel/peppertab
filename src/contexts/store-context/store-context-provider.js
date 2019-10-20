@@ -12,23 +12,25 @@ import { debounce } from '../../utils';
 
 
 function StoreContextProvider({ children }) {
+  const todoStore = new TodoStore();
+  const noteStore = new NoteStore();
+  const generalStore = new GeneralStore();
+
   const { userSession } = React.useContext(AuthContext);
 
   const isUserLoggedIn = userSession.isUserSignedIn();
 
   const [isSyncing, setIsSyncing] = React.useState(false);
-  const [lastSyncTime, setLastSyncTime] = React.useState();
-
-
-  const todoStore = new TodoStore();
-  const noteStore = new NoteStore();
-  const generalStore = new GeneralStore();
+  const [lastSyncTime, setLastSyncTime] = React.useState(generalStore.getLastSyncTime());
+  const [syncError, setSyncError] = React.useState();
 
 
   async function syncDb(store) {
     if (!isUserLoggedIn || isSyncing) {
       return;
     }
+
+    if (!window.navigator.onLine) return;
 
     try {
       setIsSyncing(true);
@@ -47,10 +49,12 @@ function StoreContextProvider({ children }) {
       await userSession.putFile(fileName, dbDump, { encrypt: true });
 
       setLastSyncTime(new Date());
+      generalStore.setLastSyncTime(new Date());
       setIsSyncing(false);
     } catch (e) {
-      console.error('Error occured in sync');
-      throw (e);
+      console.error('Error occured in sync', e);
+      setIsSyncing(false);
+      setSyncError(e);
     }
   }
 
@@ -63,7 +67,7 @@ function StoreContextProvider({ children }) {
   React.useEffect(() => {
     syncDb(todoStore);
     syncDb(noteStore);
-  }, []);
+  }, [window.navigator.onLine]);
 
 
   const value = {
@@ -72,6 +76,7 @@ function StoreContextProvider({ children }) {
     noteStore,
     isSyncing,
     lastSyncTime,
+    syncError,
   };
 
 

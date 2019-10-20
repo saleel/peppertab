@@ -109,7 +109,7 @@ function Notes() {
   ];
 
   function renderNoteListItem(note) {
-    const isActiveNote = activeNote.id === note.id;
+    const isActiveNote = activeNote && activeNote.id === note.id;
     const title = isActiveNote ? getNoteTitle(activeNote) : getNoteTitle(note);
 
     let className = 'notes__list-item';
@@ -126,16 +126,11 @@ function Notes() {
   }
 
 
-  if (!notes || !activeNote) {
-    return null;
-  }
-
-
   return (
     <Card title="Notes" className="notes" contentClassName="flex flex-row" actions={actions}>
 
       <div className="notes__list">
-        {notes.map(renderNoteListItem)}
+        {(notes || []).map(renderNoteListItem)}
       </div>
 
       <div className="notes__editor">
@@ -143,7 +138,7 @@ function Notes() {
           <HtmlEditor
             ref={editorEl}
             className="notes__editor"
-            data={activeNote.content}
+            data={activeNote && activeNote.content}
             onChange={onEditoreChange}
             onFocus={() => { setIsEditing(true); }}
             onBlur={() => { setIsEditing(false); }}

@@ -7,7 +7,8 @@ import React from 'react';
  *  todoStore: import('../../model/todo-store').default,
  *  noteStore: import('../../model/note-store').default
  *  isSyncing: boolean,
- *  lastSyncTime: Date
+ *  lastSyncTime: Date,
+ *  syncError: Error
  * }}
  */
 const defaultValues = {
@@ -16,6 +17,7 @@ const defaultValues = {
   notesStore: null,
   isSyncing: false,
   lastSyncTime: null,
+  syncError: null,
 };
 
 const StoreContext = React.createContext(defaultValues);

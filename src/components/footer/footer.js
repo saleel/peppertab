@@ -1,6 +1,7 @@
 import React from 'react';
 import { formatDistance } from 'date-fns';
 import SyncIcon from '@iconscout/react-unicons/icons/uil-sync';
+import SyncSlashIcon from '@iconscout/react-unicons/icons/uil-sync-slash';
 import AuthContent from '../../contexts/auth-context';
 import StoreContext from '../../contexts/store-context';
 import './footer.scss';
@@ -8,7 +9,7 @@ import './footer.scss';
 
 function Footer() {
   const { isLoggedIn, login, logout } = React.useContext(AuthContent);
-  const { lastSyncTime, isSyncing } = React.useContext(StoreContext);
+  const { lastSyncTime, syncError, isSyncing } = React.useContext(StoreContext);
 
   const [lastSyncDistance, setLastSyncDistance] = React.useState();
 
@@ -37,10 +38,10 @@ function Footer() {
   const syncInfo = (
     <>
       {isSyncing && (
-        <>
-          <SyncIcon size="15" />
+        <span className="footer__syncing">
+          <SyncIcon size="17" />
           <span>Syncing</span>
-        </>
+        </span>
       )}
 
       {!isSyncing && lastSyncDistance && (
@@ -49,6 +50,13 @@ function Footer() {
           <span>{lastSyncDistance}</span>
           <span> ago</span>
         </>
+      )}
+
+      {!isSyncing && syncError && (
+        <span className="footer__sync-error">
+          <SyncSlashIcon color="orange" size="17" />
+          <span>Error occurred in sync</span>
+        </span>
       )}
     </>
   );

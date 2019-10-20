@@ -56,6 +56,25 @@ class GeneralStore {
 
     return weatherInfo;
   }
+
+
+  /**
+   * @param {Date} time
+   */
+  setLastSyncTime(time) {
+    window.localStorage.setItem('last-sync-time', time.toUTCString());
+  }
+
+
+  /**
+   * @return {Date} time
+   */
+  getLastSyncTime() {
+    const time = window.localStorage.getItem('last-sync-time');
+    if (!time) return null;
+
+    return new Date(time);
+  }
 }
 
 

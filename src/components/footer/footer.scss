@@ -21,15 +21,25 @@
 
   &__sync-info {
     vertical-align: baseline;
+  }
 
+  &__syncing {
     svg {
       display: inline;
       margin: 0 5px;
       vertical-align: center;
       animation-name: spin;
-      animation-duration: 1500ms;
+      animation-duration: 1000ms;
       animation-iteration-count: infinite;
       animation-timing-function: linear;
+    }
+  }
+
+  &__sync-error {
+    svg {
+      display: inline;
+      margin: 0 5px;
+      vertical-align: center;
     }
   }
 }
