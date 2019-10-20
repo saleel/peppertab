@@ -109,7 +109,7 @@ function Notes() {
   ];
 
   function renderNoteListItem(note) {
-    const isActiveNote = activeNote && activeNote.id === note.id;
+    const isActiveNote = activeNote && (activeNote.id === note.id);
     const title = isActiveNote ? getNoteTitle(activeNote) : getNoteTitle(note);
 
     let className = 'notes__list-item';
@@ -134,19 +134,21 @@ function Notes() {
       </div>
 
       <div className="notes__editor">
-        <>
-          <HtmlEditor
-            ref={editorEl}
-            className="notes__editor"
-            data={activeNote && activeNote.content}
-            onChange={onEditoreChange}
-            onFocus={() => { setIsEditing(true); }}
-            onBlur={() => { setIsEditing(false); }}
-          />
-          <button type="button" className="notes__btn-delete" onClick={onDeleteClick}>
-            <TrashIcon size="16" />
-          </button>
-        </>
+        {activeNote && (
+          <>
+            <HtmlEditor
+              ref={editorEl}
+              className="notes__editor"
+              data={activeNote.content}
+              onChange={onEditoreChange}
+              onFocus={() => { setIsEditing(true); }}
+              onBlur={() => { setIsEditing(false); }}
+            />
+            <button type="button" className="notes__btn-delete" onClick={onDeleteClick}>
+              <TrashIcon size="16" />
+            </button>
+          </>
+        )}
       </div>
 
     </Card>
