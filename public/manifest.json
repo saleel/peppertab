@@ -5,6 +5,7 @@
   "chrome_url_overrides" : {
     "newtab": "./index.html"
   },
+  "permissions": ["geolocation"],
   "icons": [
     {
       "src": "https://helloblockstack.com/icon-192x192.png",
@@ -12,9 +13,8 @@
       "type": "image/png"
     }
   ],
-  "permissions": [],
   "manifest_version": 2,
-  "content_security_policy": "script-src 'self' 'sha256-5As4+...'; object-src 'self'",
+  "content_security_policy": "script-src 'self' 'sha256-iukUnkAORUI+rjJ6jME5VF7WQ4Qz8h6EFwuhb0qtJ7k='; object-src 'self'",
   "start_url": "./index.html",
   "display": "standalone",
   "theme_color": "#ffffff",

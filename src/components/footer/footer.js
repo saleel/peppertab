@@ -27,9 +27,9 @@ function Footer() {
   }, [lastSyncTime]);
 
 
-  const loginButton = !isLoggedIn() && (
-    <button type="button" className="footer__btn" onClick={login}>Login</button>
-  );
+  // const loginButton = !isLoggedIn() && (
+  //   <button type="button" className="footer__btn" onClick={login}>Login</button>
+  // );
 
   const logoutButton = isLoggedIn() && (
     <button type="button" className="footer__btn" onClick={logout}>Logout</button>
@@ -69,7 +69,7 @@ function Footer() {
       </div>
 
       <div>
-        {loginButton}
+        {/* {loginButton} */}
         {logoutButton}
       </div>
     </div>
