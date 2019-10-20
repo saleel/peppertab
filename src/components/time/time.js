@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+import { format } from 'date-fns';
 import './time.scss';
 
 
@@ -16,17 +16,16 @@ function Time() {
   });
 
 
-  const momentTime = moment(time);
-  const hours = momentTime.format('HH:mm');
-  const seconds = momentTime.format('ss');
+  const hours = format(time, 'HH:mm');
+  const seconds = format(time, 'ss');
 
 
-	return (
-		<div className="time">
-			<div className="time__hours">{hours}</div>
-			<div className="time__seconds">{seconds}</div>
-		</div>
-	);
+  return (
+    <div className="time">
+      <div className="time__hours">{hours}</div>
+      <div className="time__seconds">{seconds}</div>
+    </div>
+  );
 }
 
 

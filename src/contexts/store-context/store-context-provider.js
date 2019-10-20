@@ -1,7 +1,7 @@
 // @ts-check
 
 import React from 'react';
-import PropTypes from 'proptypes';
+import PropTypes from 'prop-types';
 import StoreContext from './store-context';
 import TodoStore from '../../model/todo-store';
 import NoteStore from '../../model/note-store';
@@ -26,7 +26,7 @@ function StoreContextProvider({ children }) {
 
 
   async function syncDb(store) {
-    if (!isUserLoggedIn) {
+    if (!isUserLoggedIn || isSyncing) {
       return;
     }
 

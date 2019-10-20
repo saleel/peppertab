@@ -1,4 +1,12 @@
 .footer {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  padding: 1rem;
+
   &__btn {
     font-weight: 500;
     background-color: rgb(247, 244, 236);
@@ -8,6 +16,20 @@
 
     &:hover {
       background-color: #E8E7E4;
+    }
+  }
+
+  &__sync-info {
+    vertical-align: baseline;
+
+    svg {
+      display: inline;
+      margin: 0 5px;
+      vertical-align: center;
+      animation-name: spin;
+      animation-duration: 1500ms;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
     }
   }
 }
