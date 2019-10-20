@@ -103,7 +103,7 @@ function Notes() {
   const actions = [
     (
       <button key="create" type="button" className="notes__create" onClick={onCreateClick}>
-        <PlusIcon size="22" color="#383530" />
+        <PlusIcon size="22" />
       </button>
     ),
   ];
@@ -144,7 +144,7 @@ function Notes() {
             onBlur={() => { setIsEditing(false); }}
           />
           <button type="button" className="notes__btn-delete" onClick={onDeleteClick}>
-            <TrashIcon size="16" color="#383530" />
+            <TrashIcon size="16" />
           </button>
         </>
       </div>

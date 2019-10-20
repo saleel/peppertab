@@ -7,7 +7,7 @@
 
   &.ck-focused {
     border: 1px solid transparent !important;
-    box-shadow: inset 0 0 5px #F7F6F3 !important;
+    box-shadow: inset 0 0 5px var(--secondary-color) !important;
   }
 
   h2 {
@@ -37,6 +37,6 @@
   }
 
   a {
-    color: #2980b9;
+    color: var(--primary-color);
   }
 }

@@ -60,12 +60,12 @@ function TodoList() {
   const actions = [
     showCompleted && (
       <button key="completed" type="button" onClick={() => setShowCompleted(false)}>
-        <EyeSlashIcon size="20" color="#383530" />
+        <EyeSlashIcon size="20" />
       </button>
     ),
     !showCompleted && (
       <button key="completed" type="button" onClick={() => setShowCompleted(true)}>
-        <EyeIcon size="20" color="#383530" />
+        <EyeIcon size="20" />
       </button>
     ),
   ].filter(Boolean);

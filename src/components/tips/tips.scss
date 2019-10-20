@@ -1,7 +1,6 @@
 .tips {
-
   border-radius: 5px;
-  background-color: rgb(238, 228, 208);
+  background-color: var(--secondary-color-active);
   padding: 3px;
 
   &__message {
@@ -10,13 +9,15 @@
   
   &__btn-action {
     font-weight: 500;
-    background-color: rgb(252, 202, 192);
+    background-color: var(--secondary-color);
     padding: 0 1rem;
     line-height: 2rem;
     border-radius: 3px;
+    opacity: 0.9;
 
     &:hover {
-      background-color: rgb(253, 192, 180);
+      background-color: var(--secondary-color);
+      opacity: 1;
     }
   }
 }

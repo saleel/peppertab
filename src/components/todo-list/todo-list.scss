@@ -14,7 +14,7 @@
     width: 100%;
     bottom: 0;
     padding: 1rem;
-    background-color: #F7F6F3;
+    background-color: var(--secondary-color);
   }
 
   &__create-input {
@@ -24,7 +24,7 @@
     line-height: 1rem;
 
     &:focus, &:hover {
-      outline-color: #FEF4F2;
+      outline-color: var(--secondary-color);
     }
   }
 }
