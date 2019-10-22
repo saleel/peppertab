@@ -8,7 +8,7 @@ import './footer.scss';
 
 
 function Footer() {
-  const { isLoggedIn, login, logout } = React.useContext(AuthContent);
+  const { isLoggedIn, logout } = React.useContext(AuthContent);
   const { lastSyncTime, syncError, isSyncing } = React.useContext(StoreContext);
 
   const [lastSyncDistance, setLastSyncDistance] = React.useState();

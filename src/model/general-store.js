@@ -13,7 +13,23 @@ import { OPEN_WEATHER_API_KEY } from '../constants';
 
 class GeneralStore {
   constructor() {
-    this.db = new PouchDB('weather');
+    this.db = new PouchDB('general');
+  }
+
+
+  /**
+   * @param {{ name: string }} time
+   */
+  setProfile({ name }) {
+    return this.db.put({ _id: 'profile', name });
+  }
+
+
+  /**
+   * @return {Promise<{ name: string }>} time
+   */
+  getProfile() {
+    return this.db.get('profile');
   }
 
 
@@ -24,7 +40,7 @@ class GeneralStore {
   async getWeatherInfo({ latitude, longitude }) {
     if (!latitude || !longitude) return null;
 
-    const dbId = `${latitude.toFixed(2)}-${longitude.toFixed(2)}`;
+    const dbId = `${latitude.toFixed(1)}-${longitude.toFixed(1)}`;
 
     // Check if already exists in DB
     try {
@@ -50,6 +66,8 @@ class GeneralStore {
     const weatherInfo = {
       city, temperature, humidity, sky,
     };
+
+    console.log({ weatherInfo });
 
     // Store to db
     await this.db.post({ _id: dbId, ...weatherInfo });

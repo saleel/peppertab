@@ -1,0 +1,44 @@
+.prompt {
+  background-color: var(--card-bg-color);
+  border-radius: 5px;
+  box-shadow: rgba(83, 70, 35, 0.15) 0px 2px 8px, rgba(83, 70, 35, 0.15) 0px 1px 3px; 
+  overflow: hidden;
+  width: 500px;
+  min-height: 200px;
+  padding: 2rem;
+
+
+  &:focus {
+    outline: none;
+  }
+  
+  &__question {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 500;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  &__input {
+    width: 100px;
+    font-size: 1.25rem;
+    display: block;
+    width: 100%;
+    padding: 0.25rem 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #e2e2e2;
+    margin-bottom: 1.5rem;
+  }
+
+  &__submit {
+    display: block;
+    margin: 1rem auto;
+    padding: 0.5rem 1rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #fff;
+    border-radius: 5px;
+    background-color: var(--success-color);
+  }
+}

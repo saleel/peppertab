@@ -1,8 +1,8 @@
 import React from 'react';
 import { usePosition } from 'use-position';
-import './weather.scss';
 import useStore from '../../hooks/use-store';
 import StoreContext from '../../contexts/store-context';
+import './weather.scss';
 
 
 function Weather() {
@@ -13,7 +13,7 @@ function Weather() {
   const [weatherInfo] = useStore(
     () => generalStore.getWeatherInfo({ latitude, longitude }),
     undefined,
-    [latitude],
+    [latitude, longitude],
   );
 
   if (!weatherInfo) return null;

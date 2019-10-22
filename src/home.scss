@@ -1,13 +1,15 @@
 .home {
-	min-height: 768px;
 	height: 100%;
 	width: 100%;
-	padding: 2rem;
-	padding-bottom: 4rem;
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
 	flex-direction: column;
+
+	&__welcome {
+		font-size: 2rem;
+		font-weight: 500;
+	}
 
 	&__widgets {
 		width: 75%;
@@ -17,6 +19,14 @@
 		display: flex;
 		flex-direction: row;
 		margin: 3rem;
+	}
+
+	&__notes-widget {
+		width: 65%;
+	}
+
+	&__todo-widget {
+		width: 35%;
 	}
 
 	&__time {

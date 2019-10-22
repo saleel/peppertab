@@ -1,17 +1,38 @@
 import React from 'react';
 import Time from './components/time';
-import TodoList from './components/todo-list';
-import './home.scss';
 import AuthContext from './contexts/auth-context';
-import Notes from './components/notes/notes';
 import Weather from './components/weather';
 import Tips from './components/tips';
 import Footer from './components/footer';
+import Prompt from './components/prompt';
+import StoreContext from './contexts/store-context';
+import './home.scss';
+import useStore from './hooks/use-store';
+
+const Notes = React.lazy(() => import('./components/notes/notes'));
+const TodoList = React.lazy(() => import('./components/todo-list'));
+
+
+const SkeletonBox = (
+  <div className="skeleton-box" style={{ height: '35rem', width: '100%' }} />
+);
 
 
 function Home() {
   const { login, isLoggedIn } = React.useContext(AuthContext);
+  const { generalStore } = React.useContext(StoreContext);
 
+  const [profile, { isFetching, reFetch }] = useStore(() => generalStore.getProfile(), null);
+
+
+  const hasProfile = !isFetching && !!profile;
+
+  async function onPromptSubmit(name) {
+    await generalStore.setProfile({ name });
+    reFetch();
+  }
+
+  if (isFetching) return null;
 
   return (
     <div className="home">
@@ -21,13 +42,26 @@ function Home() {
         <Weather />
       </div>
 
+      <div className="home__welcome fade-in">
+        {hasProfile && (
+          <>
+            <span>Hello </span>
+            <span>{profile.name}</span>
+          </>
+        )}
+      </div>
+
       <div className="home__widgets">
-        <div className="p-2 flex-1">
-          <Notes />
+        <div className="home__notes-widget p-2">
+          <React.Suspense fallback={SkeletonBox}>
+            <Notes />
+          </React.Suspense>
         </div>
 
-        <div className="p-2">
-          <TodoList />
+        <div className="home__todo-widget p-2">
+          <React.Suspense fallback={SkeletonBox}>
+            <TodoList />
+          </React.Suspense>
         </div>
       </div>
 
@@ -40,6 +74,14 @@ function Home() {
           />
         )}
       </div>
+
+      {!hasProfile && (
+        <Prompt
+          question="What should I call you?"
+          isOpen
+          onSubmit={onPromptSubmit}
+        />
+      )}
 
       <Footer />
 

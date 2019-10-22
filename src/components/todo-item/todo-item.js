@@ -13,7 +13,7 @@ import Todo from '../../model/todo';
 function TodoItem(props) {
   const { todo, onCompleteClick } = props;
 
-  let className = 'todo-item';
+  let className = 'todo-item fade-in';
   if (todo.isCompleted) {
     className += ' todo-item--completed';
   }

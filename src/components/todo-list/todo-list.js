@@ -75,7 +75,7 @@ function TodoList() {
 
 
   return (
-    <Card title="Todos" className="todo-list" actions={actions}>
+    <Card title="Todos" className="todo-list fade-in" actions={actions}>
       <>
 
         <div className="todo-list__items">
