@@ -9,7 +9,7 @@ import React from 'react';
  */
 function useStore(promise, defaultValue, dependenies = []) {
   const [result, setResult] = React.useState(defaultValue);
-  const [isFetching, setIsFetching] = React.useState(false);
+  const [isFetching, setIsFetching] = React.useState(true);
   const [error, setError] = React.useState();
 
   let didCancel = false;

@@ -4,17 +4,17 @@ import AuthContext from './contexts/auth-context';
 import Weather from './components/weather';
 import Tips from './components/tips';
 import Footer from './components/footer';
-import Prompt from './components/prompt';
 import StoreContext from './contexts/store-context';
 import './home.scss';
 import useStore from './hooks/use-store';
+import Welcome from './components/welcome';
 
 const Notes = React.lazy(() => import('./components/notes/notes'));
 const TodoList = React.lazy(() => import('./components/todo-list'));
 
 
 const SkeletonBox = (
-  <div className="skeleton-box" style={{ height: '35rem', width: '100%' }} />
+  <div className="skeleton-box" style={{ height: '35rem', width: '100%', opacity: 0 }} />
 );
 
 
@@ -24,45 +24,31 @@ function Home() {
 
   const [profile, { isFetching, reFetch }] = useStore(() => generalStore.getProfile(), null);
 
-
-  const hasProfile = !isFetching && !!profile;
-
-  async function onPromptSubmit(name) {
-    await generalStore.setProfile({ name });
-    reFetch();
-  }
-
   if (isFetching) return null;
 
-  return (
-    <div className="home">
 
-      <div className="home__time">
+  return (
+    <div className="home fade-in">
+
+      <div className="home__time fade-in">
         <Time />
         <Weather />
       </div>
 
       <div className="home__welcome fade-in">
-        {hasProfile && (
-          <>
-            <span>Hello </span>
-            <span>{profile.name}</span>
-          </>
-        )}
+        <Welcome onChange={reFetch} profile={profile} />
       </div>
 
       <div className="home__widgets">
-        <div className="home__notes-widget p-2">
-          <React.Suspense fallback={SkeletonBox}>
-            <Notes />
-          </React.Suspense>
-        </div>
+        <React.Suspense fallback={SkeletonBox}>
+          <div className="home__notes-widget p-2">
+            {profile && <Notes />}
+          </div>
 
-        <div className="home__todo-widget p-2">
-          <React.Suspense fallback={SkeletonBox}>
-            <TodoList />
-          </React.Suspense>
-        </div>
+          <div className="home__todo-widget p-2">
+            {profile && <TodoList />}
+          </div>
+        </React.Suspense>
       </div>
 
       <div className="home__tips">
@@ -74,14 +60,6 @@ function Home() {
           />
         )}
       </div>
-
-      {!hasProfile && (
-        <Prompt
-          question="What should I call you?"
-          isOpen
-          onSubmit={onPromptSubmit}
-        />
-      )}
 
       <Footer />
 
