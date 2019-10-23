@@ -4,13 +4,11 @@
   font-size: 1.1rem;
 
   &:hover {
-    background-color: var(--secondary-color);
+    background-color: var(--secondary-color-active);
     cursor: default;
   }
 
   &--completed {
-    opacity: 0.8;
-
     .todo-item__title {
       text-decoration: line-through;
       font-style: oblique;

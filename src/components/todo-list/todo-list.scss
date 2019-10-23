@@ -13,8 +13,8 @@
     position: absolute;
     width: 100%;
     bottom: 0;
-    padding: 1rem;
-    background-color: var(--secondary-color);
+    padding: 0.75rem;
+    background-color: var(--secondary-color-active);
   }
 
   &__create-input {
@@ -22,6 +22,7 @@
     width: 100%;
     font-size: 1.1rem;
     line-height: 1rem;
+    border-radius: 3px;
 
     &:focus, &:hover {
       outline-color: var(--secondary-color);

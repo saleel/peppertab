@@ -3,7 +3,7 @@ function getMessagePrefix() {
 
   if (hours > 4 && hours < 12) return 'Good Morning';
   if (hours >= 12 && hours <= 15) return 'Good Afternoon';
-  if (hours > 15 || hours <= 1) return 'Good Evening';
+  if (hours > 15 || hours < 1) return 'Good Evening';
   return 'Hello';
 }
 

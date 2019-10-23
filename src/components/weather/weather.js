@@ -16,6 +16,7 @@ function Weather() {
     [latitude, longitude],
   );
 
+
   if (!weatherInfo) return null;
 
   const {

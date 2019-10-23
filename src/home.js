@@ -5,9 +5,9 @@ import Weather from './components/weather';
 import Tips from './components/tips';
 import Footer from './components/footer';
 import StoreContext from './contexts/store-context';
-import './home.scss';
 import useStore from './hooks/use-store';
 import Welcome from './components/welcome';
+import './home.scss';
 
 const Notes = React.lazy(() => import('./components/notes/notes'));
 const TodoList = React.lazy(() => import('./components/todo-list'));

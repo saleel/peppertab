@@ -1,6 +1,6 @@
 .tips {
   border-radius: 5px;
-  background-color: var(--secondary-color-active);
+  background-color: var(--secondary-color);
   padding: 3px;
 
   &__message {
@@ -9,14 +9,13 @@
   
   &__btn-action {
     font-weight: 500;
-    background-color: var(--secondary-color);
+    background-color: var(--secondary-color-active);
     padding: 0 1rem;
     line-height: 2rem;
     border-radius: 3px;
-    opacity: 0.9;
+    opacity: 0.8;
 
     &:hover {
-      background-color: var(--secondary-color);
       opacity: 1;
     }
   }
