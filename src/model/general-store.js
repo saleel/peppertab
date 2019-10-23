@@ -67,8 +67,6 @@ class GeneralStore {
       city, temperature, humidity, sky,
     };
 
-    console.log({ weatherInfo });
-
     // Store to db
     await this.db.post({ _id: dbId, ...weatherInfo });
 

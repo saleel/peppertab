@@ -9,7 +9,8 @@ import Note from '../../model/note';
 import Card from '../card';
 import { getNoteTitle } from './notes.utils';
 import './notes.scss';
-import HtmlEditor from '../html-editor/html-editor';
+
+const HtmlEditor = React.lazy(() => import('../html-editor/html-editor'));
 
 
 function Notes() {
@@ -136,14 +137,17 @@ function Notes() {
       <div className="notes__editor">
         {activeNote && (
           <>
-            <HtmlEditor
-              ref={editorEl}
-              className="notes__editor"
-              data={activeNote.content}
-              onChange={onEditoreChange}
-              onFocus={() => { setIsEditing(true); }}
-              onBlur={() => { setIsEditing(false); }}
-            />
+            <React.Suspense fallback={null}>
+              <HtmlEditor
+                ref={editorEl}
+                className="notes__editor"
+                data={activeNote.content}
+                onChange={onEditoreChange}
+                onFocus={() => { setIsEditing(true); }}
+                onBlur={() => { setIsEditing(false); }}
+              />
+            </React.Suspense>
+
             <button type="button" className="notes__btn-delete" onClick={onDeleteClick}>
               <TrashIcon size="16" />
             </button>

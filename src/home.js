@@ -7,15 +7,9 @@ import Footer from './components/footer';
 import StoreContext from './contexts/store-context';
 import useStore from './hooks/use-store';
 import Welcome from './components/welcome';
+import Notes from './components/notes';
+import TodoList from './components/todo-list';
 import './home.scss';
-
-const Notes = React.lazy(() => import('./components/notes/notes'));
-const TodoList = React.lazy(() => import('./components/todo-list'));
-
-
-const SkeletonBox = (
-  <div className="skeleton-box" style={{ height: '35rem', width: '100%', opacity: 0 }} />
-);
 
 
 function Home() {
@@ -30,25 +24,23 @@ function Home() {
   return (
     <div className="home fade-in">
 
-      <div className="home__time fade-in">
+      <div className="home__time">
         <Time />
         <Weather />
       </div>
 
-      <div className="home__welcome fade-in">
-        <Welcome onChange={reFetch} profile={profile} />
+      <div className="home__welcome">
+        {!isFetching && <Welcome onChange={reFetch} profile={profile} />}
       </div>
 
       <div className="home__widgets">
-        <React.Suspense fallback={SkeletonBox}>
-          <div className="home__notes-widget p-2">
-            {profile && <Notes />}
-          </div>
+        <div className="home__notes-widget p-2">
+          <Notes />
+        </div>
 
-          <div className="home__todo-widget p-2">
-            {profile && <TodoList />}
-          </div>
-        </React.Suspense>
+        <div className="home__todo-widget p-2">
+          <TodoList />
+        </div>
       </div>
 
       <div className="home__tips">
