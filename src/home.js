@@ -1,7 +1,7 @@
 import React from 'react';
 import Time from './components/time';
 import Weather from './components/weather';
-import Qoutes from './components/qoutes';
+import Quotes from './components/quotes';
 import Footer from './components/footer';
 import StoreContext from './contexts/store-context';
 import useStore from './hooks/use-store';
@@ -34,16 +34,16 @@ function Home() {
         </div>
 
         <div className="home__quotes">
-          <Qoutes />
+          {profile && <Quotes />}
         </div>
 
         <div className="home__widgets">
           <div className="home__notes p-2">
-            <Notes />
+            {profile && <Notes />}
           </div>
 
           <div className="home__todo p-2">
-            <TodoList />
+            {profile && <TodoList />}
           </div>
         </div>
 

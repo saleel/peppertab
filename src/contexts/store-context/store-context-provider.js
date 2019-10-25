@@ -2,11 +2,11 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { differenceInMinutes } from 'date-fns';
 import StoreContext from './store-context';
 import TodoStore from '../../model/todo-store';
 import NoteStore from '../../model/note-store';
 import GeneralStore from '../../model/general-store';
-// import { syncDb } from './utils';
 import AuthContext from '../auth-context';
 import { debounce } from '../../utils';
 
@@ -30,41 +30,49 @@ function StoreContextProvider({ children }) {
 
     if (!window.navigator.onLine) return;
 
+    // Get backup from blockstack
+    const fileName = `${store.name}-db.json`;
+    const dump = await userSession.getFile(fileName, { decrypt: true });
+
+    // Restore dump
+    store.restore(dump);
+
+    // Dump the synced DB
+    const dbDump = await store.dump();
+
+    // Push db dump back to blockstack
+    await userSession.putFile(fileName, dbDump, { encrypt: true });
+
+    setLastSyncTime(new Date());
+    generalStore.setLastSyncTime(new Date());
+    setIsSyncing(false);
+  }
+
+  const syncAll = debounce(() => {
     try {
       setIsSyncing(true);
-
-      // Get backup from blockstacks
-      const fileName = `${store.name}-db.json`;
-      const dump = await userSession.getFile(fileName, { decrypt: true });
-
-      // Restore dump
-      store.restore(dump);
-
-      // Dump the synced DB
-      const dbDump = await store.dump();
-
-      // Push db dump back to blockstacks
-      await userSession.putFile(fileName, dbDump, { encrypt: true });
-
-      setLastSyncTime(new Date());
-      generalStore.setLastSyncTime(new Date());
-      setIsSyncing(false);
+      syncDb(todoStore);
+      syncDb(noteStore);
     } catch (e) {
-      console.error('Error occured in sync', e);
+      // eslint-disable-next-line no-console
+      console.error('Error ocurred in sync', e);
       setIsSyncing(false);
       setSyncError(e);
     }
-  }
+  }, 3000);
 
 
-  todoStore.on('change', debounce(() => syncDb(todoStore), 3000));
-  noteStore.on('change', debounce(() => syncDb(noteStore), 3000));
+  todoStore.on('change', () => syncAll());
+  noteStore.on('change', () => syncAll());
 
 
   // Sync once on page load
   React.useEffect(() => {
-    syncDb(todoStore);
-    syncDb(noteStore);
+    if (lastSyncTime && differenceInMinutes(new Date(), lastSyncTime) < 1) {
+      return;
+    }
+
+    syncAll();
   }, []);
 
 

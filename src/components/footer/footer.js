@@ -2,16 +2,18 @@ import React from 'react';
 import { formatDistance } from 'date-fns';
 import SyncIcon from '@iconscout/react-unicons/icons/uil-sync';
 import SyncSlashIcon from '@iconscout/react-unicons/icons/uil-sync-slash';
+import LoginModal from '../login-modal';
 import AuthContent from '../../contexts/auth-context';
 import StoreContext from '../../contexts/store-context';
 import './footer.scss';
 
 
 function Footer() {
-  const { isLoggedIn, login, logout } = React.useContext(AuthContent);
+  const { isLoggedIn } = React.useContext(AuthContent);
   const { lastSyncTime, syncError, isSyncing } = React.useContext(StoreContext);
 
   const [lastSyncDistance, setLastSyncDistance] = React.useState();
+  const [showLoginPrompt, setShowLoginPrompt] = React.useState(false);
 
 
   React.useEffect(() => {
@@ -29,14 +31,21 @@ function Footer() {
 
   const loginButton = !isLoggedIn() && (
     <>
-      <button type="button" className="footer__btn" onClick={login}>Login</button>
-      <span> to sync your data securely </span>
+      <button
+        type="button"
+        className="footer__btn"
+        onClick={() => setShowLoginPrompt(true)}
+      >
+        Login
+      </button>
+      <span> to store &amp; sync your data securely in Blockchain</span>
+      <LoginModal isOpen={showLoginPrompt} onRequestClose={() => setShowLoginPrompt(false)} />
     </>
   );
 
-  const logoutButton = isLoggedIn() && (
-    <button type="button" className="footer__btn" onClick={logout}>Logout</button>
-  );
+  // const logoutButton = isLoggedIn() && (
+  //   <button type="button" className="footer__btn" onClick={logout}>Logout</button>
+  // );
 
   const syncInfo = isLoggedIn() && (
     <>
@@ -48,11 +57,11 @@ function Footer() {
       )}
 
       {!isSyncing && !syncError && lastSyncDistance && (
-        <>
+        <span className="fade-in">
           <span>Last synced </span>
           <span>{lastSyncDistance}</span>
           <span> ago</span>
-        </>
+        </span>
       )}
 
       {!isSyncing && syncError && (
@@ -68,9 +77,9 @@ function Footer() {
   return (
     <div className="footer">
       <div className="footer__sync-info">
+        {/* {logoutButton} */}
         {syncInfo}
         {loginButton}
-        {logoutButton}
       </div>
     </div>
   );

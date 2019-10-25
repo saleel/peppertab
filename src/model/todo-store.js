@@ -47,7 +47,7 @@ class TodoStore extends Store {
 
     const existingTodo = await this.db.get(id);
 
-    await this.db.put({
+    await this.updateItem({
       ...existingTodo,
       isCompleted,
     });

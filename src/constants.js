@@ -1,7 +1,7 @@
 import { AppConfig } from 'blockstack';
 
 const appConfig = new AppConfig(['store_write', 'publish_data']);
-appConfig.manifestPath = '/blockstacks-manifest.json';
+appConfig.manifestPath = '/blockstack-manifest.json';
 
 
 export { appConfig };

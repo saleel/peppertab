@@ -5,7 +5,7 @@
 // and hidden.
 
 module.exports = function (app) {
-  app.get('/blockstacks-manifest.json', (req, res, next) => {
+  app.get('/blockstack-manifest.json', (req, res, next) => {
     res.set({
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Headers': '*',

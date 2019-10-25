@@ -24,7 +24,7 @@ class Store {
 
   async restore(dump) {
     // Create temporary DB
-    const tempDb = new PouchDB(`${this.name.name}-temp-${new Date().getTime()}`);
+    const tempDb = new PouchDB(`${this.name}-temp-${new Date().getTime()}`);
 
     // Load backup
     tempDb.loadIt(dump);
@@ -46,6 +46,20 @@ class Store {
     await this.db.dump(stream);
 
     return dbDump;
+  }
+
+  async updateItem(doc) {
+    try {
+      const originalDoc = await this.db.get(doc._id);
+      // eslint-disable-next-line no-param-reassign
+      doc._rev = originalDoc._rev;
+      return this.db.put(doc);
+    } catch (err) {
+      if (err.status === 409) {
+        return this.updateItem(doc);
+      } // new doc
+      return this.db.put(doc);
+    }
   }
 }
 

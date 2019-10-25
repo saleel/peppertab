@@ -47,7 +47,7 @@ class NoteStore extends Store {
       return existingNote; // Nothing to update
     }
 
-    await this.db.put({
+    await this.updateItem({
       ...existingNote,
       content,
       updatedAt: new Date(),

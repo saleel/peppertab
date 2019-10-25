@@ -17,6 +17,7 @@ function TodoList() {
 
   const [newTodo, setNewTodo] = React.useState({ title: '' });
   const [showCompleted, setShowCompleted] = React.useState(false);
+  const todoListRef = React.useRef(null);
 
 
   React.useEffect(() => {
@@ -40,9 +41,17 @@ function TodoList() {
    */
   async function onCreateKeyDown(e) {
     if (e.keyCode === 13) {
+      if (!newTodo.title) return;
+
       await todoStore.createTodo(new Todo(newTodo));
       setNewTodo({ title: '' });
       reFetch();
+
+      setTimeout(() => {
+        if (todoListRef.current.lastElementChild instanceof Element) {
+          todoListRef.current.lastElementChild.scrollIntoView({ behaviour: 'smooth' });
+        }
+      }, 100);
     }
   }
 
@@ -78,7 +87,7 @@ function TodoList() {
     <Card title="Todos" className="todo-list fade-in" actions={actions}>
       <>
 
-        <div className="todo-list__items">
+        <div className="todo-list__items" ref={todoListRef}>
           {filteredTodos.map((todo) => (
             <TodoItem
               key={todo.id}

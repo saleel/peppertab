@@ -9,24 +9,28 @@
 	&__content {
     display: flex;
 		flex-direction: column;
-		width: 75%;
     max-width: 1000px;
-    min-width: 800px;
+		min-width: 800px;
+		width: 80%;
 	}
 
 	&__widgets {
 		height: 35rem;
 		display: flex;
 		flex-direction: row;
-		margin: 1rem;
+		margin: 2rem 0;
 	}
 
 	&__notes {
-		width: 65%;
+		width: 70%;
 	}
 
 	&__todo {
-		width: 35%;
+		width: 30%;
+	}
+
+	&__quotes {
+		height: 50px;
 	}
 
 	&__time {

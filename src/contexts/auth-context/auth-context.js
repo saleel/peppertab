@@ -1,7 +1,12 @@
 import React from 'react';
 
 /**
- * @type {{ userSession: import('blockstack').UserSession }}
+ * @type {{
+ * userSession: import('blockstack').UserSession
+ * login: Function
+ * logout: Function
+ * isLoggedIn: () => boolean
+ * }}
  */
 const defaultValues = { userSession: null };
 

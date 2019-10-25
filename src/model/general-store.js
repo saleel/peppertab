@@ -1,7 +1,7 @@
 // @ts-check
-import PouchDB from 'pouchdb';
 import { isSameDay } from 'date-fns';
 import { OPEN_WEATHER_API_KEY } from '../constants';
+import Store from './store';
 
 
 /**
@@ -14,15 +14,15 @@ import { OPEN_WEATHER_API_KEY } from '../constants';
 
 
 /**
- * @typedef Qoute
+ * @typedef Quote
  * @property message {string}
  * @property author {string}
 */
 
 
-class GeneralStore {
+class GeneralStore extends Store {
   constructor() {
-    this.db = new PouchDB('general');
+    super('general');
   }
 
 
@@ -30,7 +30,7 @@ class GeneralStore {
    * @param {{ name: string }} time
    */
   setProfile({ name }) {
-    return this.db.put({ _id: 'profile', name });
+    return this.updateItem({ _id: 'profile', name });
   }
 
 
@@ -90,29 +90,30 @@ class GeneralStore {
       weather: [{ main: sky }],
     } = jsonResponse;
 
-    const temperature = temp - 273.15; // Convert Kelvin to Celcius
+    const temperature = temp - 273.15; // Convert Kelvin to Celsius
     const weatherInfo = {
       city, temperature, humidity, sky,
     };
 
     // Store to db
-    await this.db.post({ _id: dbId, ...weatherInfo });
+    await this.updateItem({ _id: dbId, ...weatherInfo });
 
     return weatherInfo;
   }
 
 
   /**
-   * @return {Promise<Qoute>} Weather Data for give lat long
+   * @return {Promise<Quote>} Weather Data for give lat long
    */
-  async getQoute() {
+  async getQuote() {
     try {
-      const cachedQoute = await this.db.get('qod');
-      if (cachedQoute) {
-        const qodDate = new Date(cachedQoute.createdAt);
+      const cachedQuote = await this.db.get('qod');
+
+      if (cachedQuote) {
+        const qodDate = new Date(cachedQuote.createdAt);
 
         if (isSameDay(qodDate, new Date())) {
-          return cachedQoute;
+          return cachedQuote;
         }
       }
     } catch (e) {
@@ -123,18 +124,17 @@ class GeneralStore {
     const url = 'https://quotes.rest/qod?category=inspire';
     const response = await fetch(url);
     const jsonResponse = await response.json();
+    const { contents: { quotes: [quoteRaw] = [] } = {} } = jsonResponse;
 
-    const { contents: { quotes: [qouteRaw] = [] } = {} } = jsonResponse;
+    if (!quoteRaw) return null;
 
-    if (!qouteRaw) return null;
+    const { quote: message, author } = quoteRaw;
 
-    const { qotue: message, author } = qouteRaw;
+    const quote = { message, author };
 
-    const qoute = { message, author };
+    await this.updateItem({ _id: 'qod', ...quote, createdAt: new Date() });
 
-    await this.db.put({ _id: 'qod', ...qoute });
-
-    return qoute;
+    return quote;
   }
 }
 

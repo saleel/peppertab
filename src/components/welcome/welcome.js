@@ -53,8 +53,12 @@ function Welcome(props) {
 Welcome.propTypes = {
   profile: PropTypes.shape({
     name: PropTypes.string,
-  }).isRequired,
+  }),
   onChange: PropTypes.func.isRequired,
+};
+
+Welcome.defaultProps = {
+  profile: null,
 };
 
 
