@@ -10,7 +10,6 @@ PouchDB.plugin({
 PouchDB.plugin(replicationStream.plugin);
 
 PouchDB.adapter('writableStream', replicationStream.adapters.writableStream);
-const MemoryStream = window.memorystream;
 
 
 class Store {
@@ -38,6 +37,11 @@ class Store {
 
 
   async dump() {
+    const MemoryStream = window.memorystream;
+    if (!MemoryStream) {
+      throw new Error('MemoryStream not loaded');
+    }
+
     const stream = new MemoryStream();
     let dbDump = '';
     stream.on('data', (chunk) => {

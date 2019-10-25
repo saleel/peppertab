@@ -1,5 +1,5 @@
 // @ts-check
-import { isSameDay } from 'date-fns';
+import { differenceInHours } from 'date-fns';
 import { OPEN_WEATHER_API_KEY } from '../constants';
 import Store from './store';
 
@@ -71,8 +71,12 @@ class GeneralStore extends Store {
     // Check if already exists in DB
     try {
       const dbWeatherInfo = await this.db.get(dbId);
+
       if (dbWeatherInfo) {
-        return dbWeatherInfo;
+        const weatherDate = new Date(dbWeatherInfo.createdAt);
+        if (differenceInHours(new Date(), weatherDate) < 1) {
+          return dbWeatherInfo;
+        }
       }
     } catch (e) {
       // Do nothing if not found in DB
@@ -96,7 +100,7 @@ class GeneralStore extends Store {
     };
 
     // Store to db
-    await this.updateItem({ _id: dbId, ...weatherInfo });
+    await this.updateItem({ _id: dbId, ...weatherInfo, createdAt: new Date() });
 
     return weatherInfo;
   }
@@ -112,7 +116,7 @@ class GeneralStore extends Store {
       if (cachedQuote) {
         const qodDate = new Date(cachedQuote.createdAt);
 
-        if (isSameDay(qodDate, new Date())) {
+        if (differenceInHours(new Date(), qodDate) < 1) {
           return cachedQuote;
         }
       }

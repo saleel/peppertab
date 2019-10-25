@@ -25,7 +25,7 @@ function Weather() {
 
 
   return (
-    <div className="weather">
+    <div className="weather fade-in">
 
       <span className="weather__temperature">
         {temperature.toFixed(1)}
