@@ -1,18 +1,13 @@
 import React from 'react';
 import StoreContext from '../../contexts/store-context';
-import './qoutes.scss';
 import useStore from '../../hooks/use-store';
+import './qoutes.scss';
 
 
 function Qoutes() {
   const { generalStore } = React.useContext(StoreContext);
 
-  // const [qoute] = useStore(() => generalStore.getQoute());
-
-  const qoute = {
-    message: 'Let us think the unthinkable, let us do the undoable, let us prepare to grapple with the ineffable itself, and see if we may not eff it after all.',
-    author: 'Saleel',
-  };
+  const [qoute] = useStore(() => generalStore.getQoute());
 
 
   if (!qoute) return null;
