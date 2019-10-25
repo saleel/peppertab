@@ -1,14 +1,23 @@
 // @ts-check
 import PouchDB from 'pouchdb';
+import { isSameDay } from 'date-fns';
 import { OPEN_WEATHER_API_KEY } from '../constants';
 
+
 /**
- * @typedef WeatherData
+ * @typedef WeatherInfo
  * @property city {string}
  * @property temperature {number}
  * @property humidity {number}
  * @property sky {string}
  */
+
+
+/**
+ * @typedef Qoute
+ * @property message {string}
+ * @property author {string}
+*/
 
 
 class GeneralStore {
@@ -34,8 +43,27 @@ class GeneralStore {
 
 
   /**
+   * @param {Date} time
+   */
+  setLastSyncTime(time) {
+    window.localStorage.setItem('last-sync-time', time.toUTCString());
+  }
+
+
+  /**
+   * @return {Date} time
+   */
+  getLastSyncTime() {
+    const time = window.localStorage.getItem('last-sync-time');
+    if (!time) return null;
+
+    return new Date(time);
+  }
+
+
+  /**
    * @param {{latitude: number, longitude: number}} params Lat/Long
-   * @return {Promise<WeatherData>} Weather Data for give lat long
+   * @return {Promise<WeatherInfo>} Weather Data for give lat long
    */
   async getWeatherInfo({ latitude, longitude }) {
     const dbId = 'weather';
@@ -75,21 +103,38 @@ class GeneralStore {
 
 
   /**
-   * @param {Date} time
+   * @return {Promise<Qoute>} Weather Data for give lat long
    */
-  setLastSyncTime(time) {
-    window.localStorage.setItem('last-sync-time', time.toUTCString());
-  }
+  async getQoute() {
+    try {
+      const cachedQoute = await this.db.get('qod');
+      if (cachedQoute) {
+        const qodDate = new Date(cachedQoute.createdAt);
+
+        if (isSameDay(qodDate, new Date())) {
+          return cachedQoute;
+        }
+      }
+    } catch (e) {
+      // Skip
+    }
 
 
-  /**
-   * @return {Date} time
-   */
-  getLastSyncTime() {
-    const time = window.localStorage.getItem('last-sync-time');
-    if (!time) return null;
+    const url = 'https://quotes.rest/qod?category=inspire';
+    const response = await fetch(url);
+    const jsonResponse = await response.json();
 
-    return new Date(time);
+    const { contents: { quotes: [qouteRaw] = [] } = {} } = jsonResponse;
+
+    if (!qouteRaw) return null;
+
+    const { qotue: message, author } = qouteRaw;
+
+    const qoute = { message, author };
+
+    await this.db.put({ _id: 'qod', ...qoute });
+
+    return qoute;
   }
 }
 

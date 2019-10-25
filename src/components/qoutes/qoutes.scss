@@ -1,0 +1,15 @@
+.qoutes {
+  padding: 3px;
+  text-align: center;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+
+  &__message {
+    max-width: 500px;
+  }
+
+  &__author {
+    font-style: oblique;
+  }
+}

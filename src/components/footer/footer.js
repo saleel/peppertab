@@ -8,7 +8,7 @@ import './footer.scss';
 
 
 function Footer() {
-  const { isLoggedIn, logout } = React.useContext(AuthContent);
+  const { isLoggedIn, login, logout } = React.useContext(AuthContent);
   const { lastSyncTime, syncError, isSyncing } = React.useContext(StoreContext);
 
   const [lastSyncDistance, setLastSyncDistance] = React.useState();
@@ -27,15 +27,18 @@ function Footer() {
   }, [lastSyncTime]);
 
 
-  // const loginButton = !isLoggedIn() && (
-  //   <button type="button" className="footer__btn" onClick={login}>Login</button>
-  // );
+  const loginButton = !isLoggedIn() && (
+    <>
+      <button type="button" className="footer__btn" onClick={login}>Login</button>
+      <span> to sync your data securely </span>
+    </>
+  );
 
   const logoutButton = isLoggedIn() && (
     <button type="button" className="footer__btn" onClick={logout}>Logout</button>
   );
 
-  const syncInfo = (
+  const syncInfo = isLoggedIn() && (
     <>
       {isSyncing && (
         <span className="footer__syncing">
@@ -66,10 +69,7 @@ function Footer() {
     <div className="footer">
       <div className="footer__sync-info">
         {syncInfo}
-      </div>
-
-      <div>
-        {/* {loginButton} */}
+        {loginButton}
         {logoutButton}
       </div>
     </div>

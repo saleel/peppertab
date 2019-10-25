@@ -1,8 +1,7 @@
 import React from 'react';
 import Time from './components/time';
-import AuthContext from './contexts/auth-context';
 import Weather from './components/weather';
-import Tips from './components/tips';
+import Qoutes from './components/qoutes';
 import Footer from './components/footer';
 import StoreContext from './contexts/store-context';
 import useStore from './hooks/use-store';
@@ -13,7 +12,6 @@ import './home.scss';
 
 
 function Home() {
-  const { login, isLoggedIn } = React.useContext(AuthContext);
   const { generalStore } = React.useContext(StoreContext);
 
   const [profile, { isFetching, reFetch }] = useStore(() => generalStore.getProfile(), null);
@@ -22,35 +20,33 @@ function Home() {
 
 
   return (
-    <div className="home fade-in">
+    <div className="home">
 
       <div className="home__time">
         <Time />
         <Weather />
       </div>
 
-      <div className="home__welcome">
-        {!isFetching && <Welcome onChange={reFetch} profile={profile} />}
-      </div>
+      <div className="home__content">
 
-      <div className="home__widgets">
-        <div className="home__notes-widget p-2">
-          <Notes />
+        <div className="home__welcome">
+          {!isFetching && <Welcome onChange={reFetch} profile={profile} />}
         </div>
 
-        <div className="home__todo-widget p-2">
-          <TodoList />
+        <div className="home__quotes">
+          <Qoutes />
         </div>
-      </div>
 
-      <div className="home__tips">
-        {!isLoggedIn() && (
-          <Tips
-            message="Login to sync your data securely"
-            actionText="Login"
-            onAction={login}
-          />
-        )}
+        <div className="home__widgets">
+          <div className="home__notes p-2">
+            <Notes />
+          </div>
+
+          <div className="home__todo p-2">
+            <TodoList />
+          </div>
+        </div>
+
       </div>
 
       <Footer />

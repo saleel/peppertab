@@ -6,21 +6,26 @@
 	align-items: center;
 	flex-direction: column;
 
-	&__widgets {
+	&__content {
+    display: flex;
+		flex-direction: column;
 		width: 75%;
-		min-width: 800px;
-		max-width: 1000px;
+    max-width: 1000px;
+    min-width: 800px;
+	}
+
+	&__widgets {
 		height: 35rem;
 		display: flex;
 		flex-direction: row;
-		margin: 3rem;
+		margin: 1rem;
 	}
 
-	&__notes-widget {
+	&__notes {
 		width: 65%;
 	}
 
-	&__todo-widget {
+	&__todo {
 		width: 35%;
 	}
 
