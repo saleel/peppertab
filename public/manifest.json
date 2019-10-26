@@ -6,9 +6,9 @@
   "chrome_url_overrides" : {
     "newtab": "./index.html"
   },
-  "permissions": ["geolocation", "background", "webRequest", "webRequestBlocking", "*://*.peppertab.com/*"],
+  "permissions": ["geolocation",  "webRequest", "webRequestBlocking", "*://*.peppertab.com/*"],
   "background": {
-    "scripts": ["chrome.js"],
+    "scripts": ["background.js"],
     "persistent": true
   } 
 }

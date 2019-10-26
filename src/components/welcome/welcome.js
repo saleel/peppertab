@@ -34,7 +34,7 @@ function Welcome(props) {
   if (!profile) {
     return (
       <div className="welcome fade-in">
-        <span className="welcome__message">Hello there, what should I call you?</span>
+        <span className="welcome__message">Hello there, what is your name?</span>
         <input ref={inputRef} onKeyDown={onKeyDown} type="text" className="welcome__inp-name" />
       </div>
     );

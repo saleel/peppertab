@@ -28,6 +28,10 @@ function AuthContextProvider({ children }) {
           if (!userData.username) {
             throw new Error('This app requires a username.');
           }
+
+          // Clear last sync time
+          window.localStorage.removeItem('last-sync-time');
+
           window.location.reload();
         });
     }

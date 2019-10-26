@@ -69,6 +69,10 @@ function StoreContextProvider({ children }) {
   noteStore.on('change', () => syncAll());
 
 
+  // @ts-ignore
+  window.syncAll = syncAll;
+
+
   // Sync once on page load
   React.useEffect(() => {
     if (lastSyncTime && differenceInMinutes(new Date(), lastSyncTime) < 1) {
