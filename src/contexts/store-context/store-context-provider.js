@@ -35,24 +35,27 @@ function StoreContextProvider({ children }) {
     const dump = await userSession.getFile(fileName, { decrypt: true });
 
     // Restore dump
-    store.restore(dump);
+    await store.merge(dump);
 
     // Dump the synced DB
     const dbDump = await store.dump();
 
     // Push db dump back to blockstack
     await userSession.putFile(fileName, dbDump, { encrypt: true });
-
-    setLastSyncTime(new Date());
-    generalStore.setLastSyncTime(new Date());
-    setIsSyncing(false);
   }
 
-  const syncAll = debounce(() => {
+  const syncAll = debounce(async () => {
     try {
       setIsSyncing(true);
-      syncDb(todoStore);
-      syncDb(noteStore);
+
+      await Promise.all([
+        syncDb(todoStore),
+        syncDb(noteStore),
+      ]);
+
+      setLastSyncTime(new Date());
+      generalStore.setLastSyncTime(new Date());
+      setIsSyncing(false);
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error('Error ocurred in sync', e);

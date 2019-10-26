@@ -17,6 +17,7 @@ function Notes() {
   const { noteStore, lastSyncTime } = React.useContext(StoreContext);
   const [notes, { reFetch }] = useStore(() => noteStore.findNotes());
 
+  const componentRenderedAt = React.useRef(new Date());
   const editorEl = React.useRef(null);
   const [activeNote, setActiveNote] = React.useState();
   const [isEditing, setIsEditing] = React.useState(false);
@@ -34,7 +35,7 @@ function Notes() {
 
 
   React.useEffect(() => {
-    if (lastSyncTime) {
+    if (new Date(lastSyncTime).getTime() > componentRenderedAt.current.getTime()) {
       reFetch();
     }
   }, [lastSyncTime]);
@@ -51,6 +52,8 @@ function Notes() {
     // Set first note as active if none present
     if (!activeNote || !notes.find((n) => n.id === activeNote.id)) {
       setActiveNote(notes[0]);
+    } else if (activeNote) {
+      setActiveNote(notes.find((n) => n.id === activeNote.id));
     }
   }, [notes]);
 
@@ -77,7 +80,7 @@ function Notes() {
   }
 
 
-  function onEditoreChange(_, editor) {
+  function onEditorChange(_, editor) {
     const data = editor.getData();
     setActiveNote((an) => ({ ...an, content: data }));
   }
@@ -142,7 +145,7 @@ function Notes() {
                 ref={editorEl}
                 className="notes__editor"
                 data={activeNote.content}
-                onChange={onEditoreChange}
+                onChange={onEditorChange}
                 onFocus={() => { setIsEditing(true); }}
                 onBlur={() => { setIsEditing(false); }}
               />

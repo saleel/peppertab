@@ -15,13 +15,14 @@ function TodoList() {
   const { todoStore, lastSyncTime } = React.useContext(StoreContext);
   const [todos, { reFetch }] = useStore(() => todoStore.findTodos(), []);
 
+  const componentRenderedAt = React.useRef(new Date());
   const [newTodo, setNewTodo] = React.useState({ title: '' });
   const [showCompleted, setShowCompleted] = React.useState(false);
   const todoListRef = React.useRef(null);
 
 
   React.useEffect(() => {
-    if (lastSyncTime) {
+    if (new Date(lastSyncTime).getTime() > componentRenderedAt.current.getTime()) {
       reFetch();
     }
   }, [lastSyncTime]);

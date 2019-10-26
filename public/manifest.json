@@ -1,10 +1,14 @@
 {
+  "manifest_version": 2,
   "name": "PepperTab",
   "short_name": "PepperTab",
   "version": "1.0.0",
   "chrome_url_overrides" : {
     "newtab": "./index.html"
   },
-  "permissions": ["geolocation"],
-  "manifest_version": 2
+  "permissions": ["geolocation", "background", "webRequest", "webRequestBlocking", "*://*.peppertab.com/*"],
+  "background": {
+    "scripts": ["chrome.js"],
+    "persistent": true
+  } 
 }

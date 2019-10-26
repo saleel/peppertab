@@ -21,7 +21,7 @@ class Store {
     this.on = this.emitter.on.bind(this.emitter);
   }
 
-  async restore(dump) {
+  async merge(dump) {
     // Create temporary DB
     const tempDb = new PouchDB(`${this.name}-temp-${new Date().getTime()}`);
 

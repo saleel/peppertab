@@ -4,6 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactModal from 'react-modal';
 import './login-modal.scss';
+import AuthContext from '../../contexts/auth-context';
 
 
 ReactModal.setAppElement('#root');
@@ -14,10 +15,12 @@ ReactModal.setAppElement('#root');
  */
 function LoginModal(props) {
   const { isOpen, onRequestClose } = props;
+  const { login } = React.useContext(AuthContext);
 
 
   function onLoginClick() {
-    window.location.pathname = '/login';
+    login();
+    // window.location.pathname = '/login';
   }
 
 
