@@ -1,7 +1,7 @@
 .card {
   background-color: var(--card-bg-color);
   border-radius: 5px;
-  box-shadow: rgba(83, 70, 35, 0.15) 0px 2px 8px, rgba(83, 70, 35, 0.15) 0px 1px 3px; 
+  // box-shadow: rgba(83, 70, 35, 0.15) 0px 2px 8px, rgba(83, 70, 35, 0.15) 0px 1px 3px; 
   overflow: hidden;
 
   &__title {
@@ -9,6 +9,7 @@
     padding: 1.25rem;
     font-weight: 500;
     line-height: 2rem;
+    border-bottom: 0.5px solid var(--secondary-color-active);
   }
 
   &__actions {

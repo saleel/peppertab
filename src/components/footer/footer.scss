@@ -4,6 +4,7 @@
   align-items: flex-end;
   width: 100%;
   padding: 1rem;
+  height: 50px;
 
   &__btn {
     font-weight: 500;
@@ -25,7 +26,6 @@
     svg {
       display: inline;
       margin: 0 5px;
-      vertical-align: center;
       animation-name: spin;
       animation-duration: 1000ms;
       animation-iteration-count: infinite;
@@ -37,7 +37,6 @@
     svg {
       display: inline;
       margin: 0 5px;
-      vertical-align: center;
     }
   }
 }

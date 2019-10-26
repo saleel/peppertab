@@ -52,7 +52,8 @@ function Notes() {
     // Set first note as active if none present
     if (!activeNote || !notes.find((n) => n.id === activeNote.id)) {
       setActiveNote(notes[0]);
-    } else if (activeNote) {
+    } else if (activeNote && !isEditing) {
+      // If the active note was updated while sync
       setActiveNote(notes.find((n) => n.id === activeNote.id));
     }
   }, [notes]);

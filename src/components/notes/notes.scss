@@ -8,7 +8,7 @@
     position: relative;
     background-color: var(--secondary-color);
     width: 30%;
-    border-right: 1px solid var(--secondary-color-active);
+    border-right: 0.5px solid var(--secondary-color-active);
     height: 100%;
     overflow-y: scroll;
     padding-bottom: 0.5rem;
@@ -16,7 +16,7 @@
 
   &__list-item {
     padding: 0.5rem 1.5rem;
-    border-bottom: 1px solid var(--secondary-color-active);
+    border-bottom: 0.5px solid var(--secondary-color-active);
     text-align: left;
     width: 100%;
 

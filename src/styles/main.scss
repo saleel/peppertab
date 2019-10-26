@@ -2,20 +2,6 @@
 @import "~tailwindcss/dist/utilities";
 @import '~pretty-checkbox/src/pretty-checkbox.scss';
 
-
-:root {
-	--main-bg-color: #fdbf9c;
-	--main-text-color: #33302d;
-	--card-bg-color: #ffffff;
-
-	--secondary-color: #F7F6F3;
-	--secondary-color-active: #E6E6E6;
-
-  --primary-color: #2980b9;
-  --success-color: #27ae60;
-}
-
-
 html, body {
 	height: 100%;
   width: 100%;
@@ -32,6 +18,30 @@ html, body {
 	-moz-osx-font-smoothing: grayscale;
 }
 
+html.light {
+  --main-bg-color: #B1B7C5;
+  --main-text-color: #33302d;
+  --card-bg-color: #f8f8f8;
+
+  --secondary-color: #F7F6F3;
+  --secondary-color-active: #E6E6E6;
+
+  --primary-color: #2980b9;
+  --success-color: #27ae60;
+}
+
+html.dark {
+  --main-bg-color: #1E1E1E;
+  --main-text-color: #cec5c5;
+  --card-bg-color: #484848;
+
+  --secondary-color: #484848;
+  --secondary-color-active: #3b3b3b;
+
+  --primary-color: #2980b9;
+  --success-color: #27ae60;
+}
+
 #root {
 	height: 100%;
 }
@@ -39,7 +49,9 @@ html, body {
 button, input {
 	&:focus, &:active {
 		outline: none;
-	}
+  }
+  
+	color: var(--main-text-color);
 }
 
 

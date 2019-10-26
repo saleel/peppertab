@@ -9,7 +9,7 @@
 	&__content {
     display: flex;
 		flex-direction: column;
-    max-width: 1000px;
+    max-width: 900px;
 		min-width: 800px;
 		min-height: 600px;
 		width: 80%;
@@ -23,7 +23,8 @@
 		height: 35rem;
 		display: flex;
 		flex-direction: row;
-		margin: 2rem 0;
+		// margin: 2rem 0;
+		margin-top: 2rem;
 	}
 
 	&__notes {
@@ -37,7 +38,7 @@
 	&__quotes {
 		height: 50px;
 	}
-
+	
 	&__time {
 		position: absolute;
 		top: 0;
