@@ -33,19 +33,23 @@ function Home() {
           {!isFetching && <Welcome onChange={reFetch} profile={profile} />}
         </div>
 
-        <div className="home__quotes">
-          {profile && <Quotes />}
-        </div>
+        {profile && (
+          <>
+            <div className="home__quotes">
+              <Quotes />
+            </div>
 
-        <div className="home__widgets">
-          <div className="home__notes p-2">
-            {profile && <Notes />}
-          </div>
+            <div className="home__widgets">
+              <div className="home__notes p-2">
+                <Notes />
+              </div>
 
-          <div className="home__todo p-2">
-            {profile && <TodoList />}
-          </div>
-        </div>
+              <div className="home__todo p-2">
+                <TodoList />
+              </div>
+            </div>
+          </>
+        )}
 
       </div>
 

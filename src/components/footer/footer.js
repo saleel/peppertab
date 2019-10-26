@@ -38,7 +38,7 @@ function Footer() {
       >
         Login
       </button>
-      <span> to store &amp; sync your data securely in Blockchain</span>
+      <span> to store &amp; sync your data securely</span>
       <LoginModal isOpen={showLoginPrompt} onRequestClose={() => setShowLoginPrompt(false)} />
     </>
   );

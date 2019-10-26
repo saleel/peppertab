@@ -39,13 +39,13 @@ function LoginModal(props) {
       </div>
 
       <p className="login-modal__description">
-        You will be redirected to
+        PepperTab is designed using
         <strong> Blockstack </strong>
-        to login securely.
+         infrastructure. You will be redirected to Blockstack to login securely.
         Blockstack is a decentralized computing ecosystem powered by Blockchain.
         <br />
         <br />
-        All your data will be encrypted and stored in Blockstack storage.
+        All your data (like Todos, Notes) will be encrypted and stored in Blockstack storage engine.
         No one apart from you (even us) will be able to access your data.
         <br />
         <br />
