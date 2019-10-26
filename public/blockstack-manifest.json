@@ -1,7 +1,6 @@
 {
-  "name": "newtab",
-  "short_name": "MY Block",
-  "version": "0.0.1",
+  "name": "PepperTab",
+  "version": "1.0.0",
   "icons": [
     {
       "src": "https://helloblockstack.com/icon-192x192.png",

@@ -4,6 +4,7 @@ import Weather from './components/weather';
 import Quotes from './components/quotes';
 import Footer from './components/footer';
 import StoreContext from './contexts/store-context';
+import AuthContext from './contexts/auth-context';
 import useStore from './hooks/use-store';
 import Welcome from './components/welcome';
 import Notes from './components/notes';
@@ -13,8 +14,17 @@ import './home.scss';
 
 function Home() {
   const { generalStore } = React.useContext(StoreContext);
+  const { login } = React.useContext(AuthContext);
 
   const [profile, { isFetching, reFetch }] = useStore(() => generalStore.getProfile(), null);
+
+
+  React.useEffect(() => {
+    if (window.location.pathname === '/login') {
+      login();
+    }
+  }, [window.location.pathname]);
+
 
   if (isFetching) return null;
 

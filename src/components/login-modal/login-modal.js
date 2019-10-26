@@ -4,7 +4,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactModal from 'react-modal';
 import './login-modal.scss';
-import AuthContext from '../../contexts/auth-context';
 
 
 ReactModal.setAppElement('#root');
@@ -15,7 +14,11 @@ ReactModal.setAppElement('#root');
  */
 function LoginModal(props) {
   const { isOpen, onRequestClose } = props;
-  const { login } = React.useContext(AuthContext);
+
+
+  function onLoginClick() {
+    window.location.pathname = '/login';
+  }
 
 
   const overlayStyles = {
@@ -55,7 +58,7 @@ function LoginModal(props) {
         <br />
       </p>
 
-      <button type="button" className="login-modal__btn-proceed" onClick={() => login()}>
+      <button type="button" className="login-modal__btn-proceed" onClick={() => onLoginClick()}>
         Proceed
       </button>
 
