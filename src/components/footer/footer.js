@@ -2,18 +2,42 @@ import React from 'react';
 import { formatDistance } from 'date-fns';
 import SyncIcon from '@iconscout/react-unicons/icons/uil-sync';
 import SyncSlashIcon from '@iconscout/react-unicons/icons/uil-sync-slash';
+import MoonIcon from '@iconscout/react-unicons/icons/uil-moon';
+import SunIcon from '@iconscout/react-unicons/icons/uil-sun';
 import LoginModal from '../login-modal';
+import useStore from '../../hooks/use-store';
 import AuthContent from '../../contexts/auth-context';
 import StoreContext from '../../contexts/store-context';
+import { Themes } from '../../constants';
 import './footer.scss';
 
 
 function Footer() {
   const { isLoggedIn } = React.useContext(AuthContent);
-  const { lastSyncTime, syncError, isSyncing } = React.useContext(StoreContext);
+  const {
+    generalStore, lastSyncTime, syncError, isSyncing,
+  } = React.useContext(StoreContext);
+
 
   const [lastSyncDistance, setLastSyncDistance] = React.useState();
   const [showLoginPrompt, setShowLoginPrompt] = React.useState(false);
+
+  const [theme, { reFetch }] = useStore(() => generalStore.getTheme(), Themes.light);
+
+  function onMoonClick() {
+    generalStore.setTheme(Themes.dark);
+    reFetch();
+  }
+
+  function onSunClick() {
+    generalStore.setTheme(Themes.light);
+    reFetch();
+  }
+
+
+  React.useEffect(() => {
+    document.documentElement.className = theme;
+  }, [theme]);
 
 
   React.useEffect(() => {
@@ -74,12 +98,29 @@ function Footer() {
   );
 
 
+  const themeConfig = (theme === Themes.dark)
+    ? (
+      <button className="fade-in" type="button" onClick={onSunClick}>
+        <SunIcon color="#f7f7f7" size="20" />
+      </button>
+    )
+    : (
+      <button className="fade-in" type="button" onClick={onMoonClick}>
+        <MoonIcon color="#f7f7f7" size="20" />
+      </button>
+    );
+
+
   return (
     <div className="footer">
       <div className="footer__sync-info">
         {/* {logoutButton} */}
         {syncInfo}
         {loginButton}
+      </div>
+
+      <div className="footer__theme">
+        {themeConfig}
       </div>
     </div>
   );

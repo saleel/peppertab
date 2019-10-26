@@ -1,6 +1,6 @@
 // @ts-check
 import { differenceInHours } from 'date-fns';
-import { OPEN_WEATHER_API_KEY } from '../constants';
+import { OPEN_WEATHER_API_KEY, LocalStorage } from '../constants';
 import Store from './store';
 
 
@@ -43,10 +43,26 @@ class GeneralStore extends Store {
 
 
   /**
+   * @param {string} theme
+   */
+  setTheme(theme) {
+    window.localStorage.setItem(LocalStorage.theme, theme);
+  }
+
+
+  /**
+   * @return {string} theme
+   */
+  getTheme() {
+    return window.localStorage.getItem(LocalStorage.theme);
+  }
+
+
+  /**
    * @param {Date} time
    */
   setLastSyncTime(time) {
-    window.localStorage.setItem('last-sync-time', time.toUTCString());
+    window.localStorage.setItem(LocalStorage.lastSyncTime, time.toUTCString());
   }
 
 
@@ -54,7 +70,7 @@ class GeneralStore extends Store {
    * @return {Date} time
    */
   getLastSyncTime() {
-    const time = window.localStorage.getItem('last-sync-time');
+    const time = window.localStorage.getItem(LocalStorage.lastSyncTime);
     if (!time) return null;
 
     return new Date(time);

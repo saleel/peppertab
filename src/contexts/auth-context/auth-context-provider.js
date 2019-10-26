@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { UserSession } from 'blockstack';
 import AuthContext from './auth-context';
-import { appConfig } from '../../constants';
+import { appConfig, LocalStorage } from '../../constants';
 
 
 function AuthContextProvider({ children }) {
@@ -30,7 +30,7 @@ function AuthContextProvider({ children }) {
           }
 
           // Clear last sync time
-          window.localStorage.removeItem('last-sync-time');
+          window.localStorage.removeItem(LocalStorage.lastSyncTime);
 
           window.location.reload();
         });
