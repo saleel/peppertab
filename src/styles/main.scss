@@ -19,12 +19,12 @@ html, body {
 }
 
 html.light {
-  --main-bg-color: #B1B7C5;
-  --main-text-color: #33302d;
-  --card-bg-color: #f8f8f8;
+	--main-bg-color: rgb(207, 207, 207);
+	--main-text-color: #33302d;
+	--card-bg-color: #ffffff;
 
-  --secondary-color: #F7F6F3;
-  --secondary-color-active: #E6E6E6;
+	--secondary-color: rgb(243, 243, 243);
+	--secondary-color-active: rgb(226, 226, 226);
 
   --primary-color: #2980b9;
   --success-color: #27ae60;
@@ -32,11 +32,11 @@ html.light {
 
 html.dark {
   --main-bg-color: #1E1E1E;
-  --main-text-color: #cec5c5;
+  --main-text-color: #ddd8d8;
   --card-bg-color: #484848;
 
-  --secondary-color: #484848;
-  --secondary-color-active: #3b3b3b;
+  --secondary-color: #414141;
+  --secondary-color-active: #353535;
 
   --primary-color: #2980b9;
   --success-color: #27ae60;

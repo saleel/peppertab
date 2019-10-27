@@ -5,7 +5,7 @@ import App from './app';
 import { LocalStorage, Themes } from './constants';
 
 
-const theme = window.localStorage.getItem(LocalStorage.theme) || Themes.dark;
+const theme = window.localStorage.getItem(LocalStorage.theme) || Themes.light;
 document.documentElement.className = theme;
 
 

@@ -106,7 +106,7 @@ function Footer() {
     )
     : (
       <button className="fade-in" type="button" onClick={onMoonClick}>
-        <MoonIcon color="#f7f7f7" size="20" />
+        <MoonIcon color="#1E1E1E" size="20" />
       </button>
     );
 

@@ -5,8 +5,9 @@
   display: block;
 
   &__items {
-    height: calc(100% - 5rem);
+    height: calc(100% - 4rem);
     overflow-y: scroll;
+    background-color: var(--secondary-color);
   }
 
   &__create {
@@ -14,12 +15,12 @@
     width: 100%;
     bottom: 0;
     padding: 0.75rem;
-    background-color: var(--secondary-color);
+    background-color: var(--secondary-color-active);
   }
 
   &__create-input {
     padding: 0.75rem;
-    background-color: var(--secondary-color-active);
+    background-color: var(--secondary-color);
     width: 100%;
     font-size: 1.1rem;
     line-height: 1rem;

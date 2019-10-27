@@ -3,15 +3,27 @@
   "name": "PepperTab",
   "short_name": "PepperTab",
   "version": "1.0.0",
-  "chrome_url_overrides" : {
+  "chrome_url_overrides": {
     "newtab": "./index.html"
   },
-  "permissions": ["geolocation",  "webRequest", "webRequestBlocking", "*://*.peppertab.com/*"],
+  "permissions": [
+    "geolocation",
+    "webRequest",
+    "webRequestBlocking",
+    "*://*.peppertab.com/*"
+  ],
   "background": {
-    "scripts": ["background.js"],
+    "scripts": [
+      "background.js"
+    ],
     "persistent": true
   },
   "web_accessible_resources": [
     "index.html"
-  ]
+  ],
+  "icons": {
+    "16": "assets/logo-16px.png",
+    "48": "assets/logo-48px.png",
+    "128": "assets/logo-128px.png"
+  }
 }

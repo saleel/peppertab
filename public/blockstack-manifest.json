@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "icons": [
     {
-      "src": "https://helloblockstack.com/icon-192x192.png",
-      "sizes": "192x192",
+      "src": "./assets/logo-500px.png",
+      "sizes": "500x500",
       "type": "image/png"
     }
   ],
