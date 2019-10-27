@@ -36,7 +36,9 @@ function Footer() {
 
 
   React.useEffect(() => {
-    document.documentElement.className = theme;
+    if (theme) {
+      document.documentElement.className = theme;
+    }
   }, [theme]);
 
 

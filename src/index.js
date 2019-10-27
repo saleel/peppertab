@@ -2,11 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './styles/main.scss';
 import App from './app';
-import { LocalStorage, Themes } from './constants';
+import { LocalStorage } from './constants';
 
 
-const theme = window.localStorage.getItem(LocalStorage.theme) || Themes.light;
-document.documentElement.className = theme;
+const lastTheme = window.localStorage.getItem(LocalStorage.theme);
+if (lastTheme) {
+  document.documentElement.className = lastTheme;
+}
 
 
 ReactDOM.render(<App />, document.getElementById('root'));
