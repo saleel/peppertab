@@ -10,7 +10,7 @@
   }
 
   browser.webRequest.onBeforeRequest.addListener(({ url }) => {
-    const hostedUrl = 'https://app.peppertab.com/ext-auth';
+    const hostedUrl = 'https://peppertab.com/ext-auth';
 
     if (url.startsWith(hostedUrl)) {
       const extensionUrl = browser.extension.getURL('/index.html');

@@ -11,7 +11,7 @@ appConfig.manifestPath = '/blockstack-manifest.json';
 // Is chrome extension
 if (isBrowserExtension()) {
   appConfig.redirectPath = '/ext-auth';
-  appConfig.appDomain = 'https://app.peppertab.com';
+  appConfig.appDomain = 'https://peppertab.com';
 }
 
 export { appConfig };
