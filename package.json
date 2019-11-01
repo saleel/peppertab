@@ -1,6 +1,6 @@
 {
-  "name": "myblock",
-  "version": "1.0.2",
+  "name": "pepper-tab",
+  "version": "1.1.0",
   "private": true,
   "dependencies": {
     "@ckeditor/ckeditor5-react": "^1.1.3",
