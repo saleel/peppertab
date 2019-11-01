@@ -1,5 +1,6 @@
 import React from 'react';
 import { format } from 'date-fns';
+import useInterval from '../../hooks/use-interval';
 import './time.scss';
 
 
@@ -7,13 +8,9 @@ function Time() {
   const [time, setTime] = React.useState(new Date());
 
 
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setTime(new Date());
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  });
+  useInterval(() => {
+    setTime(new Date());
+  }, 1000);
 
 
   const hours = format(time, 'HH:mm');

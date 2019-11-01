@@ -25,6 +25,8 @@ function TodoList() {
     if (new Date(lastSyncTime).getTime() > componentRenderedAt.current.getTime()) {
       reFetch();
     }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastSyncTime]);
 
 
