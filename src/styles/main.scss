@@ -19,37 +19,37 @@ html, body {
 html.light {
 	--main-bg-color: rgb(207, 207, 207);
 	--main-text-color: #33302d;
-	--card-bg-color: #ffffff;
 
-	--secondary-color: rgb(243, 243, 243);
-	--secondary-color-active: rgb(226, 226, 226);
-
-  --primary-color: #2980b9;
-  --success-color: #27ae60;
+  --card-bg-color: #f5f5f5;
+	--card-item-color: rgb(241, 241, 241);
+  --card-item-color-active: rgb(226, 226, 226);
+  
+  --inverted-color: #1E1E1E;
+  --inverted-text-color: #ddd8d8;
 }
 
 html.dark {
   --main-bg-color: #1E1E1E;
   --main-text-color: #ddd8d8;
+ 
   --card-bg-color: #484848;
+  --card-item-color: #414141;
+  --card-item-color-active: #353535;
 
-  --secondary-color: #414141;
-  --secondary-color-active: #353535;
-
-  --primary-color: #2980b9;
-  --success-color: #27ae60;
+  --inverted-color: rgb(207, 207, 207);
+  --inverted-text-color: #33302d;
 }
 
 html.image {
   --main-bg-color: #1E1E1E;
   --main-text-color: #ffffff;
+  
   --card-bg-color: rgba(72, 72, 72, 0.95);
+  --card-item-color: rgba(65, 65, 65, 0.75);
+  --card-item-color-active: rgba(53, 53, 53, 0.95);
 
-  --secondary-color: rgba(65, 65, 65, 0.75);
-  --secondary-color-active: rgba(53, 53, 53, 0.95);
-
-  --primary-color: #2980b9;
-  --success-color: #27ae60;
+  --inverted-color: rgb(207, 207, 207);
+  --inverted-text-color: #33302d;
 }
 
 #root {
@@ -99,7 +99,7 @@ button, input {
   height: 1em;
   position: relative;
   overflow: hidden;
-  background-color: var(--secondary-color);
+  background-color: var(--card-item-color);
   border-radius: 5px;
 
   &::after {

@@ -24,13 +24,13 @@
 
   &__btn {
     font-weight: 500;
-    background-color: var(--secondary-color);
+    background-color: var(--card-item-color);
     padding: 0 1rem;
     line-height: 2rem;
     border-radius: 3px;
 
     &:hover {
-      background-color: var(--secondary-color-active);
+      background-color: var(--card-item-color-active);
     }
   }
 

@@ -8,7 +8,7 @@
     padding: 0.5rem 0;
     height: calc(100% - 4.25rem);
     overflow-y: scroll;
-    background-color: var(--secondary-color);
+    background-color: var(--card-item-color);
     scroll-behavior: smooth;
   }
 
@@ -17,19 +17,19 @@
     width: 100%;
     bottom: 0;
     padding: 0.75rem;
-    background-color: var(--secondary-color-active);
+    background-color: var(--card-item-color-active);
   }
 
   &__create-input {
     padding: 0.75rem;
-    background-color: var(--secondary-color);
+    background-color: var(--card-item-color);
     width: 100%;
     font-size: 1.1rem;
     line-height: 1rem;
     border-radius: 3px;
 
     &:focus, &:hover {
-      outline-color: var(--secondary-color);
+      outline-color: var(--card-item-color);
     }
   }
 }
