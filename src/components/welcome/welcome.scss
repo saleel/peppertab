@@ -1,6 +1,6 @@
 .welcome {
   text-align: center;
-  font-size: 2.5rem;
+  font-size: 2.5em; // relative to parent
 
   &__message {
     margin-bottom: 2rem;

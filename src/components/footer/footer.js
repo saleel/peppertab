@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import SyncIcon from '@iconscout/react-unicons/icons/uil-sync';
 import SyncSlashIcon from '@iconscout/react-unicons/icons/uil-sync-slash';
 import MoonIcon from '@iconscout/react-unicons/icons/uil-moon';
+import ImageIcon from '@iconscout/react-unicons/icons/uil-image';
 import SunIcon from '@iconscout/react-unicons/icons/uil-sun';
 import LoginModal from '../login-modal';
 import useStore from '../../hooks/use-store';
@@ -25,7 +26,8 @@ function Footer(props) {
   const [lastSyncDistance, setLastSyncDistance] = React.useState();
   const [showLoginPrompt, setShowLoginPrompt] = React.useState(false);
 
-  const [theme, { reFetch }] = useStore(() => generalStore.getTheme(), Themes.light);
+  const [theme, { reFetch }] = useStore(() => generalStore.getTheme(), Themes.image);
+
 
   function onMoonClick() {
     generalStore.setTheme(Themes.dark);
@@ -34,6 +36,11 @@ function Footer(props) {
 
   function onSunClick() {
     generalStore.setTheme(Themes.light);
+    reFetch();
+  }
+
+  function onImageClick() {
+    generalStore.setTheme(Themes.image);
     reFetch();
   }
 
@@ -103,17 +110,29 @@ function Footer(props) {
   );
 
 
-  const themeConfig = (theme === Themes.dark)
-    ? (
+  const themeConfig = (() => {
+    if (theme === Themes.dark) {
+      return (
+        <button className="fade-in" type="button" onClick={onImageClick}>
+          <ImageIcon color="#f7f7f7" size="20" />
+        </button>
+      );
+    }
+
+    if (theme === Themes.light) {
+      return (
+        <button className="fade-in" type="button" onClick={onMoonClick}>
+          <MoonIcon color="#1E1E1E" size="20" />
+        </button>
+      );
+    }
+
+    return (
       <button className="fade-in" type="button" onClick={onSunClick}>
         <SunIcon color="#f7f7f7" size="20" />
       </button>
-    )
-    : (
-      <button className="fade-in" type="button" onClick={onMoonClick}>
-        <MoonIcon color="#1E1E1E" size="20" />
-      </button>
     );
+  })();
 
 
   const toggles = (
@@ -131,17 +150,17 @@ function Footer(props) {
 
   return (
     <div className="footer flex">
-      <div className="footer__sync-info flex-1 text-left">
+      <div className="footer__sync-info">
         {/* {logoutButton} */}
         {syncInfo}
         {loginButton}
       </div>
 
-      <div className="footer__toggles flex-1 text-center">
+      <div className="footer__toggles">
         {toggles}
       </div>
 
-      <div className="footer__theme flex-1 text-right">
+      <div className="footer__theme">
         {themeConfig}
       </div>
     </div>

@@ -22,42 +22,51 @@ function Home() {
   if (isFetching) return null;
 
 
+  let welcomeClass = 'home__welcome';
+  let widgetsClass = 'home__widgets';
+
+  if (isWidgetsVisible) {
+    welcomeClass += ' home__welcome--big';
+    widgetsClass += ' home__widgets--minimized';
+  }
+
+
   return (
-    <div className="home">
+    <Background>
+      <div className="home">
 
-      <Background />
-
-      <div className="home__time">
-        <Time />
-        <Weather />
-      </div>
-
-      <div className="home__content">
-
-        <div className="home__welcome">
-          <Welcome onChange={reFetch} profile={profile} />
-          <Quotes />
+        <div className="home__time">
+          <Time />
+          <Weather />
         </div>
 
-        {profile && (
-          <div className={`home__widgets ${!isWidgetsVisible ? 'home__widgets--removed' : ''}`}>
-            <div className="home__notes p-2">
-              <Notes />
-            </div>
+        <div className="home__content">
 
-            <div className="home__todo p-2">
-              <TodoList />
-            </div>
+          <div className={welcomeClass}>
+            <Welcome onChange={reFetch} profile={profile} />
+            <Quotes />
           </div>
-        )}
+
+          {profile && (
+            <div className={widgetsClass}>
+              <div className="home__notes p-2">
+                <Notes />
+              </div>
+
+              <div className="home__todo p-2">
+                <TodoList />
+              </div>
+            </div>
+          )}
+
+        </div>
+
+        <div className="home__footer">
+          <Footer onWidgetsClick={() => setIsWidgetVisible((a) => !a)} />
+        </div>
 
       </div>
-
-      <div className="home__footer">
-        <Footer onWidgetsClick={() => setIsWidgetVisible((a) => !a)} />
-      </div>
-
-    </div>
+    </Background>
   );
 }
 

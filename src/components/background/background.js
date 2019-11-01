@@ -1,46 +1,53 @@
 // @ts-check
 
 import React from 'react';
-import './background.scss';
+import PropTypes from 'prop-types';
 import StoreContext from '../../contexts/store-context';
+import { Themes } from '../../constants';
 import useStore from '../../hooks/use-store';
+import './background.scss';
 
 
-function Background() {
+function Background(props) {
+  const { children } = props;
+
   const { generalStore } = React.useContext(StoreContext);
-  const [imageLoaded, setImageLoaded] = React.useState(false);
 
-  // @ts-ignore
   const [theme, { reFetch }] = useStore(() => generalStore.getTheme());
+  const [background] = useStore(
+    () => (theme === Themes.image) && generalStore.getBackground(),
+    null,
+    [theme],
+  );
+
+  generalStore.on('theme-updated', reFetch);
 
 
-  generalStore.on('change-theme', reFetch);
-  // const fileName = `assets/${theme}-bg.jpg`;
-  // const fileName = 'https://live.staticflickr.com/5159/7178241894_76ca156177_b.jpg';
-
-  // React.useEffect(() => {
-  //   const img = new Image();
-  //   img.onload = () => {
-  //     console.log('image loaded');
-  //     setTimeout(() => {
-  //       setImageLoaded(true);
-  //     }, 1000);
-  //   };
-  //   img.src = fileName;
-  // }, [theme]);
+  const showBackground = (theme === Themes.image) && !!background;
 
 
   return (
     <div className="background">
-      {/* {imageLoaded && (
+
+      {showBackground && (
         <div
           className="background__image"
-          style={{ backgroundImage: `url("${fileName}")` }}
+          style={{ backgroundImage: `url('${background.base64}')` }}
         />
-      )} */}
+      )}
+
+      <div className="background__content">
+        {children}
+      </div>
+
     </div>
   );
 }
+
+
+Background.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 
 export default Background;

@@ -1,13 +1,14 @@
 import React from 'react';
 
+
 /**
  * @template T
  * @param {() => Promise<T>} promise
  * @param {T} [defaultValue]
- * @param {[*]} [dependenies=[]]
+ * @param {[*]} [dependencies=[]]
  * @returns {[T, { isFetching: boolean, reFetch: Function, error: Error }]}
  */
-function useStore(promise, defaultValue, dependenies = []) {
+function useStore(promise, defaultValue, dependencies = []) {
   const [result, setResult] = React.useState(defaultValue);
   const [isFetching, setIsFetching] = React.useState(true);
   const [error, setError] = React.useState();
@@ -38,7 +39,7 @@ function useStore(promise, defaultValue, dependenies = []) {
     return () => {
       didCancel = true;
     };
-  }, dependenies);
+  }, dependencies);
 
   return [result, { isFetching, reFetch: fetch, error }];
 }

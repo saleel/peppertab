@@ -5,10 +5,11 @@
   display: block;
 
   &__items {
-    padding-top: 0.5rem;
-    height: calc(100% - 4rem);
+    padding: 0.5rem 0;
+    height: calc(100% - 4.25rem);
     overflow-y: scroll;
     background-color: var(--secondary-color);
+    scroll-behavior: smooth;
   }
 
   &__create {
