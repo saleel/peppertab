@@ -43,10 +43,10 @@ html.dark {
 html.image {
   --main-bg-color: #1E1E1E;
   --main-text-color: #ffffff;
-  --card-bg-color: #484848;
+  --card-bg-color: rgba(72, 72, 72, 0.95);
 
-  --secondary-color: #414141;
-  --secondary-color-active: #353535;
+  --secondary-color: rgba(65, 65, 65, 0.75);
+  --secondary-color-active: rgba(53, 53, 53, 0.95);
 
   --primary-color: #2980b9;
   --success-color: #27ae60;
