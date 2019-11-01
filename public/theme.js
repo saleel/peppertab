@@ -1,6 +1,6 @@
 let lastTheme = window.localStorage.getItem('theme');
 
-if (['light', 'dark'].includes(lastTheme)) {
+if (!['light', 'dark'].includes(lastTheme)) {
   lastTheme = 'image';
 }
 
