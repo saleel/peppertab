@@ -2,17 +2,19 @@
 	height: 100%;
 	width: 100%;
 	display: flex;
-	justify-content: flex-end;
+	justify-content: center;
 	align-items: center;
 	flex-direction: column;
 
 	&__content {
     display: flex;
 		flex-direction: column;
+		justify-content: center;
     max-width: 900px;
 		min-width: 800px;
-		min-height: 600px;
+		min-height: 500px;
 		width: 80%;
+		flex-grow: 1;
 	}
 
 	&__welcome {
@@ -20,11 +22,15 @@
 	}
 
 	&__widgets {
-		height: 35rem;
+		height: 30rem;
 		display: flex;
 		flex-direction: row;
-		// margin: 2rem 0;
 		margin-top: 2rem;
+		transition: height 100ms linear;
+
+		&--removed {
+			height: 0;
+		}
 	}
 
 	&__notes {
@@ -45,5 +51,9 @@
 		right: 0;
 		padding: 1rem 2rem;
 		text-align: right;
+	}
+
+	&__footer {
+		width: 100%;
 	}
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { formatDistance } from 'date-fns';
+import PropTypes from 'prop-types';
 import SyncIcon from '@iconscout/react-unicons/icons/uil-sync';
 import SyncSlashIcon from '@iconscout/react-unicons/icons/uil-sync-slash';
 import MoonIcon from '@iconscout/react-unicons/icons/uil-moon';
@@ -12,7 +13,9 @@ import { Themes } from '../../constants';
 import './footer.scss';
 
 
-function Footer() {
+function Footer(props) {
+  const { onWidgetsClick } = props;
+
   const { isLoggedIn } = React.useContext(AuthContent);
   const {
     generalStore, lastSyncTime, syncError, isSyncing,
@@ -113,20 +116,42 @@ function Footer() {
     );
 
 
+  const toggles = (
+    <>
+      <button
+        type="button"
+        className="footer__btn mx-1"
+        onClick={onWidgetsClick}
+      >
+          Widgets
+      </button>
+    </>
+  );
+
+
   return (
-    <div className="footer">
-      <div className="footer__sync-info">
+    <div className="footer flex">
+      <div className="footer__sync-info flex-1 text-left">
         {/* {logoutButton} */}
         {syncInfo}
         {loginButton}
       </div>
 
-      <div className="footer__theme">
+      <div className="footer__toggles flex-1 text-center">
+        {toggles}
+      </div>
+
+      <div className="footer__theme flex-1 text-right">
         {themeConfig}
       </div>
     </div>
   );
 }
+
+
+Footer.propTypes = {
+  onWidgetsClick: PropTypes.func.isRequired,
+};
 
 
 export default Footer;

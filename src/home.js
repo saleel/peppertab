@@ -16,6 +16,7 @@ function Home() {
   const { generalStore } = React.useContext(StoreContext);
 
   const [profile, { isFetching, reFetch }] = useStore(() => generalStore.getProfile(), null);
+  const [isWidgetsVisible, setIsWidgetVisible] = React.useState(true);
 
 
   if (isFetching) return null;
@@ -34,30 +35,27 @@ function Home() {
       <div className="home__content">
 
         <div className="home__welcome">
-          {!isFetching && <Welcome onChange={reFetch} profile={profile} />}
+          <Welcome onChange={reFetch} profile={profile} />
+          <Quotes />
         </div>
 
         {profile && (
-          <>
-            <div className="home__quotes">
-              <Quotes />
+          <div className={`home__widgets ${!isWidgetsVisible ? 'home__widgets--removed' : ''}`}>
+            <div className="home__notes p-2">
+              <Notes />
             </div>
 
-            <div className="home__widgets">
-              <div className="home__notes p-2">
-                <Notes />
-              </div>
-
-              <div className="home__todo p-2">
-                <TodoList />
-              </div>
+            <div className="home__todo p-2">
+              <TodoList />
             </div>
-          </>
+          </div>
         )}
 
       </div>
 
-      <Footer />
+      <div className="home__footer">
+        <Footer onWidgetsClick={() => setIsWidgetVisible((a) => !a)} />
+      </div>
 
     </div>
   );

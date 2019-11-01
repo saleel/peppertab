@@ -1,10 +1,9 @@
 .footer {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  width: 100%;
   padding: 1rem;
-  height: 50px;
+  align-items: center;
+  width: 100%;
+  width: 100%;
 
   &__btn {
     font-weight: 500;
@@ -38,5 +37,8 @@
       display: inline;
       margin: 0 5px;
     }
+  }
+
+  &__toggles {
   }
 }
