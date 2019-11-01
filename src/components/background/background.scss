@@ -1,0 +1,24 @@
+.background {
+  background-color: var(--main-bg-color);
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: fixed;
+  z-index: -1;
+
+
+  &__image {
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    background-position: bottom;
+    opacity: 0.97;
+
+    animation: fadeIn ease 0.5s;
+    -webkit-animation: fadeIn ease 0.5s;
+    -moz-animation: fadeIn ease 0.5s;
+    -o-animation: fadeIn ease 0.5s;
+    -ms-animation: fadeIn ease 0.5s;
+  }
+}

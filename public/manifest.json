@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "PepperTab",
   "short_name": "PepperTab",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "chrome_url_overrides": {
     "newtab": "./index.html"
   },
@@ -10,7 +10,7 @@
     "geolocation",
     "webRequest",
     "webRequestBlocking",
-    "*://*.peppertab.com/*"
+    "*://peppertab.com/*"
   ],
   "background": {
     "scripts": [

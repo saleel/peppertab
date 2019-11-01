@@ -9,6 +9,7 @@ import Welcome from './components/welcome';
 import Notes from './components/notes';
 import TodoList from './components/todo-list';
 import './home.scss';
+import Background from './components/background';
 
 
 function Home() {
@@ -22,6 +23,8 @@ function Home() {
 
   return (
     <div className="home">
+
+      <Background />
 
       <div className="home__time">
         <Time />

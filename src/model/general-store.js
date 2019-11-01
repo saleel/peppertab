@@ -47,6 +47,7 @@ class GeneralStore extends Store {
    */
   setTheme(theme) {
     window.localStorage.setItem(LocalStorage.theme, theme);
+    this.emitter.emit('change-theme');
   }
 
 

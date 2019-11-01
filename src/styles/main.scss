@@ -9,7 +9,7 @@ html, body {
 	min-height: 700px;
 	padding: 0;
 	margin: 0;
-	background-color: var(--main-bg-color);
+	// background-color: var(--main-bg-color);
 	color: var(--main-text-color);
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
 	font-weight: 400;
@@ -33,6 +33,18 @@ html.light {
 html.dark {
   --main-bg-color: #1E1E1E;
   --main-text-color: #ddd8d8;
+  --card-bg-color: #484848;
+
+  --secondary-color: #414141;
+  --secondary-color-active: #353535;
+
+  --primary-color: #2980b9;
+  --success-color: #27ae60;
+}
+
+html.bg {
+  --main-bg-color: #1E1E1E;
+  --main-text-color: #ffffff;
   --card-bg-color: #484848;
 
   --secondary-color: #414141;

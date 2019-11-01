@@ -21,6 +21,6 @@
 
     return null;
   },
-  { urls: ['*://app.peppertab.com/*'], types: ['main_frame'] },
+  { urls: ['*://peppertab.com/*'], types: ['main_frame'] },
   ['blocking']);
 })();
