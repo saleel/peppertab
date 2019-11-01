@@ -16,10 +16,16 @@ function Home() {
   const { generalStore } = React.useContext(StoreContext);
 
   const [profile, { isFetching, reFetch }] = useStore(() => generalStore.getProfile(), null);
-  const [isWidgetsVisible, setIsWidgetVisible] = React.useState(true);
+  const visibility = generalStore.getVisibility();
+  const [isWidgetsVisible, setIsWidgetVisible] = React.useState(visibility.widgets);
 
 
-  if (isFetching) return null;
+  function onWidgetsClick() {
+    setIsWidgetVisible((visible) => {
+      generalStore.setVisibility({ widgets: !visible });
+      return !visible;
+    });
+  }
 
 
   let welcomeClass = 'home__welcome';
@@ -29,6 +35,9 @@ function Home() {
     welcomeClass += ' home__welcome--big';
     widgetsClass += ' home__widgets--minimized';
   }
+
+
+  if (isFetching) return null;
 
 
   return (
@@ -62,7 +71,7 @@ function Home() {
         </div>
 
         <div className="home__footer">
-          <Footer onWidgetsClick={() => setIsWidgetVisible((a) => !a)} />
+          <Footer onWidgetsClick={onWidgetsClick} />
         </div>
 
       </div>

@@ -45,10 +45,40 @@ class GeneralStore extends Store {
 
 
   /**
+   * @param {{ widgets: Boolean }} time
+   */
+  setVisibility({ widgets }) {
+    const existing = this.getVisibility();
+    const visibility = { ...existing, widgets };
+    window.localStorage.setItem(LocalStorage.visibility, JSON.stringify(visibility));
+  }
+
+
+  /**
+   * @return {{ widgets: Boolean }} time
+   */
+  getVisibility() {
+    let visibility = {};
+    const visibilityStr = window.localStorage.getItem(LocalStorage.visibility);
+
+    if (visibilityStr) {
+      try {
+        visibility = JSON.parse(visibilityStr);
+      } catch (e) {
+        // Ignore
+      }
+    }
+
+    // @ts-ignore
+    return visibility;
+  }
+
+
+  /**
    * @param {Date} time
    */
   setLastSyncTime(time) {
-    window.localStorage.setItem(LocalStorage.lastSyncTime, time.toUTCString());
+    window.localStorage.setItem(LocalStorage.lastSyncTime, time.getTime().toString());
   }
 
 
@@ -57,9 +87,12 @@ class GeneralStore extends Store {
    */
   getLastSyncTime() {
     const time = window.localStorage.getItem(LocalStorage.lastSyncTime);
-    if (!time) return null;
 
-    return new Date(time);
+    if (Number.isNaN(Number(time))) {
+      return null;
+    }
+
+    return new Date(Number(time));
   }
 
 

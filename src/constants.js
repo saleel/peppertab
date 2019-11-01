@@ -18,4 +18,4 @@ export { appConfig };
 export const OPEN_WEATHER_API_KEY = '4f1d994ef2ba2a3745d3c28ec1c6cbcd';
 export const UNSPLASH_API_KEY = '0de9360106325c90f44cb2b0d6414efb187b4e960855c089fc566c55d63c704f';
 export const Themes = { light: 'light', dark: 'dark', image: 'image' };
-export const LocalStorage = { theme: 'theme', lastSyncTime: 'last-sync-time' };
+export const LocalStorage = { theme: 'theme', visibility: 'visibility', lastSyncTime: 'last-sync-time' };
