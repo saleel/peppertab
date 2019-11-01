@@ -30,7 +30,7 @@ class NoteStore extends Store {
     const { rows } = await this.db.allDocs({ include_docs: true });
     return rows
       .map((row) => new Note({ ...row.doc, id: row.id }))
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
   }
 
   /**
