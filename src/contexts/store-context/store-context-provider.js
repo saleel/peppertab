@@ -80,6 +80,8 @@ function StoreContextProvider({ children }) {
     }
 
     syncAll();
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
 

@@ -10,6 +10,7 @@ function useInterval(callback, delay) {
   }, [callback]);
 
   // Set up the interval.
+  // eslint-disable-next-line consistent-return
   React.useEffect(() => {
     function tick() {
       savedCallback.current();

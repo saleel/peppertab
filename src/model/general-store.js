@@ -144,7 +144,9 @@ class GeneralStore extends Store {
 
         this.updateItem({ _id: DbKeys.background, ...background });
       })
-      .catch(() => {});
+      .catch((e) => {
+        console.error(e); // eslint-disable-line no-console
+      });
 
     return storedBg;
   }
@@ -193,7 +195,9 @@ class GeneralStore extends Store {
         // Store to db
         await this.updateItem({ _id: DbKeys.weather, ...weatherInfo, createdAt: new Date() });
       })
-      .catch((e) => { console.error(e); });
+      .catch((e) => {
+        console.error(e); // eslint-disable-line no-console
+      });
 
     return storedWeather;
   }
@@ -230,7 +234,9 @@ class GeneralStore extends Store {
 
         await this.updateItem({ _id: DbKeys.quote, ...quote, createdAt: new Date() });
       })
-      .catch((e) => { console.error(e); });
+      .catch((e) => {
+        console.error(e); // eslint-disable-line no-console
+      });
 
     return storedQuote;
   }

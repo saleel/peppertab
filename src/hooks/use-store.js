@@ -25,6 +25,7 @@ function useStore(promise, defaultValue, dependencies = []) {
       }
     } catch (e) {
       if (!didCancel) {
+        // eslint-disable-next-line no-console
         console.error('Error on fetching data', e);
         setError(e);
       }

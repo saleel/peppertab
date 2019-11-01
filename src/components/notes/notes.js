@@ -38,6 +38,7 @@ function Notes() {
     if (new Date(lastSyncTime).getTime() > componentRenderedAt.current.getTime()) {
       reFetch();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastSyncTime]);
 
 
@@ -56,6 +57,8 @@ function Notes() {
       // If the active note was updated while sync
       setActiveNote(notes.find((n) => n.id === activeNote.id));
     }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notes]);
 
 
@@ -68,6 +71,8 @@ function Notes() {
     }, 500);
 
     return () => { clearTimeout(timer); }; // eslint-disable-line consistent-return
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeNote]);
 
 

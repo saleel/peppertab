@@ -4,7 +4,7 @@
 // the webpack configuration file that create-react-app has configured
 // and hidden.
 
-module.exports = function (app) {
+module.exports = function proxy(app) {
   app.get('/blockstack-manifest.json', (req, res, next) => {
     res.set({
       'Access-Control-Allow-Origin': '*',
