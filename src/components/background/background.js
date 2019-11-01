@@ -32,12 +32,12 @@ function Background() {
 
   return (
     <div className="background">
-      {imageLoaded && (
+      {/* {imageLoaded && (
         <div
           className="background__image"
           style={{ backgroundImage: `url("${fileName}")` }}
         />
-      )}
+      )} */}
     </div>
   );
 }
