@@ -25,7 +25,7 @@ function Home() {
   let welcomeClass = 'home__welcome';
   let widgetsClass = 'home__widgets';
 
-  if (isWidgetsVisible) {
+  if (!isWidgetsVisible) {
     welcomeClass += ' home__welcome--big';
     widgetsClass += ' home__widgets--minimized';
   }
