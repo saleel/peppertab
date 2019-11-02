@@ -20,7 +20,54 @@
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
+
+    button {
+      margin-left: 7px;
+    }
   }
+
+  &__btn-theme-info {
+    position: relative;
+    display: inline-block;
+  }
+  
+  &__btn-theme-info &__theme-info {
+    position: absolute;
+    right: 0;
+    bottom: 140%;
+    z-index: 100;
+    padding: 0.5rem;
+    background-color: rgba(0,0,0, 0.35);
+    color: #fff;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    text-align: left;
+    white-space:nowrap;
+    visibility: hidden;
+
+    a {
+      opacity: 0.9;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+  
+  &__btn-theme-info:hover &__theme-info {
+    visibility: visible;
+  }
+
+  &__btn-theme-info &__theme-info::after {
+    content: " ";
+    position: absolute;
+    left: 93%;
+    top: 100%; /* To the right of the tooltip */
+    border-width: 5px;
+    border-style: solid;
+    border-color:  rgba(0,0,0, 0.35) transparent transparent transparent;
+  }
+
 
   &__btn {
     font-weight: 500;

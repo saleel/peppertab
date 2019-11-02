@@ -6,6 +6,7 @@ import SyncSlashIcon from '@iconscout/react-unicons/icons/uil-sync-slash';
 import MoonIcon from '@iconscout/react-unicons/icons/uil-moon';
 import ImageIcon from '@iconscout/react-unicons/icons/uil-image';
 import SunIcon from '@iconscout/react-unicons/icons/uil-sun';
+import InfoIcon from '@iconscout/react-unicons/icons/uil-info-circle';
 import LoginModal from '../login-modal';
 import useStore from '../../hooks/use-store';
 import AuthContent from '../../contexts/auth-context';
@@ -27,6 +28,7 @@ function Footer(props) {
   const [showLoginPrompt, setShowLoginPrompt] = React.useState(false);
 
   const [theme, { reFetch }] = useStore(() => generalStore.getTheme(), Themes.image);
+  const [background] = useStore(() => generalStore.getBackground());
 
 
   function onMoonClick() {
@@ -148,6 +150,21 @@ function Footer(props) {
   );
 
 
+  const themeInfo = (theme === Themes.image) && background && (
+    <button className="footer__btn-theme-info fade-in" type="button">
+      <InfoIcon color="#f7f7f7" size="20" />
+
+      <div className="footer__theme-info">
+        <a target="_blank" rel="noopener noreferrer" href={background.link}>
+          <div>{background.location}</div>
+          <div>{background.user}</div>
+        </a>
+      </div>
+
+    </button>
+  );
+
+
   return (
     <div className="footer flex">
       <div className="footer__sync-info">
@@ -162,6 +179,7 @@ function Footer(props) {
 
       <div className="footer__theme">
         {themeConfig}
+        {themeInfo}
       </div>
     </div>
   );

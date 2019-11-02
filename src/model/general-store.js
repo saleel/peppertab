@@ -25,7 +25,14 @@ import { convertImageUrlToBase64 } from './utils';
 
 /**
  * @typedef Background
+ * @property imageUrl {string}
  * @property base64 {string}
+ * @property color {string}
+ * @property height {string}
+ * @property width {string}
+ * @property user {string}
+ * @property location {string}
+ * @property link {string}
 */
 
 
@@ -161,7 +168,7 @@ class GeneralStore extends Store {
       .then((r) => r.json())
       .then(async (result) => {
         const {
-          urls: { regular: imageUrl }, color, height, width,
+          urls: { regular: imageUrl }, color, height, width, user, location, links,
         } = result;
 
         const base64 = await convertImageUrlToBase64(imageUrl);
@@ -172,6 +179,9 @@ class GeneralStore extends Store {
           color,
           height,
           width,
+          user: user.name,
+          location: location.title,
+          link: links.html,
           createdAt: new Date(),
         };
 
