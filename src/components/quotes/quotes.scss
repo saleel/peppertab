@@ -1,9 +1,11 @@
 .quotes {
-  min-height: 50px;
+  min-height: 3em;
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 1.1em;
+  line-height: 1.5em;
 
   &__message {
     max-width: 500px;

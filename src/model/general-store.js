@@ -154,7 +154,7 @@ class GeneralStore extends Store {
     // Fetch a new image and set to local store for next call
     const url = `https://api.unsplash.com/photos/random?client_id=${UNSPLASH_API_KEY}&collections=317099&orientation=landscape`;
 
-    fetch(url, {
+    const fetchNewPromise = fetch(url, {
       method: 'GET',
       mode: 'cors',
     })
@@ -176,10 +176,18 @@ class GeneralStore extends Store {
         };
 
         this.updateItem({ _id: DbKeys.background, ...background });
+
+        return background;
       })
       .catch((e) => {
         console.error(e); // eslint-disable-line no-console
       });
+
+
+    // For initial request if the item not found in cache
+    if (!storedBg) {
+      storedBg = await fetchNewPromise;
+    }
 
     return storedBg;
   }
@@ -208,7 +216,7 @@ class GeneralStore extends Store {
 
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${OPEN_WEATHER_API_KEY}`;
 
-    fetch(url, {
+    const fetchNewPromise = fetch(url, {
       method: 'GET',
       mode: 'cors',
     })
@@ -221,16 +229,28 @@ class GeneralStore extends Store {
         } = result;
 
         const temperature = temp - 273.15; // Convert Kelvin to Celsius
+
         const weatherInfo = {
-          city, temperature, humidity, sky,
+          city,
+          temperature,
+          humidity,
+          sky,
+          createdAt: new Date(),
         };
 
         // Store to db
-        await this.updateItem({ _id: DbKeys.weather, ...weatherInfo, createdAt: new Date() });
+        await this.updateItem({ _id: DbKeys.weather, ...weatherInfo });
+
+        return weatherInfo;
       })
       .catch((e) => {
         console.error(e); // eslint-disable-line no-console
       });
+
+    // For initial request if the item not found in cache
+    if (!storedWeather) {
+      storedWeather = await fetchNewPromise;
+    }
 
     return storedWeather;
   }
@@ -254,7 +274,7 @@ class GeneralStore extends Store {
 
     const url = 'https://quotes.rest/qod?category=inspire';
 
-    fetch(url, {
+    const fetchNewPromise = fetch(url, {
       method: 'GET',
       mode: 'cors',
     })
@@ -263,13 +283,24 @@ class GeneralStore extends Store {
         const { contents: { quotes: [quoteRaw] = [] } = {} } = result;
         const { quote: message, author } = quoteRaw;
 
-        const quote = { message, author };
+        const quote = {
+          message,
+          author,
+          createdAt: new Date(),
+        };
 
-        await this.updateItem({ _id: DbKeys.quote, ...quote, createdAt: new Date() });
+        await this.updateItem({ _id: DbKeys.quote, ...quote });
+
+        return quote;
       })
       .catch((e) => {
         console.error(e); // eslint-disable-line no-console
       });
+
+    // For initial request if the item not found in cache
+    if (!storedQuote) {
+      storedQuote = await fetchNewPromise;
+    }
 
     return storedQuote;
   }
