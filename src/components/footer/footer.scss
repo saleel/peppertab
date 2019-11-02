@@ -1,73 +1,25 @@
 .footer {
   display: flex;
-  padding: 0.75rem;
+  padding: 0.5rem;
   align-items: flex-end;
   justify-content: space-between;
   width: 100%;
-  width: 100%;
 
-  &__sync-info {
-    width: 33%;
-  }
 
-  &__toggles {
-    width: 33%;
-    text-align: center;
-  }
-
-  &__theme {
-    width: 33%;
+  &__right {
     display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
+    align-items: center;
 
-    button {
-      margin-left: 7px;
-    }
-  }
-
-  &__btn-theme-info {
-    position: relative;
-    display: inline-block;
-  }
-  
-  &__btn-theme-info &__theme-info {
-    position: absolute;
-    right: 0;
-    bottom: 140%;
-    z-index: 100;
-    padding: 0.5rem;
-    background-color: rgba(0,0,0, 0.35);
-    color: #fff;
-    border-radius: 5px;
-    font-size: 0.9rem;
-    text-align: left;
-    white-space:nowrap;
-    visibility: hidden;
-
-    a {
-      opacity: 0.9;
-
-      &:hover {
-        opacity: 1;
-      }
+    div {
+      margin-left: 10px;
     }
   }
   
-  &__btn-theme-info:hover &__theme-info {
-    visibility: visible;
+  &__toggles {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
-
-  &__btn-theme-info &__theme-info::after {
-    content: " ";
-    position: absolute;
-    left: 91%;
-    top: 100%;
-    border-width: 5px;
-    border-style: solid;
-    border-color:  rgba(0,0,0, 0.35) transparent transparent transparent;
-  }
-
 
   &__btn {
     font-weight: 500;
@@ -78,24 +30,6 @@
 
     &:hover {
       background-color: var(--card-item-color-active);
-    }
-  }
-
-  &__syncing {
-    svg {
-      display: inline;
-      margin: 0 5px;
-      animation-name: spin;
-      animation-duration: 1000ms;
-      animation-iteration-count: infinite;
-      animation-timing-function: linear;
-    }
-  }
-
-  &__sync-error {
-    svg {
-      display: inline;
-      margin: 0 5px;
     }
   }
 }
