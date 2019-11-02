@@ -20,6 +20,13 @@ function Home() {
   const [isWidgetsVisible, setIsWidgetVisible] = React.useState(visibility.widgets);
 
 
+  React.useEffect(() => {
+    if (visibility.widgets === undefined) {
+      setIsWidgetVisible(!!profile);
+    }
+  }, [visibility, profile]);
+
+
   function onWidgetsClick() {
     setIsWidgetVisible((visible) => {
       generalStore.setVisibility({ widgets: !visible });
