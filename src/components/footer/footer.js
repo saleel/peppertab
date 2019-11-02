@@ -178,8 +178,8 @@ function Footer(props) {
       </div>
 
       <div className="footer__theme">
-        {themeConfig}
         {themeInfo}
+        {themeConfig}
       </div>
     </div>
   );
