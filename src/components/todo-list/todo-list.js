@@ -20,6 +20,8 @@ function TodoList() {
   const [showCompleted, setShowCompleted] = React.useState(false);
   const todoListRef = React.useRef(null);
 
+  const hasCompleted = todos && todos.some(t => t.isCompleted);
+
 
   React.useEffect(() => {
     if (new Date(lastSyncTime).getTime() > componentRenderedAt.current.getTime()) {
@@ -69,7 +71,7 @@ function TodoList() {
   }
 
 
-  const actions = [
+  const actions = hasCompleted && [
     showCompleted && (
       <button key="completed" type="button" onClick={() => setShowCompleted(false)}>
         <EyeSlashIcon size="20" />
