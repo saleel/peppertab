@@ -159,7 +159,7 @@ class GeneralStore extends Store {
 
 
     // Fetch a new image and set to local store for next call
-    const url = `https://api.unsplash.com/photos/random?client_id=${UNSPLASH_API_KEY}&collections=317099&orientation=landscape`;
+    const url = `https://api.unsplash.com/photos/random?client_id=${UNSPLASH_API_KEY}&collections=8862978&orientation=landscape`;
 
     const fetchNewPromise = fetch(url, {
       method: 'GET',
