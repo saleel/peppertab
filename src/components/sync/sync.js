@@ -60,12 +60,12 @@ function Sync() {
     );
 
 
-  let icon = (<SyncIcon size="17" />);
+  let icon = (<SyncIcon size="18" />);
   if (isSyncing) {
-    icon = (<SyncIcon className="sync__syncing" size="17" />);
+    icon = (<SyncIcon className="sync__syncing" size="18" />);
   }
   if (syncError) {
-    icon = (<SyncSlashIcon className="sync__sync-error" size="17" />);
+    icon = (<SyncSlashIcon className="sync__sync-error" size="18" />);
   }
 
 
