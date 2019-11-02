@@ -43,7 +43,7 @@
     font-size: 0.9rem;
     text-align: left;
     white-space:nowrap;
-    visibility: hidden;
+    // visibility: hidden;
 
     a {
       opacity: 0.9;
@@ -61,8 +61,8 @@
   &__btn-theme-info &__theme-info::after {
     content: " ";
     position: absolute;
-    left: 93%;
-    top: 100%; /* To the right of the tooltip */
+    left: 91%;
+    top: 100%;
     border-width: 5px;
     border-style: solid;
     border-color:  rgba(0,0,0, 0.35) transparent transparent transparent;
