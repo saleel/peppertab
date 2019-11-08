@@ -1,7 +1,7 @@
 // @ts-check
 
 import React from 'react';
-import EyeIcon from '@iconscout/react-unicons/icons/uil-eye';
+import groupBy from 'lodash/groupBy';
 import EyeSlashIcon from '@iconscout/react-unicons/icons/uil-eye-slash';
 import StoreContext from '../../contexts/store-context';
 import usePromise from '../../hooks/use-promise';
@@ -10,6 +10,9 @@ import Todo from '../../model/todo';
 import TodoItem from '../todo-item';
 import Card from '../card';
 import CalendarItem from './calendar-item';
+import format from 'date-fns/format';
+import isToday from 'date-fns/isToday';
+import isTomorrow from 'date-fns/isTomorrow';
 
 // AIzaSyBOXuQDGtvOto1RIJpR7ab6aJ4Jk7s7PpM
 
@@ -21,31 +24,71 @@ function Calendar() {
 
   const signInButtonRef = React.useRef(null);
 
-  const [events, { isFetching }] = usePromise(
+  const [events, { isFetching, reFetch }] = usePromise(
     () => generalStore.getEvents(),
     { cacheKey: 'CALENDAR' },
   );
 
 
+  const isCalendarEnabled = Array.isArray(events);
+  const groupedEvents = events && groupBy(events, (event) => {
+    const start = new Date(event.startDateTime || event.startDate);
+    return format(start, 'yyyy-MM-dd');
+  });
+
+
   function handleAuthClick() {
     gapi.auth2.getAuthInstance().signIn();
+    gapi.auth2.getAuthInstance().isSignedIn.listen((signedIn) => signedIn && reFetch());
+  }
+
+
+  function renderGroup(groupKey) {
+    const groupDate = new Date(groupKey);
+    const eventsInGroup = groupedEvents[groupKey];
+
+    let dateLabel = format(groupDate, 'EEE, dd LLL');
+    if (isToday(groupDate)) dateLabel = 'Today';
+    if (isTomorrow(groupDate)) dateLabel = 'Tomorrow';
+
+    return (
+      <div className="calendar__group">
+
+        <div className="calendar__group-name">{dateLabel}</div>
+
+        {eventsInGroup.map((event) => (
+          <CalendarItem event={event} />
+        ))}
+      </div>
+    );
   }
 
 
   return (
-    <Card title="Today">
+    <Card title="Upcoming">
 
       <div className="calendar fade-in">
 
-        {!events && !isFetching && (
-          <button ref={signInButtonRef} type="button" onClick={handleAuthClick}>Sign in</button>
+        {!isCalendarEnabled && (
+          <div className="calendar__enroll">
+            <div>
+              Integrate with Google Calendar to see upcoming events
+            </div>
+            <button
+              className="calendar__btn-sign-in"
+              ref={signInButtonRef}
+              type="button"
+              onClick={handleAuthClick}
+              aria-label="Sign in with Google"
+            />
+          </div>
         )}
 
-        <div className="calendar__items">
-          {events && events.map((event) => (
-            <CalendarItem event={event} />
-          ))}
-        </div>
+        {isCalendarEnabled && (
+          <div className="calendar__events">
+            {groupedEvents && Object.keys(groupedEvents).map(renderGroup)}
+          </div>
+        )}
 
       </div>
 

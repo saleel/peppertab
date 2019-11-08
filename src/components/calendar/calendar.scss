@@ -6,12 +6,42 @@
   flex-direction: column;
   height: 400px;
 
-
-  &__items {
+  &__events {
     flex-grow: 1;
-    padding: 0.5rem 0;
+    padding: 1rem;
     overflow-y: scroll;
     background-color: var(--card-item-color);
     scroll-behavior: smooth;
+  }
+
+  &__group {
+    margin-bottom: 2rem;
+  }
+
+  &__group-name {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  &__enroll {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--card-item-color);
+    font-size: 1.1rem;
+  }
+
+  &__btn-sign-in {
+    background-image: url('/assets/btn_google_signin_light_normal_web@2x.png');
+    background-size: contain;
+    width: 200px;
+    height: 49px;
+    margin: 1rem;
+
+    &:hover {
+      background-image: url('/assets/btn_google_signin_light_pressed_web@2x.png');
+    }
   }
 }

@@ -23,7 +23,6 @@ const cacheDb = new PouchDB('cache');
 function usePromise(promise, options) {
   const { defaultValue, dependencies = [], cacheKey } = options;
 
-  console.log('usePromise', cacheKey);
   const [result, setResult] = React.useState(defaultValue);
   const [isFetching, setIsFetching] = React.useState(true);
   const [error, setError] = React.useState();

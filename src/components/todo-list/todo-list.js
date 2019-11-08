@@ -96,6 +96,13 @@ function TodoList() {
               onCompleteClick={(isCompleted) => onCompleteClick(todo, isCompleted)}
             />
           ))}
+
+          {(filteredTodos.length === 0) && (
+            <div className="todo-list__empty">
+              <div>Looks like everything is sorted out.</div>
+              <div>You can add Todos from the form below.</div>
+            </div>
+          )}
         </div>
 
         <div className="todo-list__create">

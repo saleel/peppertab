@@ -1,6 +1,7 @@
 // @ts-check
-import { differenceInHours, differenceInMinutes } from 'date-fns';
-import { differenceInSeconds } from 'date-fns/esm';
+import differenceInHours from 'date-fns/differenceInHours';
+import differenceInMinutes from 'date-fns/differenceInMinutes';
+import differenceInSeconds from 'date-fns/differenceInSeconds';
 import set from 'lodash/set';
 import {
   OPEN_WEATHER_API_KEY, LocalStorage, Themes, API_URL,
@@ -144,7 +145,7 @@ class GeneralStore extends Store {
    * @return {Promise<Background>} theme
    */
   async getBackground() {
-    const theme = await this.getTheme();
+    // const theme = await this.getTheme();
     // if (theme !== Themes.image) {
     //   return null;
     // }
@@ -311,19 +312,6 @@ class GeneralStore extends Store {
    * @return {Promise<Array>} events
    */
   async getEvents() {
-    // let storedEvents;
-    // try {
-    //   storedEvents = await this.db.get(DbKeys.events);
-    // } catch (error) {
-    //   // Ignore
-    // }
-
-    // // If downloaded image is recent, then no need to download new
-    // if (storedEvents && differenceInSeconds(new Date(), new Date(storedEvents.createdAt)) < 10) {
-    //   return storedEvents.items;
-    // }
-
-
     const { gapi } = window;
 
     const fetchEvents = () => new Promise((resolve, reject) => {
@@ -333,11 +321,28 @@ class GeneralStore extends Store {
           timeMin: (new Date()).toISOString(),
           showDeleted: false,
           singleEvents: true,
-          maxResults: 10,
+          maxResults: 4,
           orderBy: 'startTime',
         }).then(async (response) => {
           const { items } = response.result;
-          resolve(items);
+
+          const events = items.map((item) => {
+            const {
+              summary, htmlLink, start, end, location,
+            } = item;
+
+            return {
+              title: summary,
+              link: htmlLink,
+              ...start.dateTime && { startDateTime: new Date(start.dateTime) },
+              ...start.date && { startDate: new Date(start.date) },
+              ...end.dateTime && { endDateTime: new Date(end.dateTime) },
+              ...end.date && { endDate: new Date(end.date) },
+              location,
+            };
+          });
+
+          resolve(events);
         });
       }
     });

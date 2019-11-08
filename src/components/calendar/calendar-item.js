@@ -2,13 +2,14 @@
 
 import React from 'react';
 import './calendar-item.scss';
+import format from 'date-fns/format';
 
 
 function CalendarItem(props) {
   const { event } = props;
 
   const {
-    summary, htmlLink, start, end, location,
+    title, link, startDateTime, endDateTime, location,
   } = event;
 
 
@@ -16,11 +17,23 @@ function CalendarItem(props) {
     <div className="calendar-item">
 
       <div className="calendar-item__title">
-        {summary}
+        {title}
       </div>
 
-      <div className="calendar-item__location">
-        {location}
+
+      <div className="calendar-item__details">
+
+        <div className="calendar-item__time">
+          <span>
+            {startDateTime && format(new Date(startDateTime), 'hh:mm a')}
+            {endDateTime && format(new Date(endDateTime), ' - hh:mm a')}
+            {!startDateTime && !endDateTime && 'All Day'}
+          </span>
+        </div>
+
+        <div className="calendar-item__location">
+          {location}
+        </div>
       </div>
 
     </div>

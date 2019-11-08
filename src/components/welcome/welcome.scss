@@ -1,9 +1,11 @@
 .welcome {
   text-align: center;
-  font-size: 4em; // relative to parent
+  font-size: 3em; // relative to parent
   height: 10rem;
   display: flex;
   justify-content: center;
+  flex-direction: column;
+
 
   &__name {
     font-weight: 500;
@@ -16,6 +18,7 @@
   }
 
   &__inp-name {
+    font-size: 3rem;
     display: block;
     text-align: center;
     margin: 0 auto;

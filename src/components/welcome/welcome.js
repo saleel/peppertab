@@ -52,8 +52,10 @@ function Welcome() {
 
   return (
     <div className="welcome fade-in">
-      <span className="welcome__message">{message}</span>
-      <span className="welcome__name">{profile.name}</span>
+      <div>
+        <span className="welcome__message">{message}</span>
+        <span className="welcome__name">{profile.name}</span>
+      </div>
     </div>
   );
 }
