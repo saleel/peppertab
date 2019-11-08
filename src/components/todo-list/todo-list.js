@@ -20,7 +20,7 @@ function TodoList() {
   const [showCompleted, setShowCompleted] = React.useState(false);
   const todoListRef = React.useRef(null);
 
-  const hasCompleted = todos && todos.some(t => t.isCompleted);
+  const hasCompleted = todos && todos.some((t) => t.isCompleted);
 
 
   React.useEffect(() => {
@@ -50,13 +50,8 @@ function TodoList() {
 
       await todoStore.createTodo(new Todo(newTodo));
       setNewTodo({ title: '' });
-      reFetch();
-
-      setTimeout(() => {
-        if (todoListRef.current.lastElementChild instanceof Element) {
-          todoListRef.current.lastElementChild.scrollIntoView({ behaviour: 'smooth' });
-        }
-      }, 100);
+      await reFetch();
+      todoListRef.current.scrollTop = todoListRef.current.scrollHeight;
     }
   }
 
@@ -89,8 +84,9 @@ function TodoList() {
 
 
   return (
-    <Card title="Todos" className="todo-list fade-in" actions={actions}>
-      <>
+    <Card title="Todos" actions={actions}>
+
+      <div className="todo-list fade-in">
 
         <div className="todo-list__items" ref={todoListRef}>
           {filteredTodos.map((todo) => (
@@ -113,7 +109,8 @@ function TodoList() {
           />
         </div>
 
-      </>
+      </div>
+
     </Card>
   );
 }

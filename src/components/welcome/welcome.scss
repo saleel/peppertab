@@ -1,7 +1,9 @@
 .welcome {
   text-align: center;
-  font-size: 2.25em; // relative to parent
-  margin-bottom: 0.5rem;
+  font-size: 4em; // relative to parent
+  height: 10rem;
+  display: flex;
+  justify-content: center;
 
   &__name {
     font-weight: 500;

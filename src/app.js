@@ -1,7 +1,7 @@
 import React from 'react';
 import { AuthContextProvider } from './contexts/auth-context';
 import { StoreContextProvider } from './contexts/store-context';
-import Home from './home';
+import Home from './home.jsx';
 
 
 function App() {

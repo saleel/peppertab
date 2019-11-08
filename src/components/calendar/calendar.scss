@@ -1,0 +1,17 @@
+.calendar {
+  min-width: 270px;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+
+
+  &__items {
+    flex-grow: 1;
+    padding: 0.5rem 0;
+    overflow-y: scroll;
+    background-color: var(--card-item-color);
+    scroll-behavior: smooth;
+  }
+}

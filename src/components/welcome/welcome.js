@@ -3,14 +3,16 @@ import PropTypes from 'prop-types';
 import StoreContext from '../../contexts/store-context';
 import { getMessagePrefix } from './welcome.utils';
 import './welcome.scss';
+import useStore from '../../hooks/use-store';
 
 
-function Welcome(props) {
-  const { profile, onChange } = props;
+function Welcome() {
   const { generalStore } = React.useContext(StoreContext);
   const message = getMessagePrefix();
 
   const inputRef = React.useRef();
+
+  const [profile, { isFetching }] = useStore(() => generalStore.getProfile());
 
 
   React.useEffect(() => {
@@ -26,8 +28,15 @@ function Welcome(props) {
   async function onKeyDown(e) {
     if (e.keyCode === 13) {
       await generalStore.setProfile({ name: e.target.value });
-      onChange();
+      // onChange();
     }
+  }
+
+
+  if (isFetching) {
+    return (
+      <div className="welcome" />
+    );
   }
 
 

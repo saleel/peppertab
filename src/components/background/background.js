@@ -17,7 +17,7 @@ function Background(props) {
 
   const [theme, { reFetch }] = useStore(() => generalStore.getTheme());
   const [background] = useStore(
-    () => (theme === Themes.image) && generalStore.getBackground(),
+    () => generalStore.getBackground(),
     null,
     [theme],
   );
@@ -25,7 +25,7 @@ function Background(props) {
   generalStore.on('theme-updated', reFetch);
 
 
-  const showBackground = (theme === Themes.image) && !!background;
+  const showBackground = !!background;
 
 
   const themeInfo = background && (
@@ -46,7 +46,7 @@ function Background(props) {
             style={{ backgroundImage: `url('${background.base64}')` }}
           />
 
-          <Tooltip
+          {/* <Tooltip
             html={themeInfo}
             position="bottom"
             trigger="mouseenter"
@@ -54,7 +54,7 @@ function Background(props) {
             className="background__theme-info"
           >
             <InfoIcon color="#f7f7f7" size="20" />
-          </Tooltip>
+          </Tooltip> */}
 
         </>
       )}

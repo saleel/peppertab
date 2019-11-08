@@ -8,6 +8,8 @@
     "@saleel/ckeditor5-build-balloon-base64": "^1.2.0",
     "blockstack": "^19.3.0",
     "date-fns": "^2.5.1",
+    "googleapis": "^39.2.0",
+    "lodash": "^4.17.15",
     "nanoevents": "^2.0.0",
     "pouchdb": "^7.1.1",
     "pouchdb-load": "^1.4.6",

@@ -1,7 +1,9 @@
 // @ts-check
 import { differenceInHours, differenceInMinutes } from 'date-fns';
+import { differenceInSeconds } from 'date-fns/esm';
+import set from 'lodash/set';
 import {
-  OPEN_WEATHER_API_KEY, LocalStorage, Themes, UNSPLASH_API_KEY,
+  OPEN_WEATHER_API_KEY, LocalStorage, Themes, API_URL,
 } from '../constants';
 import Store from './store';
 import { convertImageUrlToBase64 } from './utils';
@@ -42,6 +44,7 @@ const DbKeys = {
   quote: 'quote',
   weather: 'weather',
   background: 'background',
+  events: 'events',
 };
 
 
@@ -52,19 +55,20 @@ class GeneralStore extends Store {
 
 
   /**
-   * @param {{ widgets: Boolean }} time
+   * @param {string} key
+   * @param {any} value
    */
-  setVisibility({ widgets }) {
-    const existing = this.getVisibility();
-    const visibility = { ...existing, widgets };
-    window.localStorage.setItem(LocalStorage.visibility, JSON.stringify(visibility));
+  setSettings(key, value) {
+    const existing = this.getSettings();
+    set(existing, key, value);
+    window.localStorage.setItem(LocalStorage.visibility, JSON.stringify(existing));
   }
 
 
   /**
    * @return {{ widgets: Boolean }} time
    */
-  getVisibility() {
+  getSettings() {
     let visibility = {};
     const visibilityStr = window.localStorage.getItem(LocalStorage.visibility);
 
@@ -141,9 +145,9 @@ class GeneralStore extends Store {
    */
   async getBackground() {
     const theme = await this.getTheme();
-    if (theme !== Themes.image) {
-      return null;
-    }
+    // if (theme !== Themes.image) {
+    //   return null;
+    // }
 
     let storedBg;
     try {
@@ -153,41 +157,28 @@ class GeneralStore extends Store {
     }
 
     // If downloaded image is recent, then no need to download new
-    if (storedBg && differenceInHours(new Date(), new Date(storedBg.createdAt)) < 1) {
+    if (storedBg && differenceInSeconds(new Date(), new Date(storedBg.createdAt)) < 10) {
       return storedBg;
     }
 
 
     // Fetch a new image and set to local store for next call
-    const url = `https://api.unsplash.com/photos/random?client_id=${UNSPLASH_API_KEY}&collections=8862978&orientation=landscape`;
+    // const url = `https://api.unsplash.com/photos/random?client_id=${UNSPLASH_API_KEY}&collections=8862978&orientation=landscape`;
+    const url = `${API_URL}/background`;
 
     const fetchNewPromise = fetch(url, {
       method: 'GET',
       mode: 'cors',
     })
       .then((r) => r.json())
-      .then(async (result) => {
-        const {
-          urls: { regular: imageUrl }, color, height, width, user, location, links,
-        } = result;
+      .then(async (response) => {
+        const base64 = await convertImageUrlToBase64(response.imageUrl);
 
-        const base64 = await convertImageUrlToBase64(imageUrl);
+        const newBackground = { ...response, base64 };
 
-        const background = {
-          imageUrl,
-          base64,
-          color,
-          height,
-          width,
-          user: user.name,
-          location: location.title,
-          link: links.html,
-          createdAt: new Date(),
-        };
+        this.updateItem({ _id: DbKeys.background, ...newBackground, createdAt: new Date() });
 
-        this.updateItem({ _id: DbKeys.background, ...background });
-
-        return background;
+        return newBackground;
       })
       .catch((e) => {
         console.error(e); // eslint-disable-line no-console
@@ -313,6 +304,68 @@ class GeneralStore extends Store {
     }
 
     return storedQuote;
+  }
+
+
+  /**
+   * @return {Promise<Array>} events
+   */
+  async getEvents() {
+    // let storedEvents;
+    // try {
+    //   storedEvents = await this.db.get(DbKeys.events);
+    // } catch (error) {
+    //   // Ignore
+    // }
+
+    // // If downloaded image is recent, then no need to download new
+    // if (storedEvents && differenceInSeconds(new Date(), new Date(storedEvents.createdAt)) < 10) {
+    //   return storedEvents.items;
+    // }
+
+
+    const { gapi } = window;
+
+    const fetchEvents = () => new Promise((resolve, reject) => {
+      if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+        gapi.client.calendar.events.list({
+          calendarId: 'primary',
+          timeMin: (new Date()).toISOString(),
+          showDeleted: false,
+          singleEvents: true,
+          maxResults: 10,
+          orderBy: 'startTime',
+        }).then(async (response) => {
+          const { items } = response.result;
+          resolve(items);
+        });
+      }
+    });
+
+
+    return new Promise((resolve, reject) => {
+      gapi.load('client:auth2', () => {
+        gapi.client.init({
+          apiKey: 'AIzaSyBOXuQDGtvOto1RIJpR7ab6aJ4Jk7s7PpM',
+          clientId: '492631281745-ukpj3nrml396bot57q9ikrhd9d46b8qm.apps.googleusercontent.com',
+          discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
+          scope: 'https://www.googleapis.com/auth/calendar.readonly',
+        }).then(async () => {
+          if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
+            resolve();
+          }
+
+          // Listen for sign-in state changes.
+          gapi.auth2.getAuthInstance().isSignedIn.listen(fetchEvents);
+
+          // Handle the initial sign-in state.
+          const events = await fetchEvents();
+          resolve(events);
+        }, (error) => {
+          console.error(JSON.stringify(error, null, 2));
+        });
+      });
+    });
   }
 }
 
