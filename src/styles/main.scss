@@ -139,3 +139,15 @@ button, input {
     opacity:0;
   }
 }
+
+.come-in {
+  transform: translateY(250px);
+  animation: come-in 0.5s ease forwards;
+}
+.come-in:nth-child(odd) {
+  animation-duration: 0.5s; /* So they look staggered */
+}
+
+@keyframes come-in {
+  to { transform: translateY(0); }
+}
