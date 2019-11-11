@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import ThemeContext from './theme-context';
 import StoreContext from '../store-context';
 import useStore from '../../hooks/use-store';
-import { Themes } from '../../constants';
 
 
 function ThemeContextProvider({ children }) {
@@ -11,7 +10,6 @@ function ThemeContextProvider({ children }) {
 
   const [theme, { reFetch }] = useStore(() => generalStore.getTheme());
 
-  console.log(theme);
 
   React.useEffect(() => {
     document.documentElement.classList.add(theme);

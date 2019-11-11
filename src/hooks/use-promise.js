@@ -69,8 +69,6 @@ function usePromise(promise, options) {
       }
     }
 
-    console.log('FETCHING', cacheKey);
-
     setIsFetching(true);
 
     try {

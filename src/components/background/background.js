@@ -20,25 +20,13 @@ function Background(props) {
   /** @type React.MutableRefObject<HTMLDivElement> */
   const backgroundRef = React.useRef(null);
 
-  const [background] = useStore(
+  const [background, { isFetching }] = useStore(
     () => generalStore.getBackground(),
     null,
     [theme],
   );
 
-  // generalStore.on('theme-updated', reFetch);
-
-
-  // const isInspireMode = document.body.classList.contains('inspire');
   const showBackground = theme === Themes.inspire && !!background;
-
-
-  const themeInfo = background && (
-    <a target="_blank" rel="noopener noreferrer" href={background.link}>
-      <div>{background.location}</div>
-      <div>{background.user}</div>
-    </a>
-  );
 
   function onScroll() {
     const windowOffset = window.pageYOffset;
@@ -57,14 +45,31 @@ function Background(props) {
   }, [showBackground]);
 
 
+  if (showBackground && isFetching) {
+    return null;
+  }
+
+
   return (
     <div ref={backgroundRef} className="background">
 
       {showBackground && (
-        <div
-          className="background__image"
-          style={{ backgroundImage: `url('${background.base64}')` }}
-        />
+        <>
+          <div
+            className="background__image"
+            style={{ backgroundImage: `url('${background.base64}')` }}
+          />
+
+          <a className="background__info" target="_blank" rel="noopener noreferrer" href={background.link}>
+            <div className="background__info-icon">
+              <InfoIcon size="20" />
+            </div>
+            <div className="background__info-location">
+              <div>{background.location}</div>
+              <div>{background.user}</div>
+            </div>
+          </a>
+        </>
       )}
 
       <div className="background__content">

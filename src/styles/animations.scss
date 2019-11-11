@@ -16,6 +16,15 @@
   }
 }
 
+@keyframes fadeOut {
+  0% {
+    opacity:1;
+  }
+  100% {
+    opacity:0;
+  }
+}
+
 @keyframes blink {
   0% {
     opacity:0;
@@ -39,6 +48,14 @@
   -moz-animation: fadeIn ease $duration;
   -o-animation: fadeIn ease $duration;
   -ms-animation: fadeIn ease $duration;
+}
+
+@mixin fade-out($duration) {
+  animation: fadeOut ease $duration;
+  -webkit-animation: fadeOut ease $duration;
+  -moz-animation: fadeOut ease $duration;
+  -o-animation: fadeOut ease $duration;
+  -ms-animation: fadeOut ease $duration;
 }
 
 .fade-in {
