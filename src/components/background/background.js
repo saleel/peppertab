@@ -8,24 +8,29 @@ import StoreContext from '../../contexts/store-context';
 import { Themes } from '../../constants';
 import useStore from '../../hooks/use-store';
 import './background.scss';
+import ThemeContext from '../../contexts/theme-context';
 
 
 function Background(props) {
   const { children } = props;
 
   const { generalStore } = React.useContext(StoreContext);
+  const { theme } = React.useContext(ThemeContext);
 
-  const [theme, { reFetch }] = useStore(() => generalStore.getTheme());
+  /** @type React.MutableRefObject<HTMLDivElement> */
+  const backgroundRef = React.useRef(null);
+
   const [background] = useStore(
     () => generalStore.getBackground(),
     null,
     [theme],
   );
 
-  generalStore.on('theme-updated', reFetch);
+  // generalStore.on('theme-updated', reFetch);
 
 
-  const showBackground = !!background;
+  // const isInspireMode = document.body.classList.contains('inspire');
+  const showBackground = theme === Themes.inspire && !!background;
 
 
   const themeInfo = background && (
@@ -35,28 +40,31 @@ function Background(props) {
     </a>
   );
 
+  function onScroll() {
+    const windowOffset = window.pageYOffset;
+    const contentOffset = window.innerHeight * 0.6;
+    const opacity = Math.min(1, windowOffset / contentOffset);
+    backgroundRef.current.style.setProperty('--bg-opacity', (1 - opacity).toString());
+  }
+
+  React.useEffect(() => {
+    if (showBackground) {
+      window.removeEventListener('scroll', onScroll);
+      window.addEventListener('scroll', onScroll);
+    }
+
+    return () => { window.removeEventListener('scroll', onScroll); };
+  }, [showBackground]);
+
 
   return (
-    <div className="background">
+    <div ref={backgroundRef} className="background">
 
       {showBackground && (
-        <>
-          <div
-            className="background__image"
-            style={{ backgroundImage: `url('${background.base64}')` }}
-          />
-
-          {/* <Tooltip
-            html={themeInfo}
-            position="bottom"
-            trigger="mouseenter"
-            arrow
-            className="background__theme-info"
-          >
-            <InfoIcon color="#f7f7f7" size="20" />
-          </Tooltip> */}
-
-        </>
+        <div
+          className="background__image"
+          style={{ backgroundImage: `url('${background.base64}')` }}
+        />
       )}
 
       <div className="background__content">

@@ -128,7 +128,7 @@ class GeneralStore extends Store {
    * @return {Promise<string>} theme
    */
   async getTheme() {
-    return window.localStorage.getItem(LocalStorage.theme);
+    return window.localStorage.getItem(LocalStorage.theme) || Themes.inspire;
   }
 
 
@@ -158,7 +158,7 @@ class GeneralStore extends Store {
     }
 
     // If downloaded image is recent, then no need to download new
-    if (storedBg && differenceInSeconds(new Date(), new Date(storedBg.createdAt)) < 10) {
+    if (storedBg && differenceInSeconds(new Date(), new Date(storedBg.createdAt)) < 30) {
       return storedBg;
     }
 
@@ -312,9 +312,8 @@ class GeneralStore extends Store {
    * @return {Promise<Array>} events
    */
   async getEvents() {
-    const { gapi } = window;
-
     const fetchEvents = () => new Promise((resolve, reject) => {
+      const { gapi } = window;
       if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
         gapi.client.calendar.events.list({
           calendarId: 'primary',
@@ -349,27 +348,33 @@ class GeneralStore extends Store {
 
 
     return new Promise((resolve, reject) => {
-      gapi.load('client:auth2', () => {
-        gapi.client.init({
-          apiKey: 'AIzaSyBOXuQDGtvOto1RIJpR7ab6aJ4Jk7s7PpM',
-          clientId: '492631281745-ukpj3nrml396bot57q9ikrhd9d46b8qm.apps.googleusercontent.com',
-          discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
-          scope: 'https://www.googleapis.com/auth/calendar.readonly',
-        }).then(async () => {
-          if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
-            resolve();
-          }
+      const gapiScript = document.createElement('script');
+      gapiScript.src = 'https://apis.google.com/js/api.js?onload=onGapiLoad';
+      window.onGapiLoad = function onGapiLoad() {
+        const { gapi } = window;
+        gapi.load('client:auth2', () => {
+          gapi.client.init({
+            apiKey: 'AIzaSyBOXuQDGtvOto1RIJpR7ab6aJ4Jk7s7PpM',
+            clientId: '492631281745-ukpj3nrml396bot57q9ikrhd9d46b8qm.apps.googleusercontent.com',
+            discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
+            scope: 'https://www.googleapis.com/auth/calendar.readonly',
+          }).then(async () => {
+            if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
+              resolve();
+            }
 
-          // Listen for sign-in state changes.
-          gapi.auth2.getAuthInstance().isSignedIn.listen(fetchEvents);
+            // Listen for sign-in state changes.
+            gapi.auth2.getAuthInstance().isSignedIn.listen(fetchEvents);
 
-          // Handle the initial sign-in state.
-          const events = await fetchEvents();
-          resolve(events);
-        }, (error) => {
-          console.error(JSON.stringify(error, null, 2));
+            // Handle the initial sign-in state.
+            const events = await fetchEvents();
+            resolve(events);
+          }, (error) => {
+            console.error(JSON.stringify(error, null, 2));
+          });
         });
-      });
+      };
+      document.body.appendChild(gapiScript);
     });
   }
 }

@@ -2,21 +2,14 @@
 
 import React from 'react';
 import groupBy from 'lodash/groupBy';
-import EyeSlashIcon from '@iconscout/react-unicons/icons/uil-eye-slash';
-import StoreContext from '../../contexts/store-context';
-import usePromise from '../../hooks/use-promise';
-import './calendar.scss';
-import Todo from '../../model/todo';
-import TodoItem from '../todo-item';
-import Card from '../card';
-import CalendarItem from './calendar-item';
 import format from 'date-fns/format';
 import isToday from 'date-fns/isToday';
 import isTomorrow from 'date-fns/isTomorrow';
-
-// AIzaSyBOXuQDGtvOto1RIJpR7ab6aJ4Jk7s7PpM
-
-const { gapi } = window;
+import StoreContext from '../../contexts/store-context';
+import usePromise from '../../hooks/use-promise';
+import Card from '../card';
+import CalendarItem from './calendar-item';
+import './calendar.scss';
 
 
 function Calendar() {
@@ -38,8 +31,8 @@ function Calendar() {
 
 
   function handleAuthClick() {
-    gapi.auth2.getAuthInstance().signIn();
-    gapi.auth2.getAuthInstance().isSignedIn.listen((signedIn) => signedIn && reFetch());
+    window.gapi.auth2.getAuthInstance().signIn();
+    window.gapi.auth2.getAuthInstance().isSignedIn.listen((signedIn) => signedIn && reFetch());
   }
 
 

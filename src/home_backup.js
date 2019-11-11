@@ -30,7 +30,7 @@ function Home() {
   //     }
 
   //     if (e.keyCode === 85) {
-  //       document.documentElement.style.setProperty('--main-bg-color', '#e1e1e3');
+  //       document.documentElement.style.setProperty('--bg-color', '#e1e1e3');
   //     }
   //   });
   // }, []);

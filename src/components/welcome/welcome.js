@@ -1,9 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import StoreContext from '../../contexts/store-context';
 import { getMessagePrefix } from './welcome.utils';
-import './welcome.scss';
 import useStore from '../../hooks/use-store';
+import './welcome.scss';
 
 
 function Welcome() {
@@ -12,7 +11,7 @@ function Welcome() {
 
   const inputRef = React.useRef();
 
-  const [profile, { isFetching }] = useStore(() => generalStore.getProfile());
+  const [profile, { isFetching, reFetch }] = useStore(() => generalStore.getProfile());
 
 
   React.useEffect(() => {
@@ -28,7 +27,7 @@ function Welcome() {
   async function onKeyDown(e) {
     if (e.keyCode === 13) {
       await generalStore.setProfile({ name: e.target.value });
-      // onChange();
+      reFetch();
     }
   }
 
@@ -59,18 +58,6 @@ function Welcome() {
     </div>
   );
 }
-
-
-Welcome.propTypes = {
-  profile: PropTypes.shape({
-    name: PropTypes.string,
-  }),
-  onChange: PropTypes.func.isRequired,
-};
-
-Welcome.defaultProps = {
-  profile: null,
-};
 
 
 export default Welcome;

@@ -66,7 +66,7 @@ function TodoList() {
   }
 
 
-  const actions = hasCompleted && [
+  const actions = !hasCompleted ? [] : [
     showCompleted && (
       <button key="completed" type="button" onClick={() => setShowCompleted(false)}>
         <EyeSlashIcon size="20" />
@@ -100,7 +100,7 @@ function TodoList() {
           {(filteredTodos.length === 0) && (
             <div className="todo-list__empty">
               <div>Looks like everything is sorted out.</div>
-              <div>You can add Todos from the form below.</div>
+              <div>You can add more tasks in the form below.</div>
             </div>
           )}
         </div>

@@ -1,0 +1,46 @@
+@keyframes spin {
+	from {
+			transform:rotate(360deg);
+	}
+	to {
+			transform:rotate(0deg);
+	}
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+@keyframes blink {
+  0% {
+    opacity:0;
+  }
+  50% {
+    opacity:1;
+  }
+  100% {
+    opacity:0;
+  }
+}
+
+@keyframes come-in {
+  to { transform: translateY(0); }
+}
+
+
+@mixin fade-in($duration) {
+  animation: fadeIn ease $duration;
+  -webkit-animation: fadeIn ease $duration;
+  -moz-animation: fadeIn ease $duration;
+  -o-animation: fadeIn ease $duration;
+  -ms-animation: fadeIn ease $duration;
+}
+
+.fade-in {
+  @include fade-in(0.25s);
+}

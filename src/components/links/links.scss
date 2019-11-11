@@ -1,0 +1,32 @@
+	.links {
+    display: flex;
+    flex-direction: row;
+
+    &__item {
+      display: flex;
+      flex-direction: column;
+      height: 100px;
+      width: 100px;
+      background-color: var(--card-bg-color);
+      border-radius: 5px;
+      justify-content: space-between;
+      padding: 5px;
+    }
+
+    &__item-image {
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        height: 50px;
+        width: 50px;
+      }
+    }
+    
+    &__item-name {
+      text-align: center;
+    }
+	
+	}

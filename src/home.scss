@@ -1,15 +1,38 @@
 .home {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+  $self: &;
 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-	&__content {
-		padding: 5rem 0;
-		max-width: 1000px;
-		min-width: 800px;
-		min-height: 500px;
-		width: 80%;
-	}
+  &__content {
+    padding-bottom: 5rem;
+    max-width: 900px;
+    min-width: 800px;
+    min-height: 500px;
+    width: 80%;
+  }
+
+  &__welcome {
+    display: flex;
+		align-items: center;
+		justify-content: center;
+
+    transition: height 3s linear;
+  }
+
+  &.inspire {
+    .home__welcome {
+			height: calc(100vh - (100px + 2rem));
+			color: var(--inverted-text-color);
+    }
+  }
+
+  &.focus {
+    .home__welcome {
+      height: 10rem;
+      margin: 5rem 0;
+    }
+  }
 }

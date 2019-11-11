@@ -7,6 +7,13 @@
   display: flex;
   flex-direction: column;
 
+  transform: translateY(0);
+  transition: transform 0.5s;
+
+  &.not-visible {
+    transform: translateY(300px);
+  }
+
   &__title {
     font-size: 1.75rem;
     padding: 1.5rem 1.5rem;
@@ -27,3 +34,38 @@
     flex-grow: 1;
   }
 }
+
+
+
+// .skeleton-box {
+//   display: inline-block;
+//   height: 1em;
+//   position: relative;
+//   overflow: hidden;
+//   background-color: var(--card-item-color);
+//   border-radius: 5px;
+
+//   &::after {
+//     position: absolute;
+//     top: 0;
+//     right: 0;
+//     bottom: 0;
+//     left: 0;
+//     transform: translateX(-100%);
+//     background-image: linear-gradient(
+//       90deg,
+//       rgba(#fff, 0) 0,
+//       rgba(#fff, 0.2) 20%,
+//       rgba(#fff, 0.5) 60%,
+//       rgba(#fff, 0)
+//     );
+//     animation: shimmer 1s infinite;
+//     content: '';
+//   }
+
+//   @keyframes shimmer {
+//     100% {
+//       transform: translateX(100%);
+//     }
+//   }
+// }

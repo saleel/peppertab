@@ -1,6 +1,6 @@
 .welcome {
   text-align: center;
-  font-size: 3em; // relative to parent
+  font-size: 4em; // relative to parent
   height: 10rem;
   display: flex;
   justify-content: center;
@@ -23,6 +23,6 @@
     text-align: center;
     margin: 0 auto;
     background: transparent;
-    border-bottom: 3px solid var(--main-text-color);
+    border-bottom: 3px solid var(--text-color);
   }
 }
