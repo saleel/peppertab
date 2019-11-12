@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import InfoIcon from '@iconscout/react-unicons/icons/uil-info-circle';
+import CameraIcon from '@iconscout/react-unicons/icons/uil-camera';
 import StoreContext from '../../contexts/store-context';
 import { Themes } from '../../constants';
 import ThemeContext from '../../contexts/theme-context';
@@ -46,7 +46,7 @@ function Background(props) {
 
 
   React.useEffect(() => {
-    // Set once for initial load
+    // Scroll to top on load
     window.scrollTo(0, 0);
   }, []);
 
@@ -62,10 +62,7 @@ function Background(props) {
           />
 
           <a className="background__info" target="_blank" rel="noopener noreferrer" href={background.link}>
-            <div className="background__info-icon">
-              <InfoIcon size="20" />
-            </div>
-            <div>
+            <div className="background__info-details">
               <div className="background__info-location">
                 <div>{background.location}</div>
               </div>
@@ -76,6 +73,9 @@ function Background(props) {
                   {background.user}
                 </div>
               </div>
+            </div>
+            <div className="background__info-icon">
+              <CameraIcon size="18" />
             </div>
           </a>
         </>
