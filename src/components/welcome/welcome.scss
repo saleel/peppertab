@@ -5,14 +5,15 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
+  font-weight: normal;
 
 
   &__name {
     font-weight: 500;
-    padding: 0 0.75rem;
     text-transform: capitalize;
 
     &:first-letter {
+      color: red;
       text-transform: uppercase;
     }
   }

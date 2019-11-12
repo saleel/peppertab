@@ -64,9 +64,13 @@ function Background(props) {
             <div className="background__info-icon">
               <InfoIcon size="20" />
             </div>
-            <div className="background__info-location">
-              <div>{background.location}</div>
-              <div>{background.user}</div>
+            <div>
+              <div className="background__info-location">
+                <div>{background.location}</div>
+              </div>
+              <div className="background__info-user">
+                <div>{background.user}</div>
+              </div>
             </div>
           </a>
         </>

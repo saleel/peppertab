@@ -37,15 +37,16 @@
     position: fixed;
     opacity: var(--bg-opacity);
     z-index: 3;
-    bottom: 0;
-    left: 0;
+    bottom: 5px;
+    left: 5px;
+    // background-color: rgba(0, 0, 0, 0.5);
     color: var(--inverted-text-color);
-    padding: 5px 10px;
+    padding: 5px;
     border-radius: 3px;
-    font-size: 0.8rem;
     display: flex;
     align-items: center;
-    height: 40px;
+    height: 30px;
+    line-height: 0.8rem;
 
     .background__info-icon {
       margin-right: 5px;
@@ -53,10 +54,22 @@
 
     .background__info-location {
       display: none;
+      font-size: 0.9rem;
+    }
+
+    .background__info-user {
+      display: none;
+      font-size: 0.8rem;
     }
 
     &:hover {
+      background-color: rgba(0, 0, 0, 0.5);
+      
       .background__info-location {
+        display: block;
+      }
+
+      .background__info-user {
         display: block;
       }
 
@@ -72,7 +85,8 @@
       rgba(0, 0, 0, 0) 0,
       rgba(0, 0, 0, 0.25) 40%,
       rgba(0, 0, 0, 0.25) 60%,
-      rgba(0, 0, 0, 0)
+      rgba(0, 0, 0, 0) 90%,
+      rgba(0, 0, 0, 0.5)
     );
   }
 }
