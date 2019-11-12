@@ -2,13 +2,12 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Tooltip } from 'react-tippy';
 import InfoIcon from '@iconscout/react-unicons/icons/uil-info-circle';
 import StoreContext from '../../contexts/store-context';
 import { Themes } from '../../constants';
-import useStore from '../../hooks/use-store';
-import './background.scss';
 import ThemeContext from '../../contexts/theme-context';
+import usePromise from '../../hooks/use-promise';
+import './background.scss';
 
 
 function Background(props) {
@@ -20,15 +19,16 @@ function Background(props) {
   /** @type React.MutableRefObject<HTMLDivElement> */
   const backgroundRef = React.useRef(null);
 
-  const [background, { isFetching }] = useStore(
+  const [background] = usePromise(
     () => generalStore.getBackground(),
-    null,
-    [theme],
+    { cacheKey: 'BACKGROUND', updateWithRevalidated: false },
   );
 
   const showBackground = theme === Themes.inspire && !!background;
 
   function onScroll() {
+    if (!backgroundRef.current) return;
+
     const windowOffset = window.pageYOffset;
     const contentOffset = window.innerHeight * 0.6;
     const opacity = Math.min(1, windowOffset / contentOffset);
@@ -45,9 +45,10 @@ function Background(props) {
   }, [showBackground]);
 
 
-  if (showBackground && isFetching) {
-    return null;
-  }
+  React.useEffect(() => {
+    // Set once for initial load
+    window.scrollTo(0, 0);
+  }, []);
 
 
   return (
@@ -69,7 +70,11 @@ function Background(props) {
                 <div>{background.location}</div>
               </div>
               <div className="background__info-user">
-                <div>{background.user}</div>
+                <div>
+                  Photo by
+                  {' '}
+                  {background.user}
+                </div>
               </div>
             </div>
           </a>

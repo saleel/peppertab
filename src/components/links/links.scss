@@ -11,6 +11,11 @@
       border-radius: 5px;
       justify-content: space-between;
       padding: 5px;
+      opacity: 0.9;
+
+      &:hover {
+        opacity: 1;
+      }
     }
 
     &__item-image {

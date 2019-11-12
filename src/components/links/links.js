@@ -20,8 +20,8 @@ const links = [
 
 function Links() {
   function onAddClick() {
-    const url = window.prompt('Enter the website URL', 'https://');
-    links.push();
+    // const url = window.prompt('Enter the website URL', 'https://');
+    // links.push();
   }
 
 
@@ -31,7 +31,7 @@ function Links() {
 
     return (
       <div className="links__item-image">
-        <img src={logoUrl} />
+        <img alt="" src={logoUrl} />
       </div>
     );
   }
@@ -40,7 +40,7 @@ function Links() {
     <div className="links">
 
       {links.map((link) => (
-        <div className="px-5">
+        <div key={link.url} className="px-5">
           <a href={link.url} className="links__item">
             {renderImage(link)}
 

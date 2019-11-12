@@ -17,13 +17,24 @@
 		align-items: center;
 		justify-content: center;
 
-    transition: height 3s linear;
+    transition: height 100ms linear;
   }
+
+  &__time {
+		position: absolute;
+		top: 0;
+		right: 0;
+		padding: 1rem 2rem;
+		text-align: right;
+	}
 
   &.inspire {
     .home__welcome {
 			height: calc(100vh - (100px + 2rem));
-			color: var(--inverted-text-color);
+    }
+
+    .home__welcome, .home__time {
+      color: var(--inverted-text-color);
     }
   }
 

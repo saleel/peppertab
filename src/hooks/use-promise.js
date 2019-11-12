@@ -11,6 +11,8 @@ const cacheDb = new PouchDB('cache');
  * @property [defaultValue] {any}
  * @property [dependencies = []] {[*]}
  * @property [cacheKey] {string}
+ * @property [updateWithRevalidated = false] {boolean}
+ * @property [cachePeriodInSecs = 10] {number}
  */
 
 
@@ -21,7 +23,9 @@ const cacheDb = new PouchDB('cache');
  * @returns {[T, { isFetching: boolean, reFetch: Function, error: Error }]}
  */
 function usePromise(promise, options) {
-  const { defaultValue, dependencies = [], cacheKey } = options;
+  const {
+    defaultValue, dependencies = [], cacheKey, updateWithRevalidated = true, cachePeriodInSecs = 10,
+  } = options;
 
   const [result, setResult] = React.useState(defaultValue);
   const [isFetching, setIsFetching] = React.useState(true);
@@ -59,11 +63,12 @@ function usePromise(promise, options) {
           setResult(cachedData.result);
 
           if (cachedData.fetchedAt
-          && differenceInSeconds(new Date(), new Date(cachedData.fetchedAt)) < 10) {
+          && differenceInSeconds(new Date(), new Date(cachedData.fetchedAt)) < cachePeriodInSecs) {
             return;
           }
         }
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.error(e);
         // DO NOTHING
       }
@@ -74,7 +79,9 @@ function usePromise(promise, options) {
     try {
       const data = await promise();
       if (!didCancel) {
-        setResult(data);
+        if (updateWithRevalidated) {
+          setResult(data);
+        }
 
         if (cacheKey) {
           updateCache(data);
@@ -95,6 +102,7 @@ function usePromise(promise, options) {
   React.useEffect(() => {
     fetch();
     return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       didCancel = true;
     };
   }, dependencies);

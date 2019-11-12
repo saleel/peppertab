@@ -1,7 +1,5 @@
 // @ts-check
-import differenceInHours from 'date-fns/differenceInHours';
-import differenceInMinutes from 'date-fns/differenceInMinutes';
-import differenceInSeconds from 'date-fns/differenceInSeconds';
+
 import set from 'lodash/set';
 import {
   OPEN_WEATHER_API_KEY, LocalStorage, Themes, API_URL,
@@ -145,53 +143,19 @@ class GeneralStore extends Store {
    * @return {Promise<Background>} theme
    */
   async getBackground() {
-    // const theme = await this.getTheme();
-    // if (theme !== Themes.image) {
-    //   return null;
-    // }
-
-    let storedBg;
-    try {
-      storedBg = await this.db.get(DbKeys.background);
-    } catch (error) {
-      // Ignore
-    }
-
-    // If downloaded image is recent, then no need to download new
-    if (storedBg && differenceInSeconds(new Date(), new Date(storedBg.createdAt)) < 30) {
-      return storedBg;
-    }
-
-
-    // Fetch a new image and set to local store for next call
-    // const url = `https://api.unsplash.com/photos/random?client_id=${UNSPLASH_API_KEY}&collections=8862978&orientation=landscape`;
     const url = `${API_URL}/background`;
 
-    const fetchNewPromise = fetch(url, {
+    const response = await fetch(url, {
       method: 'GET',
       mode: 'cors',
-    })
-      .then((r) => r.json())
-      .then(async (response) => {
-        const base64 = await convertImageUrlToBase64(response.imageUrl);
+    });
 
-        const newBackground = { ...response, base64 };
+    const jsonResponse = await response.json();
+    const base64 = await convertImageUrlToBase64(jsonResponse.imageUrl);
 
-        this.updateItem({ _id: DbKeys.background, ...newBackground, createdAt: new Date() });
+    const newBackground = { ...jsonResponse, base64 };
 
-        return newBackground;
-      })
-      .catch((e) => {
-        console.error(e); // eslint-disable-line no-console
-      });
-
-
-    // For initial request if the item not found in cache
-    if (!storedBg) {
-      storedBg = await fetchNewPromise;
-    }
-
-    return storedBg;
+    return newBackground;
   }
 
 
@@ -200,61 +164,33 @@ class GeneralStore extends Store {
    * @return {Promise<WeatherInfo>} Weather Data for give lat long
    */
   async getWeatherInfo({ latitude, longitude }) {
-    let storedWeather;
-    try {
-      storedWeather = await this.db.get(DbKeys.weather);
-    } catch (e) {
-      // Ignore
-    }
-
-    // If downloaded weather is recent, then no need to download new
-    if (storedWeather && differenceInMinutes(new Date(), new Date(storedWeather.createdAt)) < 60) {
-      return storedWeather;
-    }
-
-    if (!latitude || !longitude) {
-      return storedWeather;
-    }
+    if (!latitude || !longitude) return null;
 
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${OPEN_WEATHER_API_KEY}`;
 
-    const fetchNewPromise = fetch(url, {
+    const response = await fetch(url, {
       method: 'GET',
       mode: 'cors',
-    })
-      .then((r) => r.json())
-      .then(async (result) => {
-        const {
-          name: city,
-          main: { temp, humidity },
-          weather: [{ main: sky }],
-        } = result;
+    });
+    const jsonResponse = await response.json();
 
-        const temperature = temp - 273.15; // Convert Kelvin to Celsius
+    const {
+      name: city,
+      main: { temp, humidity },
+      weather: [{ main: sky }],
+    } = jsonResponse;
 
-        const weatherInfo = {
-          city,
-          temperature,
-          humidity,
-          sky,
-          createdAt: new Date(),
-        };
+    const temperature = temp - 273.15; // Convert Kelvin to Celsius
 
-        // Store to db
-        await this.updateItem({ _id: DbKeys.weather, ...weatherInfo });
+    const weatherInfo = {
+      city,
+      temperature,
+      humidity,
+      sky,
+      createdAt: new Date(),
+    };
 
-        return weatherInfo;
-      })
-      .catch((e) => {
-        console.error(e); // eslint-disable-line no-console
-      });
-
-    // For initial request if the item not found in cache
-    if (!storedWeather) {
-      storedWeather = await fetchNewPromise;
-    }
-
-    return storedWeather;
+    return weatherInfo;
   }
 
 
@@ -262,49 +198,23 @@ class GeneralStore extends Store {
    * @return {Promise<Quote>} Quote of the day
    */
   async getQuote() {
-    let storedQuote;
-    try {
-      storedQuote = await this.db.get(DbKeys.quote);
-    } catch (e) {
-      // Ignore
-    }
-
-    // If downloaded quote is recent, then no need to download new
-    if (storedQuote && differenceInHours(new Date(), new Date(storedQuote.createdAt)) < 6) {
-      return storedQuote;
-    }
-
     const url = 'https://quotes.rest/qod?category=inspire';
 
-    const fetchNewPromise = fetch(url, {
+    const response = await fetch(url, {
       method: 'GET',
       mode: 'cors',
-    })
-      .then((r) => r.json())
-      .then(async (result) => {
-        const { contents: { quotes: [quoteRaw] = [] } = {} } = result;
-        const { quote: message, author } = quoteRaw;
+    });
+    const jsonResponse = await response.json();
+    const { contents: { quotes: [quoteRaw] = [] } = {} } = jsonResponse;
+    const { quote: message, author } = quoteRaw;
 
-        const quote = {
-          message,
-          author,
-          createdAt: new Date(),
-        };
+    const quote = {
+      message,
+      author,
+      createdAt: new Date(),
+    };
 
-        await this.updateItem({ _id: DbKeys.quote, ...quote });
-
-        return quote;
-      })
-      .catch((e) => {
-        console.error(e); // eslint-disable-line no-console
-      });
-
-    // For initial request if the item not found in cache
-    if (!storedQuote) {
-      storedQuote = await fetchNewPromise;
-    }
-
-    return storedQuote;
+    return quote;
   }
 
 
@@ -350,6 +260,7 @@ class GeneralStore extends Store {
     return new Promise((resolve, reject) => {
       const gapiScript = document.createElement('script');
       gapiScript.src = 'https://apis.google.com/js/api.js?onload=onGapiLoad';
+
       window.onGapiLoad = function onGapiLoad() {
         const { gapi } = window;
         gapi.load('client:auth2', () => {

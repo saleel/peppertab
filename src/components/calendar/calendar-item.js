@@ -1,15 +1,16 @@
 // @ts-check
 
 import React from 'react';
-import './calendar-item.scss';
+import PropTypes from 'prop-types';
 import format from 'date-fns/format';
+import './calendar-item.scss';
 
 
 function CalendarItem(props) {
   const { event } = props;
 
   const {
-    title, link, startDateTime, endDateTime, location,
+    title, startDateTime, endDateTime, location,
   } = event;
 
 
@@ -39,6 +40,17 @@ function CalendarItem(props) {
     </div>
   );
 }
+
+
+CalendarItem.propTypes = {
+  event: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    link: PropTypes.string.isRequired,
+    startDateTime: PropTypes.string.isRequired,
+    endDateTime: PropTypes.string.isRequired,
+    location: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 
 export default CalendarItem;

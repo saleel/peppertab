@@ -38,6 +38,7 @@ function useStore(promise, defaultValue, dependencies = []) {
   React.useEffect(() => {
     fetch();
     return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       didCancel = true;
     };
   }, dependencies);

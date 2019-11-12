@@ -17,7 +17,7 @@ function Calendar() {
 
   const signInButtonRef = React.useRef(null);
 
-  const [events, { isFetching, reFetch }] = usePromise(
+  const [events, { reFetch }] = usePromise(
     () => generalStore.getEvents(),
     { cacheKey: 'CALENDAR' },
   );

@@ -5,27 +5,26 @@ import TodoList from './components/todo-list';
 import Welcome from './components/welcome';
 import Calendar from './components/calendar';
 import Background from './components/background';
+import Time from './components/time';
+import Weather from './components/weather';
 import Links from './components/links';
-import { enableSlideInForCards } from './home.utils';
-import useInterval from './hooks/use-interval';
 import './home.scss';
-import { Themes } from './constants';
 
 
 function Home() {
-  const { theme, changeTheme } = React.useContext(ThemeContext);
+  const { theme } = React.useContext(ThemeContext);
 
-  React.useEffect(() => enableSlideInForCards(), []);
-  // React.useEffect(() => enableBgBlurOnScroll(), []);
-
-  // useInterval(() => {
-  //   changeTheme(theme === Themes.focus ? Themes.inspire : Themes.focus);
-  // }, 5000);
 
   return (
     <Background>
 
       <div className={`home ${theme}`}>
+
+        <div className="home__time">
+          <Time />
+          <Weather />
+        </div>
+
         <div className="home__content">
 
           <div className="home__welcome flex">
