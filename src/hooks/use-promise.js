@@ -55,11 +55,14 @@ function usePromise(promise, options) {
   }
 
   async function fetch() {
+    let hasCacheData = false;
+
     if (cacheKey) {
       try {
         const cachedData = await cacheDb.get(cacheKey);
 
         if (cachedData) {
+          hasCacheData = true;
           setResult(cachedData.result);
 
           if (cachedData.fetchedAt
@@ -79,7 +82,8 @@ function usePromise(promise, options) {
     try {
       const data = await promise();
       if (!didCancel) {
-        if (updateWithRevalidated || !result) { // If result is already set and not needed to update wutg fresh data
+        // In some cases newly fetched data don't have to be updated (updateWithRevalidated = false)
+        if (updateWithRevalidated || !hasCacheData) {
           setResult(data);
         }
 
