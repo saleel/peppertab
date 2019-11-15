@@ -69,7 +69,7 @@ function usePromise(promise, options) {
         }
       } catch (e) {
         // eslint-disable-next-line no-console
-        console.error(e);
+        // console.error(e);
         // DO NOTHING
       }
     }
@@ -79,7 +79,7 @@ function usePromise(promise, options) {
     try {
       const data = await promise();
       if (!didCancel) {
-        if (updateWithRevalidated) {
+        if (updateWithRevalidated || !result) { // If result is already set and not needed to update wutg fresh data
           setResult(data);
         }
 

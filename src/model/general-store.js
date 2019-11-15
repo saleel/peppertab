@@ -126,7 +126,14 @@ class GeneralStore extends Store {
    * @return {Promise<string>} theme
    */
   async getTheme() {
-    return window.localStorage.getItem(LocalStorage.theme) || Themes.inspire;
+    const theme = window.localStorage.getItem(LocalStorage.theme);
+
+    if (!Object.keys(Themes).includes(theme)) {
+      window.localStorage.setItem(LocalStorage.theme, Themes.inspire);
+      return Themes.inspire;
+    }
+
+    return theme;
   }
 
 

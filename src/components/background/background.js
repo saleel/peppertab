@@ -26,6 +26,7 @@ function Background(props) {
 
   const showBackground = theme === Themes.inspire && !!background;
 
+
   function onScroll() {
     if (!backgroundRef.current) return;
 
@@ -34,6 +35,7 @@ function Background(props) {
     const opacity = Math.min(1, windowOffset / contentOffset);
     backgroundRef.current.style.setProperty('--bg-opacity', (1 - opacity).toString());
   }
+
 
   React.useEffect(() => {
     if (showBackground) {

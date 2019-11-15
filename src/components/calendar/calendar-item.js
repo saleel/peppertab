@@ -3,6 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import format from 'date-fns/format';
+import LinkIcon from '@iconscout/react-unicons/icons/uil-external-link-alt';
 import './calendar-item.scss';
 
 
@@ -10,7 +11,7 @@ function CalendarItem(props) {
   const { event } = props;
 
   const {
-    title, startDateTime, endDateTime, location,
+    title, startDateTime, endDateTime, location, link,
   } = event;
 
 
@@ -19,6 +20,11 @@ function CalendarItem(props) {
 
       <div className="calendar-item__title">
         {title}
+      </div>
+
+      <div className="calendar-item__link">
+        {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+        <a href={link} target="_blank" rel="noopener noreferrer"><LinkIcon size="16" /></a>
       </div>
 
 

@@ -1,5 +1,6 @@
 .calendar-item {
   display: block;
+  position: relative;
   font-size: 1.1rem;
   background-color: var(--card-item-color-active);
   margin-bottom: 0.5rem;
@@ -10,12 +11,24 @@
   &__title {
     padding: 0.25rem 0;
     font-weight: 500;
+    line-height: 1.25rem;
   }
 
   &__details {
     display: flex;
     flex-direction: row;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     justify-content: space-between;
+  }
+
+  &__link {
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    color: #98BFFA;
+
+    &:hover {
+      color: #8b75fd;
+    }
   }
 }

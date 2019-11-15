@@ -12,7 +12,7 @@ function ThemeContextProvider({ children }) {
 
 
   React.useEffect(() => {
-    document.documentElement.classList.add(theme);
+    document.documentElement.className = theme;
   }, [theme]);
 
 

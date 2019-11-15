@@ -45,12 +45,12 @@ function Calendar() {
     if (isTomorrow(groupDate)) dateLabel = 'Tomorrow';
 
     return (
-      <div className="calendar__group">
+      <div key={groupKey} className="calendar__group">
 
         <div className="calendar__group-name">{dateLabel}</div>
 
         {eventsInGroup.map((event) => (
-          <CalendarItem event={event} />
+          <CalendarItem key={event.link} event={event} />
         ))}
       </div>
     );

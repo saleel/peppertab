@@ -6,14 +6,13 @@
   justify-content: center;
   flex-direction: column;
   font-weight: normal;
-
+  
 
   &__name {
     font-weight: 500;
     text-transform: capitalize;
 
     &:first-letter {
-      color: red;
       text-transform: uppercase;
     }
   }
@@ -24,6 +23,6 @@
     text-align: center;
     margin: 0 auto;
     background: transparent;
-    border-bottom: 3px solid var(--text-color);
+    border-bottom: 3px solid;
   }
 }
