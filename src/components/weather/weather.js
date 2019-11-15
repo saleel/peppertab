@@ -12,7 +12,7 @@ function Weather() {
 
   const [weatherInfo] = usePromise(
     () => generalStore.getWeatherInfo({ latitude, longitude }),
-    { cacheKey: 'WEATHER', dependencies: [latitude, longitude], cachePeriodInSecs: (60 * 60) },
+    { cacheKey: 'WEATHER', dependencies: [latitude, longitude], cachePeriodInSecs: (10 * 60) },
   );
 
 

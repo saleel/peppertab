@@ -43,11 +43,14 @@ function Background(props) {
       window.addEventListener('scroll', onScroll);
     }
 
+    onScroll();
+
     return () => { window.removeEventListener('scroll', onScroll); };
   }, [showBackground]);
 
 
   React.useEffect(() => {
+    console.log('sc t');
     // Scroll to top on load
     window.scrollTo(0, 0);
   }, []);

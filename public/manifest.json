@@ -11,7 +11,8 @@
     "geolocation",
     "webRequest",
     "webRequestBlocking",
-    "*://peppertab.com/*"
+    "*://peppertab.com/*",
+    "topSites"
   ],
   "background": {
     "scripts": [

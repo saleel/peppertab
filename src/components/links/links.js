@@ -4,58 +4,66 @@ import React from 'react';
 import './links.scss';
 
 
-const links = [
-  // {
-  //   name: 'Apps',
-  //   imageUrl: '',
-  //   url: 'chrome://apps/',
-  // },
-  {
-    name: 'Facebook',
-    imageUrl: '',
-    url: 'https://www.facebook.com/login.php',
-  },
-];
+// @ts-ignore
+const browser = window.browser || window.chrome;
 
 
 function Links() {
-  function onAddClick() {
-    // const url = window.prompt('Enter the website URL', 'https://');
-    // links.push();
-  }
+  const [links, setLinks] = React.useState([]);
+
+
+  React.useEffect(() => {
+    if (browser && browser.topSites) {
+      browser.topSites.get((sites) => {
+        setLinks(sites.slice(0, 7));
+      });
+    }
+  }, []);
 
 
   function renderImage(link) {
-    const { hostname } = new URL(link.url);
-    const logoUrl = `//logo.clearbit.com/${hostname}`;
+    const { hostname, siteName } = link;
+    const logoUrl = `https://logo.clearbit.com/${hostname}`;
 
     return (
       <div className="links__item-image">
-        <img alt="" src={logoUrl} />
+        <img
+          alt=""
+          src={logoUrl}
+          onError={function onError(e) {
+            delete e.target.onerror;
+            delete e.target.onError;
+
+            e.target.className = 'links__item-image not-found';
+          }}
+        />
+        <div className="links__item-image-alphabet">{siteName[0]}</div>
       </div>
     );
   }
 
+
+  const linksWithSiteName = links.map((link) => {
+    const { hostname } = new URL(link.url);
+    const hostNamePortions = hostname.split('.');
+    const siteName = hostNamePortions[hostNamePortions.length - 2] || link.title;
+
+    return { ...link, hostname, siteName };
+  });
+
+
   return (
     <div className="links">
 
-      {links.map((link) => (
-        <div key={link.url} className="px-5">
-          <a href={link.url} className="links__item">
-            {renderImage(link)}
+      {linksWithSiteName.map((link) => (
+        <a key={link.url} title={link.title} href={link.url} className="links__item">
+          {renderImage(link)}
 
-            <div className="links__item-name">
-              {link.name}
-            </div>
-          </a>
-        </div>
+          <div className="links__item-name">
+            {link.siteName}
+          </div>
+        </a>
       ))}
-
-      <div className="px-5">
-        <button type="button" onClick={onAddClick} className="links__item">
-          Add
-        </button>
-      </div>
 
     </div>
   );
@@ -63,3 +71,27 @@ function Links() {
 
 
 export default Links;
+
+
+// [
+//   {
+//     title: 'Homepage of ppeters',
+//     url: 'http://localhost:3000',
+//   },
+//   {
+//     title: 'apple',
+//     url: 'http://apple.com',
+//   },
+//   {
+//     title: 'Localhost',
+//     url: 'http://facebook.com',
+//   },
+//   {
+//     title: 'Google',
+//     url: 'http://google.com',
+//   },
+//   {
+//     title: 'PepperTab',
+//     url: 'http://peppertab.com',
+//   },
+// ]
