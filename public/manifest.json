@@ -12,6 +12,7 @@
     "webRequest",
     "webRequestBlocking",
     "*://peppertab.com/*",
+    "*://content.googleapis.com/*",
     "topSites",
     "identity"
   ],

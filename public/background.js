@@ -1,12 +1,8 @@
 (() => {
-  let { browser } = window;
+  const browser = window.browser || window.chrome;
 
   if (!browser) {
-    if (window.chrome) {
-      browser = window.chrome;
-    } else {
-      return;
-    }
+    return;
   }
 
   browser.webRequest.onBeforeRequest.addListener(({ url }) => {

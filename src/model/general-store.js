@@ -40,11 +40,12 @@ import { convertImageUrlToBase64 } from './utils';
 const DbKeys = {
   profile: 'profile',
   theme: 'theme',
-  quote: 'quote',
-  weather: 'weather',
-  background: 'background',
-  events: 'events',
+  settings: 'settings',
 };
+
+
+// @ts-ignore
+const browser = window.browser || window.chrome;
 
 
 class GeneralStore extends Store {
@@ -57,30 +58,32 @@ class GeneralStore extends Store {
    * @param {string} key
    * @param {any} value
    */
-  setSettings(key, value) {
-    const existing = this.getSettings();
-    set(existing, key, value);
-    window.localStorage.setItem(LocalStorage.visibility, JSON.stringify(existing));
+  async setSetting(key, value) {
+    const settings = await this.db.get(DbKeys.settings);
+    this.updateItem({ _id: DbKeys.settings, ...settings, [key]: value });
   }
 
 
   /**
-   * @return {{ widgets: Boolean }} time
+   * @return Promise<{}> Settings
    */
-  getSettings() {
-    let visibility = {};
-    const visibilityStr = window.localStorage.getItem(LocalStorage.visibility);
+  async getSetting(key) {
+    const settings = await this.db.get(DbKeys.settings);
+    return settings[key];
+  }
 
-    if (visibilityStr) {
-      try {
-        visibility = JSON.parse(visibilityStr);
-      } catch (e) {
-        // Ignore
+  // eslint-disable-next-line consistent-return
+  async getSettings() {
+    try {
+      const settings = await this.db.get(DbKeys.settings);
+      return settings;
+    } catch (error) {
+      if (error.status === 404) {
+        console.log('crate');
+        await this.db.post({ _id: DbKeys.settings });
+        return {};
       }
     }
-
-    // @ts-ignore
-    return visibility;
   }
 
 
@@ -228,7 +231,29 @@ class GeneralStore extends Store {
   /**
    * @return {Promise<Array>} events
    */
-  async getEvents(token) {
+  async getEvents() {
+    const token = await new Promise((resolve) => {
+      let redirectURL = browser.identity.getRedirectURL();
+      redirectURL = redirectURL.endsWith('/') ? redirectURL.slice(0, -1) : redirectURL;
+
+      const clientID = '492631281745-ukpj3nrml396bot57q9ikrhd9d46b8qm.apps.googleusercontent.com';
+      const scopes = ['https://www.googleapis.com/auth/calendar.readonly'];
+      let authURL = 'https://accounts.google.com/o/oauth2/auth';
+      authURL += `?client_id=${clientID}`;
+      authURL += '&response_type=token';
+      authURL += `&redirect_uri=${encodeURIComponent(redirectURL)}`;
+      authURL += `&scope=${encodeURIComponent(scopes.join(' '))}`;
+
+      browser.identity.launchWebAuthFlow({
+        interactive: true,
+        url: authURL,
+      }, (returnUrl) => {
+        const accessToken = returnUrl.split('access_token=')[1].split('&')[0];
+        console.log({ accessToken });
+        resolve(accessToken);
+      });
+    });
+
     const query = {
       calendarId: 'primary',
       timeMin: (new Date()).toISOString(),

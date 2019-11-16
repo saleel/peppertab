@@ -9,56 +9,35 @@ import StoreContext from '../../contexts/store-context';
 import usePromise from '../../hooks/use-promise';
 import Card from '../card';
 import CalendarItem from './calendar-item';
+import useConfig from '../../hooks/use-config';
 import './calendar.scss';
 
 
 // @ts-ignore
-const browser = window.browser || window.chrome;
 
 
 function Calendar() {
   const { generalStore } = React.useContext(StoreContext);
 
-  const [googleToken, setGoogleToken] = React.useState();
+  const [isCalendarEnabled, setIsCalendarEnabled] = useConfig('calendar.enabled');
 
   const signInButtonRef = React.useRef(null);
 
   const [events] = usePromise(
-    () => (googleToken ? generalStore.getEvents(googleToken) : undefined),
-    { dependencies: [googleToken] },
+    () => (isCalendarEnabled ? generalStore.getEvents() : undefined),
+    { cacheKey: 'CALENDAR', dependencies: [isCalendarEnabled] },
   );
 
-  console.log(events);
+
+  function handleAuthClick() {
+    setIsCalendarEnabled(true);
+  }
 
 
-  const isCalendarEnabled = Array.isArray(events);
   const groupedEvents = events && groupBy(events, (event) => {
     const start = new Date(event.startDateTime || event.startDate);
     return format(start, 'yyyy-MM-dd');
   });
-
-
-  function handleAuthClick() {
-    let redirectURL = browser.identity.getRedirectURL();
-    redirectURL = redirectURL.endsWith('/') ? redirectURL.slice(0, -1) : redirectURL;
-
-    const clientID = '492631281745-ukpj3nrml396bot57q9ikrhd9d46b8qm.apps.googleusercontent.com';
-    const scopes = ['https://www.googleapis.com/auth/calendar.readonly'];
-    let authURL = 'https://accounts.google.com/o/oauth2/auth';
-    authURL += `?client_id=${clientID}`;
-    authURL += '&response_type=token';
-    authURL += `&redirect_uri=${encodeURIComponent(redirectURL)}`;
-    authURL += `&scope=${encodeURIComponent(scopes.join(' '))}`;
-
-    browser.identity.launchWebAuthFlow({
-      interactive: true,
-      url: authURL,
-    }, (returnUrl) => {
-      const accessToken = returnUrl.split('access_token=')[1].split('&')[0];
-      console.log(accessToken);
-      setGoogleToken(accessToken);
-    });
-  }
 
 
   function renderGroup(groupKey) {
