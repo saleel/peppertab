@@ -12,15 +12,23 @@ import CalendarItem from './calendar-item';
 import './calendar.scss';
 
 
+// @ts-ignore
+const browser = window.browser || window.chrome;
+
+
 function Calendar() {
   const { generalStore } = React.useContext(StoreContext);
 
+  const [googleToken, setGoogleToken] = React.useState();
+
   const signInButtonRef = React.useRef(null);
 
-  const [events, { reFetch }] = usePromise(
-    () => generalStore.getEvents(),
-    { cacheKey: 'CALENDAR' },
+  const [events] = usePromise(
+    () => (googleToken ? generalStore.getEvents(googleToken) : undefined),
+    { dependencies: [googleToken] },
   );
+
+  console.log(events);
 
 
   const isCalendarEnabled = Array.isArray(events);
@@ -31,8 +39,25 @@ function Calendar() {
 
 
   function handleAuthClick() {
-    window.gapi.auth2.getAuthInstance().signIn();
-    window.gapi.auth2.getAuthInstance().isSignedIn.listen((signedIn) => signedIn && reFetch());
+    let redirectURL = browser.identity.getRedirectURL();
+    redirectURL = redirectURL.endsWith('/') ? redirectURL.slice(0, -1) : redirectURL;
+
+    const clientID = '492631281745-ukpj3nrml396bot57q9ikrhd9d46b8qm.apps.googleusercontent.com';
+    const scopes = ['https://www.googleapis.com/auth/calendar.readonly'];
+    let authURL = 'https://accounts.google.com/o/oauth2/auth';
+    authURL += `?client_id=${clientID}`;
+    authURL += '&response_type=token';
+    authURL += `&redirect_uri=${encodeURIComponent(redirectURL)}`;
+    authURL += `&scope=${encodeURIComponent(scopes.join(' '))}`;
+
+    browser.identity.launchWebAuthFlow({
+      interactive: true,
+      url: authURL,
+    }, (returnUrl) => {
+      const accessToken = returnUrl.split('access_token=')[1].split('&')[0];
+      console.log(accessToken);
+      setGoogleToken(accessToken);
+    });
   }
 
 

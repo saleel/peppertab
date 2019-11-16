@@ -12,7 +12,8 @@
     "webRequest",
     "webRequestBlocking",
     "*://peppertab.com/*",
-    "topSites"
+    "topSites",
+    "identity"
   ],
   "background": {
     "scripts": [

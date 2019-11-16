@@ -50,7 +50,6 @@ function Background(props) {
 
 
   React.useEffect(() => {
-    console.log('sc t');
     // Scroll to top on load
     window.scrollTo(0, 0);
   }, []);

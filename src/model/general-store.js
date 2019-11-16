@@ -228,72 +228,51 @@ class GeneralStore extends Store {
   /**
    * @return {Promise<Array>} events
    */
-  async getEvents() {
-    const fetchEvents = () => new Promise((resolve, reject) => {
-      const { gapi } = window;
-      if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
-        gapi.client.calendar.events.list({
-          calendarId: 'primary',
-          timeMin: (new Date()).toISOString(),
-          showDeleted: false,
-          singleEvents: true,
-          maxResults: 4,
-          orderBy: 'startTime',
-        }).then(async (response) => {
-          const { items } = response.result;
+  async getEvents(token) {
+    const query = {
+      calendarId: 'primary',
+      timeMin: (new Date()).toISOString(),
+      showDeleted: false,
+      singleEvents: true,
+      maxResults: 4,
+      orderBy: 'startTime',
+      key: 'AIzaSyBOXuQDGtvOto1RIJpR7ab6aJ4Jk7s7PpM',
+    };
 
-          const events = items.map((item) => {
-            const {
-              summary, htmlLink, start, end, location,
-            } = item;
+    const queryParam = Object.keys(query)
+      .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`)
+      .join('&');
 
-            return {
-              title: summary,
-              link: htmlLink,
-              ...start.dateTime && { startDateTime: new Date(start.dateTime) },
-              ...start.date && { startDate: new Date(start.date) },
-              ...end.dateTime && { endDateTime: new Date(end.dateTime) },
-              ...end.date && { endDate: new Date(end.date) },
-              location,
-            };
-          });
+    const url = `https://content.googleapis.com/calendar/v3/calendars/primary/events?${queryParam}`;
 
-          resolve(events);
-        });
-      }
+    const response = await fetch(url, {
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
     });
 
+    const jsonResponse = await response.json();
 
-    return new Promise((resolve, reject) => {
-      const gapiScript = document.createElement('script');
-      gapiScript.src = 'https://apis.google.com/js/api.js?onload=onGapiLoad';
+    const events = jsonResponse.items.map((item) => {
+      const {
+        summary, htmlLink, start, end, location,
+      } = item;
 
-      window.onGapiLoad = function onGapiLoad() {
-        const { gapi } = window;
-        gapi.load('client:auth2', () => {
-          gapi.client.init({
-            apiKey: 'AIzaSyBOXuQDGtvOto1RIJpR7ab6aJ4Jk7s7PpM',
-            clientId: '492631281745-ukpj3nrml396bot57q9ikrhd9d46b8qm.apps.googleusercontent.com',
-            discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
-            scope: 'https://www.googleapis.com/auth/calendar.readonly',
-          }).then(async () => {
-            if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
-              resolve();
-            }
-
-            // Listen for sign-in state changes.
-            gapi.auth2.getAuthInstance().isSignedIn.listen(fetchEvents);
-
-            // Handle the initial sign-in state.
-            const events = await fetchEvents();
-            resolve(events);
-          }, (error) => {
-            console.error(JSON.stringify(error, null, 2));
-          });
-        });
+      return {
+        title: summary,
+        link: htmlLink,
+        ...start.dateTime && { startDateTime: new Date(start.dateTime) },
+        ...start.date && { startDate: new Date(start.date) },
+        ...end.dateTime && { endDateTime: new Date(end.dateTime) },
+        ...end.date && { endDate: new Date(end.date) },
+        location,
       };
-      document.body.appendChild(gapiScript);
     });
+
+    return events;
   }
 }
 
