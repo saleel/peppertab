@@ -40,6 +40,7 @@
     z-index: 3;
     bottom: 5px;
     right: 5px;
+    // right: calc(((1 - var(--bg-opacity)) * -100 * 5px) + 5px);
     color: var(--inverted-text-color);
     padding: 5px 5px;
     border-radius: 3px;
@@ -52,7 +53,7 @@
 
     .background__info-details {
       padding: 0 5px;
-      display: none;
+      // display: none;
       flex-grow: 1
     }
 
@@ -87,5 +88,14 @@
       rgba(0, 0, 0, calc(0.25 * var(--bg-opacity))) 50%,
       rgba(0, 0, 0, 0) 100%
     );
+  }
+
+  &__theme-switcher {
+    position: fixed;
+    z-index: 3;
+    bottom: 10px;
+    left: 10px;
+    // left: calc(((1 - var(--bg-opacity)) * -250px) + 10px);
+    display: flex;
   }
 }

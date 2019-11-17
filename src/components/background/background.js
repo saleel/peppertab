@@ -3,6 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CameraIcon from '@iconscout/react-unicons/icons/uil-camera';
+import FocusIcon from '@iconscout/react-unicons/icons/uil-focus';
 import StoreContext from '../../contexts/store-context';
 import { Themes } from '../../constants';
 import ThemeContext from '../../contexts/theme-context';
@@ -14,7 +15,7 @@ function Background(props) {
   const { children } = props;
 
   const { generalStore } = React.useContext(StoreContext);
-  const { theme } = React.useContext(ThemeContext);
+  const { theme, changeTheme } = React.useContext(ThemeContext);
 
   /** @type React.MutableRefObject<HTMLDivElement> */
   const backgroundRef = React.useRef(null);
@@ -24,7 +25,7 @@ function Background(props) {
     { cacheKey: 'BACKGROUND', updateWithRevalidated: false },
   );
 
-  const showBackground = theme === Themes.inspire && !!background;
+  const showImage = theme === Themes.inspire && !!background;
 
 
   function onScroll() {
@@ -38,27 +39,27 @@ function Background(props) {
 
 
   React.useEffect(() => {
-    if (showBackground) {
+    // if (showImage) {
       window.removeEventListener('scroll', onScroll);
       window.addEventListener('scroll', onScroll);
-    }
+    // }
 
     onScroll();
 
     return () => { window.removeEventListener('scroll', onScroll); };
-  }, [showBackground]);
+  }, [showImage]);
 
 
-  React.useEffect(() => {
-    // Scroll to top on load
-    window.scrollTo(0, 0);
-  }, []);
+  // React.useEffect(() => {
+  //   // Scroll to top on load
+  //   window.scrollTo(0, 1300);
+  // }, []);
 
 
   return (
     <div ref={backgroundRef} className="background">
 
-      {showBackground && (
+      {showImage && (
         <>
           <div
             className="background__image"
@@ -78,15 +79,28 @@ function Background(props) {
                 </div>
               </div>
             </div>
-            <div className="background__info-icon">
+            {/* <div className="background__info-icon">
               <CameraIcon size="18" />
-            </div>
+            </div> */}
           </a>
         </>
       )}
 
       <div className="background__content">
         {children}
+      </div>
+
+      <div className="background__theme-switcher">
+        {(theme === Themes.inspire) && (
+          <button type="button" onClick={() => changeTheme(Themes.focus)}>
+            <FocusIcon color="#fff" size="20" />
+          </button>
+        )}
+        {(theme === Themes.focus) && (
+          <button type="button" onClick={() => changeTheme(Themes.inspire)}>
+            <CameraIcon size="20" />
+          </button>
+        )}
       </div>
 
     </div>

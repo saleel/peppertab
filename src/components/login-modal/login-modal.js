@@ -28,7 +28,8 @@ function LoginModal(props) {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    zIndex: 100,
   };
 
 

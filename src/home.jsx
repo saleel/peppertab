@@ -8,6 +8,7 @@ import Background from './components/background';
 import Time from './components/time';
 import Weather from './components/weather';
 import Links from './components/links';
+import SyncInfo from './components/sync-info';
 import './home.scss';
 
 
@@ -50,6 +51,12 @@ function Home() {
           <div className="home__notes flex mb-10">
             <div className="w-full px-5">
               <Notes />
+            </div>
+          </div>
+
+          <div className="home__sync flex mb-10">
+            <div className="w-full px-5">
+              <SyncInfo />
             </div>
           </div>
 

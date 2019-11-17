@@ -1,6 +1,5 @@
 // @ts-check
 
-import set from 'lodash/set';
 import {
   OPEN_WEATHER_API_KEY, LocalStorage, Themes, API_URL,
 } from '../constants';
@@ -55,39 +54,6 @@ class GeneralStore extends Store {
 
 
   /**
-   * @param {string} key
-   * @param {any} value
-   */
-  async setSetting(key, value) {
-    const settings = await this.db.get(DbKeys.settings);
-    this.updateItem({ _id: DbKeys.settings, ...settings, [key]: value });
-  }
-
-
-  /**
-   * @return Promise<{}> Settings
-   */
-  async getSetting(key) {
-    const settings = await this.db.get(DbKeys.settings);
-    return settings[key];
-  }
-
-  // eslint-disable-next-line consistent-return
-  async getSettings() {
-    try {
-      const settings = await this.db.get(DbKeys.settings);
-      return settings;
-    } catch (error) {
-      if (error.status === 404) {
-        console.log('crate');
-        await this.db.post({ _id: DbKeys.settings });
-        return {};
-      }
-    }
-  }
-
-
-  /**
    * @param {Date} time
    */
   setLastSyncTime(time) {
@@ -101,7 +67,7 @@ class GeneralStore extends Store {
   getLastSyncTime() {
     const time = window.localStorage.getItem(LocalStorage.lastSyncTime);
 
-    if (Number.isNaN(Number(time))) {
+    if (!time || Number.isNaN(Number(time))) {
       return null;
     }
 
@@ -145,7 +111,6 @@ class GeneralStore extends Store {
    */
   async setTheme(theme) {
     window.localStorage.setItem(LocalStorage.theme, theme);
-    this.emitter.emit('theme-updated');
   }
 
 
@@ -249,7 +214,6 @@ class GeneralStore extends Store {
         url: authURL,
       }, (returnUrl) => {
         const accessToken = returnUrl.split('access_token=')[1].split('&')[0];
-        console.log({ accessToken });
         resolve(accessToken);
       });
     });

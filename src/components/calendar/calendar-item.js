@@ -54,7 +54,7 @@ CalendarItem.propTypes = {
     link: PropTypes.string.isRequired,
     startDateTime: PropTypes.string.isRequired,
     endDateTime: PropTypes.string.isRequired,
-    location: PropTypes.string.isRequired,
+    location: PropTypes.string,
   }).isRequired,
 };
 

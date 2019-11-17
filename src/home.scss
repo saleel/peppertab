@@ -17,7 +17,7 @@
 		align-items: center;
 		justify-content: center;
 
-    transition: height 100ms linear;
+    transition: margin 250ms linear;
   }
 
   &__time {
@@ -30,7 +30,7 @@
 
   &.inspire {
     .home__welcome {
-			height: calc(100vh - (100px + 2rem));
+			margin: calc(50vh - (100px + 2rem)) 0;
     }
 
     .home__welcome, .home__time {
@@ -40,8 +40,8 @@
 
   &.focus {
     .home__welcome {
-      height: 10rem;
-      margin: 5rem 0;
+      margin: 10rem 0;
+      // margin: 5rem 0;
     }
   }
 }

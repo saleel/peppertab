@@ -1,6 +1,8 @@
 (() => {
   const browser = window.browser || window.chrome;
 
+  console.log({ browser });
+
   if (!browser) {
     return;
   }

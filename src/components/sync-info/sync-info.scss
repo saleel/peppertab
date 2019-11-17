@@ -1,0 +1,33 @@
+.sync-info {
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 1rem;
+  background-color: var(--card-item-color);
+
+  &__message {
+    margin: 0 0.5rem;
+  }
+
+  &__syncing {
+    animation-name: spin;
+    animation-duration: 1000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+
+  &__btn-login {
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    line-height: 1rem;
+    background-color: var(--card-item-color-active);
+    border-radius: 3px;
+    opacity: 1;
+    margin: 0 0.5rem;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}

@@ -12,13 +12,15 @@ function Card(props) {
 
   return (
     <div className={`card ${className}`}>
-      <div className="card__title">
-        {title}
+      {title && (
+        <div className="card__title">
+          {title}
 
-        <div className="card__actions">
-          {actions}
+          <div className="card__actions">
+            {actions}
+          </div>
         </div>
-      </div>
+      )}
       <div className={`card__content ${contentClassName}`}>
         {children}
       </div>
@@ -30,12 +32,13 @@ function Card(props) {
 Card.propTypes = {
   children: PropTypes.node.isRequired,
   actions: PropTypes.arrayOf(PropTypes.node),
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   className: PropTypes.string,
   contentClassName: PropTypes.string,
 };
 
 Card.defaultProps = {
+  title: '',
   className: '',
   contentClassName: '',
   actions: [],

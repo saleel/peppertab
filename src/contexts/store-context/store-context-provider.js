@@ -16,9 +16,9 @@ function StoreContextProvider({ children }) {
   const noteStore = new NoteStore();
   const generalStore = new GeneralStore();
 
-  const { userSession } = React.useContext(AuthContext);
+  const { userSession, isLoggedIn } = React.useContext(AuthContext);
 
-  const isUserLoggedIn = userSession.isUserSignedIn();
+  const isUserLoggedIn = isLoggedIn();
 
   const [isSyncing, setIsSyncing] = React.useState(false);
   const [lastSyncTime, setLastSyncTime] = React.useState(generalStore.getLastSyncTime());
@@ -26,7 +26,7 @@ function StoreContextProvider({ children }) {
 
 
   async function syncDb(store) {
-    if (!isUserLoggedIn || isSyncing) return;
+    if (isSyncing) return;
 
     if (!window.navigator.onLine) return;
 
@@ -79,10 +79,12 @@ function StoreContextProvider({ children }) {
       return;
     }
 
-    syncAll();
+    if (!isUserLoggedIn) {
+      return;
+    }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    syncAll();
+  }, [isUserLoggedIn, lastSyncTime, syncAll]);
 
 
   const value = {
