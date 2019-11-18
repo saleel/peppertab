@@ -22,7 +22,7 @@ function Background(props) {
 
   const [background] = usePromise(
     () => generalStore.getBackground(),
-    { cacheKey: 'BACKGROUND', updateWithRevalidated: false },
+    { cacheKey: 'BACKGROUND', updateWithRevalidated: false, cachePeriodInSecs: 60 * 10 },
   );
 
   const showImage = theme === Themes.inspire && !!background;
@@ -39,10 +39,10 @@ function Background(props) {
 
 
   React.useEffect(() => {
-    // if (showImage) {
+    if (showImage) {
       window.removeEventListener('scroll', onScroll);
       window.addEventListener('scroll', onScroll);
-    // }
+    }
 
     onScroll();
 
