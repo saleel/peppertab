@@ -49,21 +49,28 @@
     align-items: center;
     line-height: 1rem;
     // background-color: rgba(0, 0, 0, 0.25);
-    height: 32px;
+    min-height: 32px;
 
     .background__info-details {
       padding: 0 5px;
       // display: none;
-      flex-grow: 1
+      flex-grow: 1;
+      max-width: 150px;
+      text-align: right;
+      white-space: nowrap;
     }
 
     .background__info-location {
       font-size: 0.8rem;
       text-transform: capitalize;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .background__info-user {
       text-transform: capitalize;
+      overflow: hidden;
+      text-overflow: ellipsis;
       font-size: 0.7rem;
     }
 

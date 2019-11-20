@@ -25,11 +25,12 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "dev": "rm -rf build && npm start -- --writeToDisk",
+    "dev": "npm run update-webpack && rm -rf build && npm start -- --writeToDisk",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "update-webpack": "cp ./webpack.config.js ./webpackDevServer.config.js node_modules/react-scripts/config"
   },
   "eslintConfig": {
     "extends": "react-app"

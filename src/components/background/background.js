@@ -69,14 +69,12 @@ function Background(props) {
           <a className="background__info" target="_blank" rel="noopener noreferrer" href={background.link}>
             <div className="background__info-details">
               <div className="background__info-location">
-                <div>{background.location}</div>
+                {background.location}
               </div>
               <div className="background__info-user">
-                <div>
-                  Photo by
-                  {' '}
-                  {background.user}
-                </div>
+                Photo by
+                {' '}
+                {background.user}
               </div>
             </div>
             {/* <div className="background__info-icon">
