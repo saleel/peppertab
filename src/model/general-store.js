@@ -144,6 +144,7 @@ class GeneralStore extends Store {
    * @return {Promise<WeatherInfo>} Weather Data for give lat long
    */
   async getWeatherInfo({ latitude, longitude }) {
+    console.log({ latitude, longitude });
     if (!latitude || !longitude) return null;
 
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${OPEN_WEATHER_API_KEY}`;

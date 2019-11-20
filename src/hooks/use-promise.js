@@ -116,7 +116,6 @@ function usePromise(promise, options = {}) {
       } catch (e) {
         // eslint-disable-next-line no-console
         console.error(e);
-        // DO NOTHING
       }
     }
 
@@ -130,7 +129,7 @@ function usePromise(promise, options = {}) {
           setResult(data);
         }
 
-        if (cacheKey) {
+        if (cacheKey && (data !== null || data !== undefined)) {
           cache.set(cacheKey, data);
         }
       }

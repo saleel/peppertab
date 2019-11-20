@@ -8,7 +8,6 @@
 // @remove-on-eject-end
 
 
-
 const fs = require('fs');
 const isWsl = require('is-wsl');
 const path = require('path');
@@ -29,8 +28,6 @@ const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeM
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 const CopyPlugin = require('copy-webpack-plugin');
-const modules = require('./modules');
-const getClientEnvironment = require('./env');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
@@ -39,6 +36,8 @@ const eslint = require('eslint');
 const getCacheIdentifier = require('react-dev-utils/getCacheIdentifier');
 // @remove-on-eject-end
 const postcssNormalize = require('postcss-normalize');
+const getClientEnvironment = require('./env');
+const modules = require('./modules');
 const paths = require('./paths');
 
 const appPackageJson = require(paths.appPackageJson);
@@ -71,7 +70,7 @@ module.exports = function (webpackEnv) {
 
   // Variable used for enabling profiling in Production
   // passed into alias object. Uses a flag if passed into the build command
-  const isEnvProductionProfile =    isEnvProduction && process.argv.includes('--profile');
+  const isEnvProductionProfile = isEnvProduction && process.argv.includes('--profile');
 
   // Webpack uses `publicPath` to determine where the app is being served from.
   // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -201,8 +200,8 @@ module.exports = function (webpackEnv) {
       // Point sourcemap entries to original disk location (format as URL on Windows)
       devtoolModuleFilenameTemplate: isEnvProduction
         ? (info) => path
-            .relative(paths.appSrc, info.absoluteResourcePath)
-            .replace(/\\/g, '/')
+          .relative(paths.appSrc, info.absoluteResourcePath)
+          .replace(/\\/g, '/')
         : isEnvDevelopment
           && ((info) => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')),
       // Prevents conflicts when multiple Webpack runtimes (from different apps)
@@ -368,18 +367,17 @@ module.exports = function (webpackEnv) {
                     let eslintConfig;
                     try {
                       eslintConfig = eslintCli.getConfigForFile(
-                        paths.appIndexJs
+                        paths.appIndexJs,
                       );
                     } catch (e) {
                       console.error(e);
                       process.exit(1);
                     }
                     return eslintConfig;
-                  } 
-                    return {
-                      extends: [require.resolve('eslint-config-react-app')],
-                    };
-                  
+                  }
+                  return {
+                    extends: [require.resolve('eslint-config-react-app')],
+                  };
                 })(),
                 useEslintrc: false,
                 // @remove-on-eject-end
@@ -587,25 +585,25 @@ module.exports = function (webpackEnv) {
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(
         {
-          
+
           inject: true,
-            template: paths.appHtml,
+          template: paths.appHtml,
           ...(isEnvProduction
             ? {
-                minify: {
-                  removeComments: true,
-                  collapseWhitespace: true,
-                  removeRedundantAttributes: true,
-                  useShortDoctype: true,
-                  removeEmptyAttributes: true,
-                  removeStyleLinkTypeAttributes: true,
-                  keepClosingSlash: true,
-                  minifyJS: true,
-                  minifyCSS: true,
-                  minifyURLs: true,
-                },
-              }
-            : undefined)
+              minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeRedundantAttributes: true,
+                useShortDoctype: true,
+                removeEmptyAttributes: true,
+                removeStyleLinkTypeAttributes: true,
+                keepClosingSlash: true,
+                minifyJS: true,
+                minifyCSS: true,
+                minifyURLs: true,
+              },
+            }
+            : undefined),
         },
       ),
       // Inlines the webpack runtime script. This script is too small to warrant
@@ -686,7 +684,7 @@ module.exports = function (webpackEnv) {
           clientsClaim: true,
           exclude: [/\.map$/, /asset-manifest\.json$/],
           importWorkboxFrom: 'cdn',
-          navigateFallback: `${publicUrl  }/index.html`,
+          navigateFallback: `${publicUrl}/index.html`,
           navigateFallbackBlacklist: [
             // Exclude URLs starting with /_, as they're likely an API call
             new RegExp('^/_'),
