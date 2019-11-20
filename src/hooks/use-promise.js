@@ -10,6 +10,7 @@ const cacheDb = new PouchDB('cache');
  * @typedef UsePromiseOptions
  * @property [defaultValue] {any}
  * @property [dependencies = []] {[*]}
+ * @property [conditions = []] {[*]}
  * @property [cacheKey] {string}
  * @property [updateWithRevalidated = false] {boolean}
  * @property [cachePeriodInSecs = 10] {number}
@@ -18,13 +19,14 @@ const cacheDb = new PouchDB('cache');
 
 /**
  * @template T
- * @param {() => Promise<T>} promise
+ * @param {(() => Promise<T>|() => T)} promise
  * @param {UsePromiseOptions} [options]
  * @returns {[T, { isFetching: boolean, reFetch: Function, error: Error }]}
  */
-function usePromise(promise, options) {
+function usePromise(promise, options = {}) {
   const {
     defaultValue, dependencies = [], cacheKey, updateWithRevalidated = true, cachePeriodInSecs = 10,
+    conditions = [],
   } = options;
 
   const [result, setResult] = React.useState(defaultValue);
@@ -104,12 +106,21 @@ function usePromise(promise, options) {
   }
 
   React.useEffect(() => {
+    const allConditionsValid = conditions.every((condition) => {
+      if (typeof condition === 'function') return !!condition();
+      return !!condition;
+    });
+
+    if (!allConditionsValid) return;
+
     fetch();
+
+    // eslint-disable-next-line consistent-return
     return () => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
       didCancel = true;
     };
-  }, dependencies);
+  }, [...dependencies, ...conditions]);
 
   return [result, { isFetching, reFetch: fetch, error }];
 }

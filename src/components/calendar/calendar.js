@@ -9,7 +9,7 @@ import StoreContext from '../../contexts/store-context';
 import usePromise from '../../hooks/use-promise';
 import Card from '../card';
 import CalendarItem from './calendar-item';
-import useConfig from '../../hooks/use-config';
+// import useConfig from '../../hooks/use-config';
 import './calendar.scss';
 
 
@@ -19,18 +19,25 @@ import './calendar.scss';
 function Calendar() {
   const { generalStore } = React.useContext(StoreContext);
 
-  const [isCalendarEnabled, setIsCalendarEnabled] = useConfig('calendar.enabled');
-
   const signInButtonRef = React.useRef(null);
 
+  const [isCalendarEnabled, setIsCalendarEnabled] = React.useState(generalStore.isCalendarEnabled());
+
+
   const [events] = usePromise(
-    () => (isCalendarEnabled ? generalStore.getEvents() : undefined),
-    { cacheKey: 'CALENDAR', dependencies: [isCalendarEnabled] },
+    () => generalStore.getEvents(),
+    { cacheKey: 'CALENDAR', dependencies: [isCalendarEnabled], conditions: [isCalendarEnabled] },
   );
 
 
-  function handleAuthClick() {
-    setIsCalendarEnabled(true);
+  async function handleAuthClick() {
+    try {
+      await generalStore.getEvents();
+      setIsCalendarEnabled(true);
+    } catch (e) {
+      // eslint-disable-next-line no-alert
+      window.alert('Some error occurred while connecting with your Google account. Please try again later');
+    }
   }
 
 

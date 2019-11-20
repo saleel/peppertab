@@ -58,6 +58,8 @@
       max-width: 150px;
       text-align: right;
       white-space: nowrap;
+
+      transition: max-width linear 0.1s;
     }
 
     .background__info-location {
@@ -79,7 +81,11 @@
       background-color: rgba(0, 0, 0, 0.75);
       
       .background__info-details {
-        display: block;
+        max-width: 300px;
+      }
+
+      .background__info-location .background__info-user {
+        overflow: auto;
       }
 
       & + .background__content {

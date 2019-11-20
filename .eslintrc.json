@@ -21,6 +21,7 @@
     "react/jsx-filename-extension": [0],
     "class-methods-use-this": [0],
     "no-restricted-syntax": [0],
+    "max-len": ["error", { "code": 150 }],
     "no-underscore-dangle": [1, { "allow": ["_id", "_rev"] }],
     "padding-line-between-statements": [
       "error",

@@ -193,6 +193,15 @@ class GeneralStore extends Store {
   }
 
 
+  isCalendarEnabled() {
+    return localStorage.getItem('calendar.enabled') === 'true';
+  }
+
+  /** @param {Boolean} value */
+  setCalendarEnabled(value) {
+    localStorage.setItem('calendar.enabled', value.toString());
+  }
+
   /**
    * @return {Promise<Array>} events
    */
@@ -210,9 +219,14 @@ class GeneralStore extends Store {
       authURL += `&scope=${encodeURIComponent(scopes.join(' '))}`;
 
       browser.identity.launchWebAuthFlow({
-        interactive: true,
+        interactive: !this.isCalendarEnabled(), // Interactive for the first time
         url: authURL,
       }, (returnUrl) => {
+        if (!returnUrl) {
+          this.setCalendarEnabled(false);
+          return;
+        }
+
         const accessToken = returnUrl.split('access_token=')[1].split('&')[0];
         resolve(accessToken);
       });
@@ -260,6 +274,8 @@ class GeneralStore extends Store {
         location,
       };
     });
+
+    this.setCalendarEnabled(true);
 
     return events;
   }
