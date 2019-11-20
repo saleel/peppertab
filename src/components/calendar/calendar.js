@@ -26,7 +26,7 @@ function Calendar() {
 
   const [events] = usePromise(
     () => generalStore.getEvents(),
-    { cacheKey: 'CALENDAR', conditions: [isCalendarEnabled] },
+    { cacheKey: 'CALENDAR', cachePeriodInSecs: (60 * 2), conditions: [isCalendarEnabled] },
   );
 
 
