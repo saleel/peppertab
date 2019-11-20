@@ -12,10 +12,9 @@
     "webRequest",
     "webRequestBlocking",
     "*://peppertab.com/*",
-    "*://content.googleapis.com/*",
-    "topSites",
-    "identity"
+    "topSites"
   ],
+  "optional_permissions": ["identity", "*://content.googleapis.com/*"],
   "background": {
     "scripts": [
       "background.js"

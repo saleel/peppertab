@@ -211,6 +211,30 @@ class GeneralStore extends Store {
    * @return {Promise<Array>} events
    */
   async getEvents() {
+    // Get permission
+    await new Promise((resolve) => {
+      browser.permissions.contains({
+        permissions: ['identity'],
+        origins: ['*://content.googleapis.com/*'],
+      }, (result) => {
+        if (result) {
+          resolve();
+        } else {
+          browser.permissions.request({
+            permissions: ['identity'],
+            origins: ['*://content.googleapis.com/*'],
+          }, (granted) => {
+            if (granted) {
+              resolve();
+            } else {
+              // eslint-disable-next-line no-console
+              console.error('Identity permission is required to authenticate with Google and fetch your calendar data');
+            }
+          });
+        }
+      });
+    });
+
     const token = await new Promise((resolve) => {
       let redirectURL = browser.identity.getRedirectURL();
       redirectURL = redirectURL.endsWith('/') ? redirectURL.slice(0, -1) : redirectURL;

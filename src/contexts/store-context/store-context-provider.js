@@ -46,6 +46,10 @@ function StoreContextProvider({ children }) {
 
   const syncAll = debounce(async () => {
     try {
+      if (!isUserLoggedIn) {
+        return;
+      }
+
       setIsSyncing(true);
 
       await Promise.all([
@@ -79,9 +83,6 @@ function StoreContextProvider({ children }) {
       return;
     }
 
-    if (!isUserLoggedIn) {
-      return;
-    }
 
     syncAll();
   }, [isUserLoggedIn, lastSyncTime, syncAll]);
