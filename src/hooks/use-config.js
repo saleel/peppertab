@@ -16,6 +16,7 @@ function useConfig(key, initialValue) {
       setStoredValue(value);
       window.localStorage.setItem(key, value);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(error);
     }
   };

@@ -62,7 +62,7 @@ function Home() {
           </div>
 
           <div className="home__attributions mt-20 mb-10">
-            <div className="px-3">PepperTab v{packageJson.version}</div>
+            <div className="px-3">{`PepperTab v${packageJson.version}`}</div>
             <a target="_blank" rel="noopener noreferrer" href="https://clearbit.com">
               Logos provided by Clearbit
             </a>
