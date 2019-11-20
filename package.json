@@ -25,7 +25,7 @@
   "scripts": {
     "start": "react-scripts start",
     "dev": "npm run update-webpack && rm -rf build && npm start -- --writeToDisk",
-    "build": "npm install && rm -rf build && react-scripts build",
+    "build": "npm install -D react-scripts && rm -rf build && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint src",
@@ -55,6 +55,6 @@
     "eslint-plugin-react": "^7.16.0",
     "eslint-plugin-react-hooks": "^1.7.0",
     "node-sass": "^4.12.0",
-    "react-scripts": "3.2.0"
+    "react-scripts": "^3.2.0"
   }
 }

@@ -37,7 +37,7 @@ function Notes() {
 
   async function updateActiveNoteContent() {
     // Create one if its a default note
-    if (!activeNote.id) {
+    if (!activeNote.id && activeNote.content) {
       await noteStore.createNote(activeNote);
       await reFetch();
     }
