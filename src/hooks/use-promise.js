@@ -3,7 +3,70 @@ import PouchDB from 'pouchdb';
 import { differenceInSeconds } from 'date-fns';
 
 
-const cacheDb = new PouchDB('cache');
+const defaultBackgroundCache = {
+  id: 'oMpAz-DN-9I',
+  imageUrl: '/assets/bg.jpg',
+  color: '#6D4A43',
+  height: 3168,
+  width: 4752,
+  user: 'Greg Rakozy',
+  userUrl: 'https://unsplash.com/@grakozy?utm_source=PepperTab&utm_medium=referral',
+  location: 'Spiral Jetty, United States',
+  link: 'https://unsplash.com/@grakozy?utm_source=PepperTab&utm_medium=referral',
+  source: 'Unsplash',
+  sourceUrl: 'https://unsplash.com/?utm_source=PepperTab&utm_medium=referral',
+};
+
+class Cache {
+  constructor() {
+    this.cacheDb = new PouchDB('cache');
+  }
+
+  async get(key) {
+    console.warn('get', key);
+    let cachedData;
+
+    try {
+      cachedData = await this.cacheDb.get(key);
+    } catch (error) {
+      console.warn(error);
+      if (error.status === 404 && key === 'BACKGROUND') {
+        console.log('return default');
+        cachedData = await this.cacheDb.post({
+          _id: key,
+          data: defaultBackgroundCache,
+          storedAt: new Date('2019-01-01'), // An old date
+        });
+
+        cachedData = await this.cacheDb.get(key);
+      }
+    }
+
+    return cachedData;
+  }
+
+  async set(key, data) {
+    const newDoc = {
+      _id: key,
+      data,
+      storedAt: new Date(),
+    };
+
+    try {
+      const originalDoc = await this.cacheDb.get(key);
+      // eslint-disable-next-line no-param-reassign
+      newDoc._rev = originalDoc._rev;
+      return this.cacheDb.put(newDoc);
+    } catch (err) {
+      if (err.status === 409) {
+        return this.updateItem(data);
+      } // new doc
+      return this.cacheDb.put(newDoc);
+    }
+  }
+}
+
+const cache = new Cache();
 
 
 /**
@@ -36,45 +99,28 @@ function usePromise(promise, options = {}) {
 
   let didCancel = false;
 
-  async function updateCache(newResult) {
-    const newDoc = {
-      _id: cacheKey,
-      result: newResult,
-      fetchedAt: new Date(),
-    };
-
-    try {
-      const originalDoc = await cacheDb.get(cacheKey);
-      // eslint-disable-next-line no-param-reassign
-      newDoc._rev = originalDoc._rev;
-      return cacheDb.put(newDoc);
-    } catch (err) {
-      if (err.status === 409) {
-        return this.updateItem(newResult);
-      } // new doc
-      return cacheDb.put(newDoc);
-    }
-  }
 
   async function fetch() {
     let hasCacheData = false;
 
     if (cacheKey) {
       try {
-        const cachedData = await cacheDb.get(cacheKey);
+        const cachedData = await cache.get(cacheKey);
+
+        console.log({ cacheKey, cachedData });
 
         if (cachedData) {
           hasCacheData = true;
-          setResult(cachedData.result);
+          setResult(cachedData.data);
 
-          if (cachedData.fetchedAt
-          && differenceInSeconds(new Date(), new Date(cachedData.fetchedAt)) < cachePeriodInSecs) {
+          if (cachedData.storedAt
+            && differenceInSeconds(new Date(), new Date(cachedData.storedAt)) < cachePeriodInSecs) {
             return;
           }
         }
       } catch (e) {
         // eslint-disable-next-line no-console
-        // console.error(e);
+        console.error(e);
         // DO NOTHING
       }
     }
@@ -90,7 +136,7 @@ function usePromise(promise, options = {}) {
         }
 
         if (cacheKey) {
-          updateCache(data);
+          cache.set(cacheKey, data);
         }
       }
     } catch (e) {

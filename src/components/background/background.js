@@ -63,24 +63,22 @@ function Background(props) {
         <>
           <div
             className="background__image"
-            style={{ backgroundImage: `url('${background.base64}')` }}
+            style={{ backgroundImage: `url('${background.base64 || background.imageUrl}')` }}
           />
 
-          <a className="background__info" target="_blank" rel="noopener noreferrer" href={background.link}>
+          <div className="background__info">
             <div className="background__info-details">
               <div className="background__info-location">
                 {background.location}
               </div>
               <div className="background__info-user">
-                Photo by
-                {' '}
-                {background.user}
+                <span>Photo by </span>
+                <a target="_blank" rel="noopener noreferrer" href={background.userUrl}>{background.user}</a>
+                <span> on </span>
+                <a target="_blank" rel="noopener noreferrer" href={background.sourceUrl}>{background.source}</a>
               </div>
             </div>
-            {/* <div className="background__info-icon">
-              <CameraIcon size="18" />
-            </div> */}
-          </a>
+          </div>
         </>
       )}
 

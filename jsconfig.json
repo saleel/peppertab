@@ -1,1 +1,6 @@
-{ "typeAcquisition": { "include": ["chrome", "browser"] } }
+{
+  "typeAcquisition": { "include": ["chrome", "browser"] },
+  "compilerOptions": {
+    "jsx": "react"
+  }
+}

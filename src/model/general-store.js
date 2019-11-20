@@ -126,9 +126,14 @@ class GeneralStore extends Store {
     });
 
     const jsonResponse = await response.json();
-    const base64 = await convertImageUrlToBase64(jsonResponse.imageUrl);
+    const { imageUrl } = jsonResponse;
 
-    const newBackground = { ...jsonResponse, base64 };
+    const requiredWidth = Math.max(1920, window.innerWidth * 1.25);
+    const imageUrlWithWidth = `${imageUrl}&w=${requiredWidth}`;
+
+    const base64 = await convertImageUrlToBase64(imageUrlWithWidth);
+
+    const newBackground = { ...jsonResponse, base64, imageUrl: imageUrlWithWidth };
 
     return newBackground;
   }

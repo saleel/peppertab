@@ -51,6 +51,10 @@
     // background-color: rgba(0, 0, 0, 0.25);
     min-height: 32px;
 
+    a {
+      text-decoration: underline;
+    }
+
     .background__info-details {
       padding: 0 5px;
       // display: none;
@@ -81,7 +85,7 @@
       background-color: rgba(0, 0, 0, 0.75);
       
       .background__info-details {
-        max-width: 300px;
+        max-width: 500px;
       }
 
       .background__info-location .background__info-user {
