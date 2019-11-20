@@ -23,15 +23,12 @@ class Cache {
   }
 
   async get(key) {
-    console.warn('get', key);
     let cachedData;
 
     try {
       cachedData = await this.cacheDb.get(key);
     } catch (error) {
-      console.warn(error);
       if (error.status === 404 && key === 'BACKGROUND') {
-        console.log('return default');
         cachedData = await this.cacheDb.post({
           _id: key,
           data: defaultBackgroundCache,
@@ -106,8 +103,6 @@ function usePromise(promise, options = {}) {
     if (cacheKey) {
       try {
         const cachedData = await cache.get(cacheKey);
-
-        console.log({ cacheKey, cachedData });
 
         if (cachedData) {
           hasCacheData = true;

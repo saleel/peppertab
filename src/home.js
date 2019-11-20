@@ -1,4 +1,5 @@
 import React from 'react';
+import packageJson from '../package.json';
 import ThemeContext from './contexts/theme-context/theme-context';
 import Notes from './components/notes';
 import TodoList from './components/todo-list';
@@ -58,6 +59,13 @@ function Home() {
             <div className="w-full px-5">
               <SyncInfo />
             </div>
+          </div>
+
+          <div className="home__attributions mt-20 mb-10">
+            <div className="px-3">PepperTab v{packageJson.version}</div>
+            <a target="_blank" rel="noopener noreferrer" href="https://clearbit.com">
+              Logos provided by Clearbit
+            </a>
           </div>
 
         </div>
