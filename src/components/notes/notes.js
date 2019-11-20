@@ -4,10 +4,10 @@ import React from 'react';
 import TrashIcon from '@iconscout/react-unicons/icons/uil-trash';
 import PlusIcon from '@iconscout/react-unicons/icons/uil-plus';
 import StoreContext from '../../contexts/store-context';
-import useStore from '../../hooks/use-store';
 import Note from '../../model/note';
 import Card from '../card';
 import { getNoteTitle } from './notes.utils';
+import usePromise from '../../hooks/use-promise';
 import './notes.scss';
 
 const HtmlEditor = React.lazy(() => import('../html-editor/html-editor'));
@@ -15,7 +15,13 @@ const HtmlEditor = React.lazy(() => import('../html-editor/html-editor'));
 
 function Notes() {
   const { noteStore, lastSyncTime } = React.useContext(StoreContext);
-  const [notes, { reFetch }] = useStore(() => noteStore.findNotes());
+  const [notes, { reFetch, isFetching }] = usePromise(() => noteStore.findNotes(), { defaultValue: [] });
+
+  const defaultNote = new Note({ content: '', createdAt: new Date(), updatedAt: new Date() });
+  let notesToRender = notes;
+  if (!isFetching && !(notes && notes.length)) {
+    notesToRender = [defaultNote]; // Render a dummy new note
+  }
 
   const componentRenderedAt = React.useRef(new Date());
   const editorEl = React.useRef(null);
@@ -24,12 +30,18 @@ function Notes() {
 
 
   async function createNoteAndSetActive() {
-    const createdNote = await noteStore.createNote(new Note({ content: '' }));
+    const createdNote = await noteStore.createNote(defaultNote);
     setActiveNote(createdNote);
     return reFetch();
   }
 
   async function updateActiveNoteContent() {
+    // Create one if its a default note
+    if (!activeNote.id) {
+      await noteStore.createNote(activeNote);
+      await reFetch();
+    }
+
     await noteStore.updateNote(activeNote.id, activeNote);
   }
 
@@ -47,7 +59,8 @@ function Notes() {
     if (!notes) return;
 
     if (notes.length === 0) {
-      createNoteAndSetActive();
+      setActiveNote(defaultNote);
+      return;
     }
 
     // Set first note as active if none present
@@ -118,17 +131,18 @@ function Notes() {
     ),
   ];
 
+
   function renderNoteListItem(note) {
     const isActiveNote = activeNote && (activeNote.id === note.id);
     const title = isActiveNote ? getNoteTitle(activeNote) : getNoteTitle(note);
 
-    let className = 'notes__list-item fade-in';
+    let className = 'notes__list-item';
     if (isActiveNote) {
       className += ' notes__list-item--active';
     }
 
     return (
-      <button key={note.id} type="button" className={className} onClick={() => onListItemClick(note)}>
+      <button key={note.id || title} type="button" className={className} onClick={() => onListItemClick(note)}>
         <div className="notes__list-item-title">{title}</div>
         <div className="notes__list-item-date">{new Date(note.createdAt).toDateString()}</div>
       </button>
@@ -140,7 +154,7 @@ function Notes() {
     <Card title="Notes" className="notes fade-in" contentClassName="flex flex-row" actions={actions}>
 
       <div className="notes__list">
-        {(notes || []).map(renderNoteListItem)}
+        {notesToRender.map(renderNoteListItem)}
       </div>
 
       <div className="notes__editor">

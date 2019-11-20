@@ -81,7 +81,7 @@ const cache = new Cache();
  * @template T
  * @param {(() => Promise<T>|() => T)} promise
  * @param {UsePromiseOptions} [options]
- * @returns {[T, { isFetching: boolean, reFetch: Function, error: Error }]}
+ * @returns {[T, { isFetching: boolean, isRefetching: boolean, reFetch: Function, error: Error }]}
  */
 function usePromise(promise, options = {}) {
   const {
@@ -91,13 +91,13 @@ function usePromise(promise, options = {}) {
 
   const [result, setResult] = React.useState(defaultValue);
   const [isFetching, setIsFetching] = React.useState(true);
+  const [isRefetching, setIsRefetching] = React.useState(false);
   const [error, setError] = React.useState();
-
 
   let didCancel = false;
 
 
-  async function fetch() {
+  async function fetch(isRefetch = false) {
     let hasCacheData = false;
 
     if (cacheKey) {
@@ -119,7 +119,11 @@ function usePromise(promise, options = {}) {
       }
     }
 
-    setIsFetching(true);
+    if (isRefetch) {
+      setIsRefetching(true);
+    } else {
+      setIsFetching(true);
+    }
 
     try {
       const data = await promise();
@@ -141,9 +145,14 @@ function usePromise(promise, options = {}) {
       }
     }
     if (!didCancel) {
-      setIsFetching(false);
+      if (isRefetch) {
+        setIsRefetching(false);
+      } else {
+        setIsFetching(false);
+      }
     }
   }
+
 
   React.useEffect(() => {
     const allConditionsValid = conditions.every((condition) => {
@@ -162,7 +171,10 @@ function usePromise(promise, options = {}) {
     };
   }, [...dependencies, ...conditions]);
 
-  return [result, { isFetching, reFetch: fetch, error }];
+
+  return [result, {
+    isFetching, reFetch: () => fetch(true), isRefetching, error,
+  }];
 }
 
 
