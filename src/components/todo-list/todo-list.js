@@ -13,7 +13,7 @@ import Card from '../card';
 
 function TodoList() {
   const { todoStore, lastSyncTime } = React.useContext(StoreContext);
-  const [todos, { reFetch }] = useStore(() => todoStore.findTodos(), []);
+  const [todos, { isFetching, reFetch }] = useStore(() => todoStore.findTodos(), []);
 
   const componentRenderedAt = React.useRef(new Date());
   const [newTodo, setNewTodo] = React.useState({ title: '' });
@@ -97,7 +97,7 @@ function TodoList() {
             />
           ))}
 
-          {(filteredTodos.length === 0) && (
+          {!isFetching && (filteredTodos.length === 0) && (
             <div className="todo-list__empty">
               <div>Looks like everything is sorted out.</div>
               <div>You can add more tasks in the form below.</div>

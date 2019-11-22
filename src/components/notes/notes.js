@@ -44,6 +44,7 @@ function Notes() {
       setActiveNote(createdNote);
     } else {
       await noteStore.updateNote(activeNote.id, activeNote);
+      reFetch();
     }
   }
 
