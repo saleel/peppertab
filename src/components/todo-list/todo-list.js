@@ -13,7 +13,7 @@ import './todo-list.scss';
 
 function TodoList() {
   const { todoStore, lastSyncTime } = React.useContext(StoreContext);
-  const [todos, { isFetching, reFetch }] = usePromise(() => todoStore.findTodos(), []);
+  const [todos, { isFetching, reFetch }] = usePromise(() => todoStore.findTodos(), { defaultValue: [] });
 
   const componentRenderedAt = React.useRef(new Date());
   const [newTodo, setNewTodo] = React.useState({ title: '' });

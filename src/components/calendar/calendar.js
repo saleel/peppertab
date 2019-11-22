@@ -9,7 +9,7 @@ import StoreContext from '../../contexts/store-context';
 import usePromise from '../../hooks/use-promise';
 import Card from '../card';
 import Spinner from '../spinner';
-import CalendarItem from './calendar-item';
+import CalendarItem from '../calendar-item';
 import { CacheKeys } from '../../constants';
 import './calendar.scss';
 
@@ -28,7 +28,7 @@ function Calendar() {
     () => generalStore.getEvents(),
     {
       cacheKey: CacheKeys.calendar,
-      cachePeriodInSecs: (5 * 2),
+      cachePeriodInSecs: (60 * 2),
       conditions: [isCalendarEnabled || tryCalendar],
       dependencies: [isCalendarEnabled, tryCalendar],
     },
