@@ -83,9 +83,8 @@ function StoreContextProvider({ children }) {
       return;
     }
 
-
     syncAll();
-  }, [isUserLoggedIn, lastSyncTime, syncAll]);
+  }, [lastSyncTime, syncAll]);
 
 
   const value = {

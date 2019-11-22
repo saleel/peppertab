@@ -24,15 +24,11 @@ function AuthContextProvider({ children }) {
   React.useEffect(() => {
     if (!userSession.isUserSignedIn() && userSession.isSignInPending()) {
       userSession.handlePendingSignIn()
-        .then((userData) => {
-          if (!userData.username) {
-            throw new Error('This app requires a username.');
-          }
-
+        .then(() => {
           // Clear last sync time
           window.localStorage.removeItem(LocalStorage.lastSyncTime);
 
-          window.location.reload();
+          window.location.replace('/');
         });
     }
   }, [userSession]);
