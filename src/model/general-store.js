@@ -1,7 +1,7 @@
 // @ts-check
 
 import {
-  OPEN_WEATHER_API_KEY, LocalStorage, Themes, API_URL, Browser, isWebApp,
+  OPEN_WEATHER_API_KEY, LocalStorage, Themes, API_URL, Browser, isWebApp, GOOGLE_CLIENT_ID, GOOGLE_API_KEY,
 } from '../constants';
 import Store from './store';
 import { convertImageUrlToBase64 } from './utils';
@@ -212,8 +212,8 @@ class GeneralStore extends Store {
    * @return {Promise<Array>} events
    */
   async getEvents() {
-    const clientId = '492631281745-ukpj3nrml396bot57q9ikrhd9d46b8qm.apps.googleusercontent.com';
-    const apiKey = 'AIzaSyBOXuQDGtvOto1RIJpR7ab6aJ4Jk7s7PpM';
+    const clientId = GOOGLE_CLIENT_ID;
+    const apiKey = GOOGLE_API_KEY;
     const scope = 'https://www.googleapis.com/auth/calendar.readonly';
     let token;
 

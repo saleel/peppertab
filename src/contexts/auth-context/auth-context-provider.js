@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { UserSession } from 'blockstack';
 import AuthContext from './auth-context';
-import { appConfig, LocalStorage } from '../../constants';
+import { BlockstackAppConfig, LocalStorage } from '../../constants';
 
 
 function AuthContextProvider({ children }) {
-  const userSession = new UserSession({ appConfig });
+  const userSession = new UserSession({ appConfig: BlockstackAppConfig });
 
   function isLoggedIn() {
     return userSession.isUserSignedIn();

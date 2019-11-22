@@ -26,7 +26,7 @@
     "padding-line-between-statements": [
       "error",
       { "blankLine": "always", "prev": "*", "next": "export" },
-      { "blankLine": "never", "prev": "export", "next": "export" },
+      { "blankLine": "any", "prev": "export", "next": "export" },
       { "blankLine": "always", "prev": "import", "next": "*" },
       { "blankLine": "never", "prev": "import", "next": "import" }
     ]
