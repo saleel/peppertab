@@ -3,7 +3,7 @@ import { Tooltip } from 'react-tippy';
 import MoonIcon from '@iconscout/react-unicons/icons/uil-moon';
 import ImageIcon from '@iconscout/react-unicons/icons/uil-image';
 import SunIcon from '@iconscout/react-unicons/icons/uil-sun';
-import useStore from '../../hooks/use-store';
+import usePromise from '../../hooks/use-promise';
 import StoreContext from '../../contexts/store-context';
 import { Themes } from '../../constants';
 
@@ -12,7 +12,7 @@ function ThemeSwitcher() {
   const { generalStore } = React.useContext(StoreContext);
 
 
-  const [theme, { reFetch }] = useStore(() => generalStore.getTheme(), Themes.image);
+  const [theme, { reFetch }] = usePromise(() => generalStore.getTheme(), Themes.image);
 
 
   React.useEffect(() => {

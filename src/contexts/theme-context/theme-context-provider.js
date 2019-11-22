@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ThemeContext from './theme-context';
 import StoreContext from '../store-context';
-import useStore from '../../hooks/use-store';
+import usePromise from '../../hooks/use-promise';
 
 
 function ThemeContextProvider({ children }) {
   const { generalStore } = React.useContext(StoreContext);
 
-  const [theme, { reFetch }] = useStore(() => generalStore.getTheme());
+  const [theme, { reFetch }] = usePromise(() => generalStore.getTheme());
 
 
   React.useEffect(() => {

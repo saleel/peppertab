@@ -4,16 +4,16 @@ import React from 'react';
 import EyeIcon from '@iconscout/react-unicons/icons/uil-eye';
 import EyeSlashIcon from '@iconscout/react-unicons/icons/uil-eye-slash';
 import StoreContext from '../../contexts/store-context';
-import useStore from '../../hooks/use-store';
-import './todo-list.scss';
+import usePromise from '../../hooks/use-promise';
 import Todo from '../../model/todo';
 import TodoItem from '../todo-item';
 import Card from '../card';
+import './todo-list.scss';
 
 
 function TodoList() {
   const { todoStore, lastSyncTime } = React.useContext(StoreContext);
-  const [todos, { isFetching, reFetch }] = useStore(() => todoStore.findTodos(), []);
+  const [todos, { isFetching, reFetch }] = usePromise(() => todoStore.findTodos(), []);
 
   const componentRenderedAt = React.useRef(new Date());
   const [newTodo, setNewTodo] = React.useState({ title: '' });

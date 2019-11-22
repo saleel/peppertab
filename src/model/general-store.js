@@ -342,8 +342,6 @@ class GeneralStore extends Store {
 
     this.setCalendarEnabled(true);
 
-    console.log(events);
-
     return events;
   }
 }

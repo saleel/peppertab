@@ -1,7 +1,7 @@
 import React from 'react';
 import StoreContext from '../../contexts/store-context';
 import { getMessagePrefix } from './welcome.utils';
-import useStore from '../../hooks/use-store';
+import usePromise from '../../hooks/use-promise';
 import './welcome.scss';
 
 
@@ -11,7 +11,7 @@ function Welcome() {
 
   const inputRef = React.useRef();
 
-  const [profile, { isFetching, reFetch }] = useStore(() => generalStore.getProfile());
+  const [profile, { isFetching, reFetch }] = usePromise(() => generalStore.getProfile());
 
 
   React.useEffect(() => {
