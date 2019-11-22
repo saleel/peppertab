@@ -52,8 +52,8 @@ CalendarItem.propTypes = {
   event: PropTypes.shape({
     title: PropTypes.string.isRequired,
     link: PropTypes.string.isRequired,
-    startDateTime: PropTypes.string.isRequired,
-    endDateTime: PropTypes.string.isRequired,
+    startDateTime: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]).isRequired,
+    endDateTime: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]).isRequired,
     location: PropTypes.string,
   }).isRequired,
 };

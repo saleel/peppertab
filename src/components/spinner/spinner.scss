@@ -1,0 +1,30 @@
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &__ring {
+      display: inline-block;
+
+     &:after {
+      content: " ";
+      display: block;
+      width: var(--size);
+      height: var(--size);
+      margin: 6px;
+      border-radius: 50%;
+      border: 3px solid var(--text-color);
+      border-color: var(--text-color) transparent var(--text-color) transparent;
+      animation: rotate 0.75s linear infinite;
+    }
+  }
+
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}

@@ -23,6 +23,10 @@ html, body {
 	height: 100%;
 }
 
+html {
+  --danger-color: #c0392b;
+}
+
 
 html.inspire {
   --bg-color: rgba(230, 235, 231);

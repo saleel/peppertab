@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import CameraIcon from '@iconscout/react-unicons/icons/uil-camera';
 import FocusIcon from '@iconscout/react-unicons/icons/uil-focus';
 import StoreContext from '../../contexts/store-context';
-import { Themes } from '../../constants';
+import { Themes, CacheKeys } from '../../constants';
 import ThemeContext from '../../contexts/theme-context';
 import usePromise from '../../hooks/use-promise';
 import './background.scss';
@@ -22,7 +22,11 @@ function Background(props) {
 
   const [background] = usePromise(
     () => generalStore.getBackground(),
-    { cacheKey: 'BACKGROUND', updateWithRevalidated: false, cachePeriodInSecs: 60 * 10 },
+    {
+      cacheKey: CacheKeys.background,
+      updateWithRevalidated: false,
+      cachePeriodInSecs: 60 * 10,
+    },
   );
 
   const showImage = theme === Themes.inspire && !!background;

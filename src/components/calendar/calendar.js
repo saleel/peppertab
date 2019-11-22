@@ -8,36 +8,38 @@ import isTomorrow from 'date-fns/isTomorrow';
 import StoreContext from '../../contexts/store-context';
 import usePromise from '../../hooks/use-promise';
 import Card from '../card';
+import Spinner from '../spinner';
 import CalendarItem from './calendar-item';
-// import useConfig from '../../hooks/use-config';
+import { CacheKeys } from '../../constants';
 import './calendar.scss';
-
-
-// @ts-ignore
 
 
 function Calendar() {
   const { generalStore } = React.useContext(StoreContext);
 
+  const isCalendarEnabled = generalStore.isCalendarEnabled();
+
   const signInButtonRef = React.useRef(null);
 
-  const [isCalendarEnabled, setIsCalendarEnabled] = React.useState(generalStore.isCalendarEnabled());
+  const [tryCalendar, setTryCalendar] = React.useState();
 
 
-  const [events] = usePromise(
+  const [events, { isFetching, error }] = usePromise(
     () => generalStore.getEvents(),
-    { cacheKey: 'CALENDAR', cachePeriodInSecs: (60 * 2), conditions: [isCalendarEnabled] },
+    {
+      cacheKey: CacheKeys.calendar,
+      cachePeriodInSecs: (5 * 2),
+      conditions: [isCalendarEnabled || tryCalendar],
+      dependencies: [isCalendarEnabled, tryCalendar],
+    },
   );
 
 
+  const hasEvents = events && events.length;
+
+
   async function handleAuthClick() {
-    try {
-      await generalStore.getEvents();
-      setIsCalendarEnabled(true);
-    } catch (e) {
-      // eslint-disable-next-line no-alert
-      window.alert('Some error occurred while connecting with your Google account. Please try again later');
-    }
+    setTryCalendar(new Date()); // force update
   }
 
 
@@ -73,11 +75,32 @@ function Calendar() {
 
       <div className="calendar fade-in">
 
-        {!isCalendarEnabled && (
+        {isFetching && !hasEvents && (
+          <div className="">
+            <Spinner />
+          </div>
+        )}
+
+        {hasEvents && (
+          <div className="calendar__events">
+            {groupedEvents && Object.keys(groupedEvents).map(renderGroup)}
+          </div>
+        )}
+
+        {!isCalendarEnabled && !tryCalendar && (
           <div className="calendar__enroll">
-            <div>
-              Integrate with Google Calendar to see upcoming events
-            </div>
+            {error && (
+              <div className="calendar__enroll-error">
+                Unexpected error occurred while connecting with your Google account. Please try again later.
+              </div>
+            )}
+
+            {!error && (
+              <div>
+                Integrate with Google Calendar to see upcoming events
+              </div>
+            )}
+
             <button
               className="calendar__btn-sign-in"
               ref={signInButtonRef}
@@ -85,12 +108,6 @@ function Calendar() {
               onClick={handleAuthClick}
               aria-label="Sign in with Google"
             />
-          </div>
-        )}
-
-        {isCalendarEnabled && (
-          <div className="calendar__events">
-            {groupedEvents && Object.keys(groupedEvents).map(renderGroup)}
           </div>
         )}
 

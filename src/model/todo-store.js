@@ -8,17 +8,31 @@ class TodoStore extends Store {
     super('todos');
   }
 
+
+  /**
+   * @returns {Promise<Todo>} Get todo by id
+   */
+  async getTodo(id) {
+    const dbTodo = await this.db.get(id);
+    return new Todo(dbTodo);
+  }
+
+
   /**
    * @param {Todo} todo
    * @returns {Promise<Todo>} todo
    */
   async createTodo(todo) {
-    const response = await this.db.post(todo);
-    const created = this.db.get(response.id);
+    const response = await this.db.post({
+      ...todo,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
 
     this.emitter.emit('change', new Date());
-    return created;
+    return this.getTodo(response.id);
   }
+
 
   /**
    * @returns {Promise<Array<Todo>>} All todos
@@ -26,7 +40,7 @@ class TodoStore extends Store {
   async findTodos() {
     const { rows } = await this.db.allDocs({ include_docs: true });
     return rows
-      .map((row) => new Todo({ ...row.doc, id: row.id }))
+      .map((row) => new Todo(row.doc))
       .sort((a, b) => {
         // Sort completed items to end
         const completedDiff = Number(a.isCompleted) - Number(b.isCompleted);
@@ -37,6 +51,7 @@ class TodoStore extends Store {
         return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
       });
   }
+
 
   /**
    * @param {string} id
@@ -50,11 +65,12 @@ class TodoStore extends Store {
     await this.updateItem({
       ...existingTodo,
       isCompleted,
+      updatedAt: new Date(),
     });
-    const updated = this.db.get(id);
 
     this.emitter.emit('change', new Date());
-    return updated;
+
+    return this.getTodo(id);
   }
 }
 

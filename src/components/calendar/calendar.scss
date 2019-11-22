@@ -5,12 +5,14 @@
   display: flex;
   flex-direction: column;
   height: 400px;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--card-item-color);
 
   &__events {
     flex-grow: 1;
     padding: 1rem;
     overflow-y: scroll;
-    background-color: var(--card-item-color);
     scroll-behavior: smooth;
   }
 
@@ -29,7 +31,6 @@
     flex-grow: 1;
     justify-content: center;
     align-items: center;
-    background-color: var(--card-item-color);
     font-size: 1.1rem;
     padding: 1rem;
     text-align: center;
@@ -45,5 +46,9 @@
     &:hover {
       background-image: url('/assets/btn_google_signin_light_pressed_web@2x.png');
     }
+  }
+
+  &__enroll-error {
+    color: var(--danger-color);
   }
 }

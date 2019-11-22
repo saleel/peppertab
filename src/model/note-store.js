@@ -13,14 +13,15 @@ class NoteStore extends Store {
    * @returns {Promise<Note>} Note created
    */
   async createNote(note) {
-    const response = await this.db.post({
+    const created = await this.db.post({
       ...note,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
 
     this.emitter.emit('change', new Date());
-    return this.db.get(response.id);
+
+    return this.getNote(created.id);
   }
 
   /**
@@ -28,9 +29,18 @@ class NoteStore extends Store {
    */
   async findNotes() {
     const { rows } = await this.db.allDocs({ include_docs: true });
+
     return rows
-      .map((row) => new Note({ ...row.doc, id: row.id }))
+      .map((row) => new Note(row.doc))
       .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+  }
+
+  /**
+   * @returns {Promise<Note>} Get note by id
+   */
+  async getNote(id) {
+    const dbNote = await this.db.get(id);
+    return new Note(dbNote);
   }
 
   /**
@@ -54,7 +64,8 @@ class NoteStore extends Store {
     });
 
     this.emitter.emit('change', new Date());
-    return this.db.get(id);
+
+    return this.getNote(id);
   }
 
 

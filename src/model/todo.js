@@ -2,15 +2,16 @@
 
 class Todo {
   /**
-   * @param {{ id?: string, title: string; isCompleted?: boolean; createdAt?: Date; }} props
+   * @param {{ _id?: string, title: string; isCompleted?: boolean; createdAt?: Date; }} props
    */
   constructor(props) {
     const {
-      id, title, isCompleted = false, createdAt = new Date(),
+      _id, title, isCompleted = false, createdAt = new Date(),
     } = props;
 
-    if (id !== undefined) {
-      this.id = id;
+    if (_id !== undefined) {
+      this.id = _id;
+      this._id = _id;
     }
 
     this.title = title;

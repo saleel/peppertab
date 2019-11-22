@@ -17,6 +17,7 @@ function Notes() {
   const { noteStore, lastSyncTime } = React.useContext(StoreContext);
   const [notes, { reFetch, isFetching }] = usePromise(() => noteStore.findNotes(), { defaultValue: [] });
 
+
   const defaultNote = new Note({ content: '', createdAt: new Date(), updatedAt: new Date() });
   let notesToRender = notes;
   if (!isFetching && !(notes && notes.length)) {
@@ -38,11 +39,12 @@ function Notes() {
   async function updateActiveNoteContent() {
     // Create one if its a default note
     if (!activeNote.id && activeNote.content) {
-      await noteStore.createNote(activeNote);
+      const createdNote = await noteStore.createNote(activeNote);
       await reFetch();
+      setActiveNote(createdNote);
+    } else {
+      await noteStore.updateNote(activeNote.id, activeNote);
     }
-
-    await noteStore.updateNote(activeNote.id, activeNote);
   }
 
 

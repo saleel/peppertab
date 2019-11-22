@@ -1,10 +1,11 @@
 // @ts-check
 
 import {
-  OPEN_WEATHER_API_KEY, LocalStorage, Themes, API_URL,
+  OPEN_WEATHER_API_KEY, LocalStorage, Themes, API_URL, Browser, isWebApp,
 } from '../constants';
 import Store from './store';
 import { convertImageUrlToBase64 } from './utils';
+import { addIdentityPermission } from '../browser-permissions';
 
 
 /**
@@ -44,7 +45,6 @@ const DbKeys = {
 
 
 // @ts-ignore
-const browser = window.browser || window.chrome;
 
 
 class GeneralStore extends Store {
@@ -207,59 +207,95 @@ class GeneralStore extends Store {
     localStorage.setItem('calendar.enabled', value.toString());
   }
 
+
   /**
    * @return {Promise<Array>} events
    */
   async getEvents() {
-    // Get permission
-    await new Promise((resolve) => {
-      browser.permissions.contains({
-        permissions: ['identity'],
-        origins: ['*://content.googleapis.com/*'],
-      }, (result) => {
-        if (result) {
-          resolve();
-        } else {
-          browser.permissions.request({
-            permissions: ['identity'],
-            origins: ['*://content.googleapis.com/*'],
-          }, (granted) => {
-            if (granted) {
-              resolve();
-            } else {
-              // eslint-disable-next-line no-console
-              console.error('Identity permission is required to authenticate with Google and fetch your calendar data');
+    const clientId = '492631281745-ukpj3nrml396bot57q9ikrhd9d46b8qm.apps.googleusercontent.com';
+    const apiKey = 'AIzaSyBOXuQDGtvOto1RIJpR7ab6aJ4Jk7s7PpM';
+    const scope = 'https://www.googleapis.com/auth/calendar.readonly';
+    let token;
+
+    try {
+      token = await new Promise((resolve, reject) => {
+        if (isWebApp) {
+          let gapi;
+
+          const onSignIn = () => {
+            if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+              const accessToken = gapi.auth2.getAuthInstance()
+                .currentUser.get().getAuthResponse().access_token;
+              resolve(accessToken);
             }
-          });
+          };
+
+          const script = document.createElement('script');
+          script.src = 'https://apis.google.com/js/api.js';
+          script.async = true;
+          script.onload = () => {
+            // @ts-ignore
+            gapi = window.gapi;
+
+            gapi.load('client:auth2', () => {
+              gapi.client.init({
+                clientId,
+                scope,
+                apiKey,
+              }).then(() => {
+                if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
+                  gapi.auth2.getAuthInstance().signIn()
+                    .then(onSignIn)
+                    .catch(reject);
+                }
+
+                gapi.auth2.getAuthInstance().isSignedIn.listen(onSignIn);
+
+                onSignIn();
+              }, (error) => {
+                reject(error);
+              });
+            });
+          };
+
+          document.body.appendChild(script);
+        } else {
+        // Load browser permission
+          addIdentityPermission()
+            .then(() => {
+              let redirectURL = Browser.identity.getRedirectURL();
+              redirectURL = redirectURL.endsWith('/') ? redirectURL.slice(0, -1) : redirectURL;
+
+              let authURL = 'https://accounts.google.com/o/oauth2/auth';
+              authURL += `?client_id=${clientId}`;
+              authURL += '&response_type=token';
+              authURL += `&redirect_uri=${encodeURIComponent(redirectURL)}`;
+              authURL += `&scope=${encodeURIComponent(scope)}`;
+
+              Browser.identity.launchWebAuthFlow({
+                interactive: !this.isCalendarEnabled(), // Interactive for the first time
+                url: authURL,
+              }, (returnUrl) => {
+                const accessToken = returnUrl.split('access_token=')[1].split('&')[0];
+                resolve(accessToken);
+              });
+            })
+            .catch((error) => {
+              reject(error);
+            });
         }
       });
-    });
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+      this.setCalendarEnabled(false);
+      throw e;
+    }
 
-    const token = await new Promise((resolve) => {
-      let redirectURL = browser.identity.getRedirectURL();
-      redirectURL = redirectURL.endsWith('/') ? redirectURL.slice(0, -1) : redirectURL;
+    if (token && token.length) {
+      this.setCalendarEnabled(true);
+    }
 
-      const clientID = '492631281745-ukpj3nrml396bot57q9ikrhd9d46b8qm.apps.googleusercontent.com';
-      const scopes = ['https://www.googleapis.com/auth/calendar.readonly'];
-      let authURL = 'https://accounts.google.com/o/oauth2/auth';
-      authURL += `?client_id=${clientID}`;
-      authURL += '&response_type=token';
-      authURL += `&redirect_uri=${encodeURIComponent(redirectURL)}`;
-      authURL += `&scope=${encodeURIComponent(scopes.join(' '))}`;
-
-      browser.identity.launchWebAuthFlow({
-        interactive: !this.isCalendarEnabled(), // Interactive for the first time
-        url: authURL,
-      }, (returnUrl) => {
-        if (!returnUrl) {
-          this.setCalendarEnabled(false);
-          return;
-        }
-
-        const accessToken = returnUrl.split('access_token=')[1].split('&')[0];
-        resolve(accessToken);
-      });
-    });
 
     const query = {
       calendarId: 'primary',
@@ -268,7 +304,7 @@ class GeneralStore extends Store {
       singleEvents: true,
       maxResults: 4,
       orderBy: 'startTime',
-      key: 'AIzaSyBOXuQDGtvOto1RIJpR7ab6aJ4Jk7s7PpM',
+      key: apiKey,
     };
 
     const queryParam = Object.keys(query)
@@ -305,6 +341,8 @@ class GeneralStore extends Store {
     });
 
     this.setCalendarEnabled(true);
+
+    console.log(events);
 
     return events;
   }

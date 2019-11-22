@@ -2,6 +2,7 @@ import React from 'react';
 import { usePosition } from 'use-position';
 import usePromise from '../../hooks/use-promise';
 import StoreContext from '../../contexts/store-context';
+import { CacheKeys } from '../../constants';
 import './weather.scss';
 
 
@@ -13,7 +14,7 @@ function Weather() {
   const [weatherInfo] = usePromise(
     () => generalStore.getWeatherInfo({ latitude, longitude }),
     {
-      cacheKey: 'WEATHER',
+      cacheKey: CacheKeys.weather,
       conditions: [latitude, longitude],
       cachePeriodInSecs: (10 * 60),
     },

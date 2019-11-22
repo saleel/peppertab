@@ -69,8 +69,8 @@ const cache = new Cache();
 /**
  * @typedef UsePromiseOptions
  * @property [defaultValue] {any}
- * @property [dependencies = []] {[*]}
- * @property [conditions = []] {[*]}
+ * @property [dependencies = []] {Array}
+ * @property [conditions = []] {Array}
  * @property [cacheKey] {string}
  * @property [updateWithRevalidated = false] {boolean}
  * @property [cachePeriodInSecs = 10] {number}
@@ -90,14 +90,13 @@ function usePromise(promise, options = {}) {
   } = options;
 
   const [result, setResult] = React.useState(defaultValue);
-  const [isFetching, setIsFetching] = React.useState(true);
-  const [isRefetching, setIsRefetching] = React.useState(false);
+  const [isFetching, setIsFetching] = React.useState(false);
   const [error, setError] = React.useState();
 
   let didCancel = false;
 
 
-  async function fetch(isRefetch = false) {
+  async function fetch() {
     let hasCacheData = false;
 
     if (cacheKey) {
@@ -119,11 +118,7 @@ function usePromise(promise, options = {}) {
       }
     }
 
-    if (isRefetch) {
-      setIsRefetching(true);
-    } else {
-      setIsFetching(true);
-    }
+    setIsFetching(true);
 
     try {
       const data = await promise();
@@ -144,13 +139,8 @@ function usePromise(promise, options = {}) {
         setError(e);
       }
     }
-    if (!didCancel) {
-      if (isRefetch) {
-        setIsRefetching(false);
-      } else {
-        setIsFetching(false);
-      }
-    }
+
+    setIsFetching(false);
   }
 
 
@@ -173,7 +163,7 @@ function usePromise(promise, options = {}) {
 
 
   return [result, {
-    isFetching, reFetch: () => fetch(true), isRefetching, error,
+    isFetching, reFetch: fetch, error,
   }];
 }
 
