@@ -2,7 +2,7 @@ import React from 'react';
 import usePromise from '../../hooks/use-promise';
 import StoreContext from '../../contexts/store-context';
 import './weather.scss';
-import { CacheKeys } from '../../constants';
+import { CacheKeys, isWebApp } from '../../constants';
 
 
 function Weather() {
@@ -28,12 +28,16 @@ function Weather() {
     if (isWeatherEnabled) return;
     if (!navigator.permissions) return;
 
-    navigator.permissions.query({ name: 'geolocation' }).then((permission) => {
-      if (permission.state === 'granted') {
-        generalStore.setWeatherEnabled(true);
-        setTryWeather(true);
-      }
-    });
+    if (isWebApp) {
+      navigator.permissions.query({ name: 'geolocation' }).then((permission) => {
+        if (permission.state === 'granted') {
+          generalStore.setWeatherEnabled(true);
+          setTryWeather(true);
+        }
+      });
+    } else {
+      setTryWeather(true);
+    }
   }, [generalStore, isWeatherEnabled]);
 
 
