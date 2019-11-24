@@ -15,7 +15,7 @@ function Links() {
 
 
   React.useEffect(() => {
-    const numLinks = Math.floor(containerRef.current.offsetWidth / 128);
+    const numLinks = Math.floor(containerRef.current.offsetWidth / 120); // 100 width + 10 padding
 
     if (browser && browser.topSites) {
       browser.topSites.get((sites) => {

@@ -90,18 +90,35 @@ function Background(props) {
         {children}
       </div>
 
-      <div className="background__theme-switcher">
-        {(theme === Themes.inspire) && (
-          <button type="button" onClick={() => changeTheme(Themes.focus)}>
-            <FocusIcon color="#fff" size="20" />
+      <div className="background__footer-icons">
+
+        <div className="background__theme-switcher">
+          {(theme === Themes.inspire) && (
+            <button type="button" onClick={() => changeTheme(Themes.focus)}>
+              <FocusIcon color="#fff" size="20" />
+            </button>
+          )}
+          {(theme === Themes.focus) && (
+            <button type="button" onClick={() => changeTheme(Themes.inspire)}>
+              <CameraIcon size="20" />
+            </button>
+          )}
+        </div>
+
+        <div className="background__scroll">
+          <button
+            type="button"
+            onClick={() => {
+              const todosDiv = document.getElementsByClassName('home__todos')[0];
+              todosDiv.scrollIntoView();
+            }}
+          >
+            <span />
           </button>
-        )}
-        {(theme === Themes.focus) && (
-          <button type="button" onClick={() => changeTheme(Themes.inspire)}>
-            <CameraIcon size="20" />
-          </button>
-        )}
+        </div>
+
       </div>
+
 
     </div>
   );
