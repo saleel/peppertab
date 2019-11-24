@@ -1,24 +1,58 @@
 import React from 'react';
-import { usePosition } from 'use-position';
 import usePromise from '../../hooks/use-promise';
 import StoreContext from '../../contexts/store-context';
-import { CacheKeys } from '../../constants';
 import './weather.scss';
+import { CacheKeys } from '../../constants';
 
 
 function Weather() {
   const { generalStore } = React.useContext(StoreContext);
 
-  const { latitude, longitude } = usePosition();
+  const isWeatherEnabled = generalStore.isWeatherEnabled();
+
+  const [tryWeather, setTryWeather] = React.useState();
+
 
   const [weatherInfo] = usePromise(
-    () => generalStore.getWeatherInfo({ latitude, longitude }),
+    () => generalStore.getWeatherInfo(),
     {
+      conditions: [isWeatherEnabled || tryWeather],
+      dependencies: [isWeatherEnabled, tryWeather],
       cacheKey: CacheKeys.weather,
-      conditions: [latitude, longitude],
       cachePeriodInSecs: (10 * 60),
     },
   );
+
+
+  React.useEffect(() => {
+    if (isWeatherEnabled) return;
+    if (!navigator.permissions) return;
+
+    navigator.permissions.query({ name: 'geolocation' }).then((permission) => {
+      if (permission.state === 'granted') {
+        generalStore.setWeatherEnabled(true);
+        setTryWeather(true);
+      }
+    });
+  }, [generalStore, isWeatherEnabled]);
+
+
+  function onEnableClick() {
+    setTryWeather(true);
+  }
+
+
+  if (!isWeatherEnabled && !tryWeather) {
+    return (
+      <button
+        type="button"
+        className="weather__enable"
+        onClick={onEnableClick}
+      >
+        Enable Weather
+      </button>
+    );
+  }
 
 
   if (!weatherInfo) return null;

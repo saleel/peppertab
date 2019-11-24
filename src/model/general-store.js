@@ -138,13 +138,30 @@ class GeneralStore extends Store {
     return newBackground;
   }
 
+  isWeatherEnabled() {
+    return localStorage.getItem('weather.enabled') === 'true';
+  }
+
+  /** @param {Boolean} value */
+  setWeatherEnabled(value) {
+    localStorage.setItem('weather.enabled', value.toString());
+  }
+
 
   /**
-   * @param {{latitude: number, longitude: number}} params Lat/Long
-   * @return {Promise<WeatherInfo>} Weather Data for give lat long
+   * @return {Promise<WeatherInfo|boolean>} Weather Data for give lat long
    */
-  async getWeatherInfo({ latitude, longitude }) {
-    if (!latitude || !longitude) return null;
+  async getWeatherInfo() {
+    const { latitude, longitude } = await new Promise((resolve, reject) => {
+      try {
+        navigator.geolocation.getCurrentPosition((pos) => {
+          resolve(pos.coords);
+        });
+      } catch (e) {
+        reject(e);
+      }
+    });
+
 
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${OPEN_WEATHER_API_KEY}`;
 
@@ -169,6 +186,8 @@ class GeneralStore extends Store {
       sky,
       createdAt: new Date(),
     };
+
+    this.setWeatherEnabled(true);
 
     return weatherInfo;
   }
