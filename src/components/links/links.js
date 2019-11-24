@@ -11,11 +11,15 @@ const browser = window.browser || window.chrome;
 function Links() {
   const [links, setLinks] = React.useState([]);
 
+  const containerRef = React.useRef(null);
+
 
   React.useEffect(() => {
+    const numLinks = Math.floor(containerRef.current.offsetWidth / 128);
+
     if (browser && browser.topSites) {
       browser.topSites.get((sites) => {
-        setLinks(sites.slice(0, 7));
+        setLinks(sites.slice(0, numLinks));
       });
     }
   }, []);
@@ -53,7 +57,7 @@ function Links() {
 
 
   return (
-    <div className="links">
+    <div className="links" ref={containerRef}>
 
       {linksWithSiteName.map((link) => (
         <a key={link.url} title={link.title} href={link.url} className="links__item">
