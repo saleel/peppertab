@@ -105,17 +105,19 @@ function Background(props) {
           )}
         </div>
 
-        <div className="background__scroll">
-          <button
-            type="button"
-            onClick={() => {
-              const todosDiv = document.getElementsByClassName('home__todos')[0];
-              todosDiv.scrollIntoView();
-            }}
-          >
-            <span />
-          </button>
-        </div>
+        {theme === Themes.inspire && (
+          <div className="background__scroll">
+            <button
+              type="button"
+              onClick={() => {
+                const todosDiv = document.getElementsByClassName('home__todos')[0];
+                todosDiv.scrollIntoView();
+              }}
+            >
+              <span />
+            </button>
+          </div>
+        )}
 
       </div>
 
