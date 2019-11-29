@@ -24,10 +24,10 @@ function Links() {
       }
       return linkStore.findLinks({ limit: numLinks });
     },
-    { defaultValue: [], dependencies: [numLinks] },
+    { dependencies: [numLinks] },
   );
 
-  const showAdd = numLinks > links.length;
+  const showAdd = numLinks > (links || []).length;
 
 
   React.useEffect(() => {
@@ -112,8 +112,15 @@ function Links() {
   }
 
 
+  if (!links) {
+    return (
+      <div className="links" />
+    );
+  }
+
+
   return (
-    <div className="links" ref={containerRef}>
+    <div className="links fade-in" ref={containerRef}>
 
       <div className="links__items">
         {links.map((link) => (
