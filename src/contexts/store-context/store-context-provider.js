@@ -90,7 +90,8 @@ function StoreContextProvider({ children }) {
     }
 
     syncAll();
-  }, [lastSyncTime, syncAll]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lastSyncTime]);
 
 
   const value = {
