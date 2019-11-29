@@ -237,6 +237,10 @@ class GeneralStore extends Store {
     const scope = 'https://www.googleapis.com/auth/calendar.readonly';
     let token;
 
+    if (!this.isCalendarEnabled() && isBrowserExtension) {
+      await addIdentityPermission();
+    }
+
     try {
       token = await new Promise((resolve, reject) => {
         if (isWebApp) {
@@ -280,29 +284,22 @@ class GeneralStore extends Store {
 
           document.body.appendChild(script);
         } else {
-        // Load browser permission
-          addIdentityPermission()
-            .then(() => {
-              let redirectURL = Browser.identity.getRedirectURL();
-              redirectURL = redirectURL.endsWith('/') ? redirectURL.slice(0, -1) : redirectURL;
+          let redirectURL = Browser.identity.getRedirectURL();
+          redirectURL = redirectURL.endsWith('/') ? redirectURL.slice(0, -1) : redirectURL;
 
-              let authURL = 'https://accounts.google.com/o/oauth2/auth';
-              authURL += `?client_id=${clientId}`;
-              authURL += '&response_type=token';
-              authURL += `&redirect_uri=${encodeURIComponent(redirectURL)}`;
-              authURL += `&scope=${encodeURIComponent(scope)}`;
+          let authURL = 'https://accounts.google.com/o/oauth2/auth';
+          authURL += `?client_id=${clientId}`;
+          authURL += '&response_type=token';
+          authURL += `&redirect_uri=${encodeURIComponent(redirectURL)}`;
+          authURL += `&scope=${encodeURIComponent(scope)}`;
 
-              Browser.identity.launchWebAuthFlow({
-                interactive: !this.isCalendarEnabled(), // Interactive for the first time
-                url: authURL,
-              }, (returnUrl) => {
-                const accessToken = returnUrl.split('access_token=')[1].split('&')[0];
-                resolve(accessToken);
-              });
-            })
-            .catch((error) => {
-              reject(error);
-            });
+          Browser.identity.launchWebAuthFlow({
+            interactive: !this.isCalendarEnabled(), // Interactive for the first time
+            url: authURL,
+          }, (returnUrl) => {
+            const accessToken = returnUrl.split('access_token=')[1].split('&')[0];
+            resolve(accessToken);
+          });
         }
       });
     } catch (e) {
@@ -312,8 +309,8 @@ class GeneralStore extends Store {
       throw e;
     }
 
-    if (token && token.length) {
-      this.setCalendarEnabled(true);
+    if (!token || !token.length) {
+      this.setCalendarEnabled(false);
     }
 
 
@@ -382,11 +379,9 @@ class GeneralStore extends Store {
    * @return {Promise<Link[]>} Weather Data for give lat long
    */
   async findTopSites({ limit }) {
-    if (!isBrowserExtension) {
-      throw new Error('Top Sites can work only in Browser Extension');
+    if (!this.isTopSitesEnabled()) {
+      await addTopSitesPermission();
     }
-
-    await addTopSitesPermission();
 
     const topSites = await new Promise((resolve, reject) => {
       if (Browser && Browser.topSites) {

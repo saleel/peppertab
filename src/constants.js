@@ -15,7 +15,9 @@ export const CacheKeys = { calendar: 'calendar', background: 'background', weath
 
 
 export const Browser = window.browser || window.chrome;
-export const isBrowserExtension = ['chrome-extension:', 'moz-extension:'].includes(window.location.protocol);
+export const isChromeExtension = window.location.protocol === 'chrome-extension:';
+export const isFirefoxExtension = window.location.protocol === 'moz-extension:';
+export const isBrowserExtension = isChromeExtension || isFirefoxExtension;
 export const isWebApp = !isBrowserExtension;
 
 

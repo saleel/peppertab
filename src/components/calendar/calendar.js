@@ -21,16 +21,16 @@ function Calendar() {
 
   const signInButtonRef = React.useRef(null);
 
-  const [tryCalendar, setTryCalendar] = React.useState();
+  const [isTrying, setIsTrying] = React.useState(false);
 
 
-  const [events, { isFetching, error }] = usePromise(
+  const [events, { isFetching, error, reFetch }] = usePromise(
     () => generalStore.getEvents(),
     {
       cacheKey: CacheKeys.calendar,
       cachePeriodInSecs: (60 * 2),
-      conditions: [isCalendarEnabled || tryCalendar],
-      dependencies: [isCalendarEnabled, tryCalendar],
+      conditions: [isCalendarEnabled],
+      dependencies: [isCalendarEnabled],
     },
   );
 
@@ -39,7 +39,9 @@ function Calendar() {
 
 
   async function handleAuthClick() {
-    setTryCalendar(new Date()); // force update
+    setIsTrying(true);
+    await generalStore.getEvents();
+    reFetch();
   }
 
 
@@ -75,7 +77,7 @@ function Calendar() {
 
       <div className="calendar fade-in">
 
-        {isFetching && !hasEvents && (
+        {(isTrying || isFetching) && !hasEvents && (
           <div className="">
             <Spinner color="#303133" />
           </div>
@@ -87,7 +89,7 @@ function Calendar() {
           </div>
         )}
 
-        {!isCalendarEnabled && !tryCalendar && (
+        {!isCalendarEnabled && !isTrying && (
           <div className="calendar__enroll">
             {error && (
               <div className="calendar__enroll-error">

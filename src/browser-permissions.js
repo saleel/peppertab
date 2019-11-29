@@ -1,51 +1,61 @@
-import { Browser } from './constants';
+import {
+  Browser, isChromeExtension, isFirefoxExtension, isBrowserExtension,
+} from './constants';
 
 
-export function addIdentityPermission() {
-  // Get permission
+function addPermission(permissionsToAdd) {
   return new Promise((resolve, reject) => {
-    Browser.permissions.contains({
-      permissions: ['identity'],
-      origins: ['*://content.googleapis.com/*'],
-    }, (result) => {
-      if (result) {
-        resolve();
-      } else {
-        Browser.permissions.request({
-          permissions: ['identity'],
-          origins: ['*://content.googleapis.com/*'],
-        }, (granted) => {
-          if (granted) {
-            resolve();
-          } else {
-            reject(new Error('Identity permission is required to authenticate with Google and fetch your calendar data'));
-          }
-        });
-      }
-    });
+    if (!isBrowserExtension) {
+      reject(new Error('Top Sites can work only in Browser Extension'));
+    }
+
+    if (isChromeExtension) {
+      Browser.permissions.contains(permissionsToAdd, (contains) => {
+        if (contains) {
+          resolve();
+        } else {
+          Browser.permissions.request(permissionsToAdd, (granted) => {
+            if (granted) resolve();
+            else reject(new Error('Permission Declined'));
+          });
+        }
+      });
+    }
+
+    if (isFirefoxExtension) {
+      Browser.permissions.request(permissionsToAdd)
+        .then((granted) => {
+          if (granted) resolve();
+          else reject(new Error('Permission Declined'));
+        })
+        .catch(reject);
+    }
   });
 }
 
 
-export function addTopSitesPermission() {
-  // Get permission
-  return new Promise((resolve, reject) => {
-    Browser.permissions.contains({
-      permissions: ['topSites'],
-    }, (result) => {
-      if (result) {
-        resolve();
-      } else {
-        Browser.permissions.request({
-          permissions: ['topSites'],
-        }, (granted) => {
-          if (granted) {
-            resolve();
-          } else {
-            reject(new Error('Browser History permission is required to display top sites'));
-          }
-        });
-      }
+export async function addIdentityPermission() {
+  try {
+    return addPermission({
+      // permissions: ['identity'],
+      origins: ['*://content.googleapis.com/*'],
     });
-  });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error);
+    throw error;
+  }
+}
+
+
+export async function addTopSitesPermission() {
+  try {
+    await addPermission({
+      permissions: ['topSites'],
+    });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error);
+    throw error;
+  }
 }

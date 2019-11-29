@@ -15,9 +15,11 @@ function Welcome() {
 
 
   React.useEffect(() => {
-    if (!profile && inputRef.current) {
-      inputRef.current.focus();
-    }
+    setTimeout(() => {
+      if (!profile && inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, 1000);
   }, [profile]);
 
 

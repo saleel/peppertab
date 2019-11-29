@@ -135,7 +135,7 @@ function Links() {
 
         {showAdd && (
           <button type="button" className="links__create" onClick={onCreateClick}>
-            Add
+            Add Link
           </button>
         )}
       </div>

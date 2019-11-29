@@ -9,7 +9,7 @@ function Sync(props) {
 
   return (
     <div className="spinner">
-      <div className="spinner__ring" style={{ '--size': `${size}px`, color }} />
+      <div className="spinner__ring" style={{ '--size': `${size}px`, '--color': color }} />
     </div>
   );
 }

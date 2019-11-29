@@ -11,9 +11,10 @@
     "geolocation",
     "webRequest",
     "webRequestBlocking",
+    "identity",
     "*://peppertab.com/*"
   ],
-  "optional_permissions": ["identity", "*://content.googleapis.com/*", "topSites"],
+  "optional_permissions": ["*://content.googleapis.com/*", "topSites"],
   "background": {
     "scripts": [
       "background.js"
