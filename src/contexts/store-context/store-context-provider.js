@@ -28,29 +28,33 @@ function StoreContextProvider({ children }) {
 
 
   async function syncDb(store) {
-    if (isSyncing) return;
-
     if (!window.navigator.onLine) return;
 
-    // Get backup from blockstack
-    const fileName = `${store.name}-db.json`;
-    const dump = await userSession.getFile(fileName, { decrypt: true });
+    try {
+      // Get backup from blockstack
+      const fileName = `${store.name}-db.json`;
+      const dump = await userSession.getFile(fileName, { decrypt: true });
 
-    // Restore dump
-    await store.merge(dump);
+      // Restore dump
+      await store.merge(dump);
 
-    // Dump the synced DB
-    const dbDump = await store.dump();
+      // Dump the synced DB
+      const dbDump = await store.dump();
 
-    // Push db dump back to blockstack
-    await userSession.putFile(fileName, dbDump, { encrypt: true });
+      // Push db dump back to blockstack
+      await userSession.putFile(fileName, dbDump, { encrypt: true });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Sync error', error);
+      throw error;
+    }
   }
 
   const syncAll = debounce(async () => {
     try {
-      if (!isUserLoggedIn) {
-        return;
-      }
+      if (isSyncing) return;
+
+      if (!isUserLoggedIn) return;
 
       setIsSyncing(true);
 

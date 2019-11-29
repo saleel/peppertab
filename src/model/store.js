@@ -37,9 +37,23 @@ class Store {
 
 
   async dump() {
-    const MemoryStream = window.memorystream;
+    let MemoryStream = window.memorystream;
     if (!MemoryStream) {
-      throw new Error('MemoryStream not loaded');
+      await new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = '/memorystream.js';
+        script.async = true;
+        script.onload = () => {
+          MemoryStream = window.memorystream;
+          resolve();
+        };
+
+        script.onerror = () => {
+          reject(new Error('Unable to load memory stream'));
+        };
+
+        document.body.appendChild(script);
+      });
     }
 
     const stream = new MemoryStream();
