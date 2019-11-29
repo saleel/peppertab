@@ -17,50 +17,26 @@ html, body {
 	-webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
+
+  --bg-color: #303133;
+  --text-color: #fff;
+  --card-bg-color: #fff;
+	--card-item-color: #f7f7f7;
+  --card-item-color-active: rgb(226, 226, 226);
+  --card-text-color: #303133;
+  --danger-color: #c0392b;
 }
 
 #root {
 	height: 100%;
 }
 
-html {
-  --danger-color: #c0392b;
-}
-
-
-html {
-  // --bg-color: rgba(230, 235, 231);
-  // --text-color: #333333;
-  --bg-color: #303133;
-  --text-color: #fff;
-  
-  --card-bg-color: #fff;
-	--card-item-color: #f7f7f7;
-  --card-item-color-active: rgb(226, 226, 226);
-  --card-text-color: #303133;
-
-  --inverted-bg-color: #AAA9A5;
-  --inverted-text-color: #fff;
-}
-
-
-// html.focus {
-//   --bg-color: rgba(230, 235, 231);
-//   --text-color: #333333;
-
-//   --card-bg-color: #fff;
-// 	--card-item-color: #f7f7f7;
-//   --card-item-color-active: rgb(226, 226, 226);
-  
-//   --inverted-bg-color: #1E1E1E;
-//   --inverted-text-color: #fff;
-// }
 
 button, input {
 	&:focus, &:active {
 		outline: none;
   }
-  
-	// color: var(--text-color);
+
+  // color: var(--text-color);
 }
 

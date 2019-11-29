@@ -63,11 +63,6 @@
     .home__welcome {
       margin: calc(50vh - 5rem - 60px - 1rem) 0;
     }
-
-    .home__welcome,
-    .home__time {
-      color: var(--inverted-text-color);
-    }
   }
 
   &.focus {
@@ -76,7 +71,7 @@
     }
 
     .home__links {
-      margin-bottom: 1rem;
+      margin-bottom: 3rem;
     }
   }
 }
