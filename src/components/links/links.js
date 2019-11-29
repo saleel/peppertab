@@ -15,7 +15,7 @@ function Links() {
   const componentRenderedAt = React.useRef(new Date());
   const containerRef = React.useRef(null);
 
-  const numLinks = Math.ceil((containerRef.current || {}).offsetWidth / 115); // 100 width + 15 margin
+  const numLinks = Math.round((containerRef.current || {}).offsetWidth / 115); // 100 width + 15 margin
 
   const [links, { reFetch }] = usePromise(
     () => {

@@ -4,12 +4,12 @@ import './spinner.scss';
 
 
 function Sync(props) {
-  const { size } = props;
+  const { size, color } = props;
 
 
   return (
     <div className="spinner">
-      <div className="spinner__ring" style={{ '--size': `${size}px` }} />
+      <div className="spinner__ring" style={{ '--size': `${size}px`, color }} />
     </div>
   );
 }
@@ -17,11 +17,13 @@ function Sync(props) {
 
 Sync.propTypes = {
   size: PropTypes.number,
+  color: PropTypes.string,
 };
 
 
 Sync.defaultProps = {
   size: 40,
+  color: '#fff',
 };
 
 

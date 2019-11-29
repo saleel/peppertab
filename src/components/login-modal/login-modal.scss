@@ -1,13 +1,15 @@
 .login-modal {
   display: flex;
   flex-direction: column;
-  background-color: var(--card-bg-color);
-  border-radius: 5px;
   overflow: hidden;
-  width: 600px;
-  min-height: 250px;
-  padding: 2rem;
   z-index: 100;
+
+
+  &__content {
+    min-height: 250px;
+  width: 600px;
+  padding: 2rem;
+  }
 
 
   &:focus {
@@ -26,14 +28,16 @@
   }
 
   &__btn-proceed {
-    background-color: var(--inverted-bg-color);
-    color: var(--inverted-text-color);
+    display: block;
+    background-color: #27ae60;
+    color: var(--text-color);
     margin: 0 auto;
     padding: 0.5rem 2rem;
     border-radius: 5px;
     font-weight: bold;
     font-size: 1.2rem;
     opacity: 0.9;
+    text-align: center;
 
     &:hover {
       opacity: 1;

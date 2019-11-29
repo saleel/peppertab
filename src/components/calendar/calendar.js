@@ -77,7 +77,7 @@ function Calendar() {
 
         {isFetching && !hasEvents && (
           <div className="">
-            <Spinner />
+            <Spinner color="#303133" />
           </div>
         )}
 
