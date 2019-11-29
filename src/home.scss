@@ -14,40 +14,69 @@
 
   &__welcome {
     display: flex;
-		align-items: center;
-		justify-content: center;
+    align-items: center;
+    justify-content: center;
 
     transition: margin 250ms linear;
   }
 
   &__time {
-		position: absolute;
-		top: 0;
-		right: 0;
-		padding: 1rem 2rem;
-		text-align: right;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1rem 2rem;
+    text-align: right;
   }
-  
+
   &__attributions {
     font-size: 12px;
     width: 100%;
     text-align: center;
-	}
+  }
+
+  &__links {
+    margin-bottom: 3rem;
+  }
+
+  &__scroll {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    bottom: 30px;
+    right: calc(50%);
+
+    button span {
+      position: absolute;
+      top: 0;
+      width: 1.1rem;
+      height: 1.1rem;
+      border-left: 3px solid #fff;
+      border-bottom: 3px solid #fff;
+      transform: rotate(-45deg);
+      box-sizing: border-box;
+    }
+  }
 
   &.inspire {
     .home__welcome {
-			margin: calc(50vh - (100px + 2rem)) 0;
+      margin: calc(50vh - 5rem - 60px - 1rem) 0;
     }
 
-    .home__welcome, .home__time {
+    .home__welcome,
+    .home__time {
       color: var(--inverted-text-color);
     }
   }
 
   &.focus {
     .home__welcome {
-      margin: 10rem 0;
-      // margin: 5rem 0;
+      margin: 8rem 0;
+    }
+
+    .home__links {
+      margin-bottom: 1rem;
     }
   }
 }

@@ -79,7 +79,7 @@ const cache = new Cache();
 
 /**
  * @template T
- * @param {(() => Promise<T>|() => T)} promise
+ * @param {(() => Promise<T>)} promise
  * @param {UsePromiseOptions} [options]
  * @returns {[T, { isFetching: boolean, isRefetching: boolean, reFetch: Function, error: Error }]}
  */

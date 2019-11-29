@@ -1,11 +1,12 @@
 // @ts-check
 
 import {
-  OPEN_WEATHER_API_KEY, LocalStorage, Themes, API_URL, Browser, isWebApp, GOOGLE_CLIENT_ID, GOOGLE_API_KEY,
+  OPEN_WEATHER_API_KEY, LocalStorage, Themes, API_URL, Browser, isWebApp, GOOGLE_CLIENT_ID, GOOGLE_API_KEY, isBrowserExtension,
 } from '../constants';
 import Store from './store';
-import { convertImageUrlToBase64 } from './utils';
-import { addIdentityPermission } from '../browser-permissions';
+import { convertImageUrlToBase64, getLinkFromUrl } from './utils';
+import { addIdentityPermission, addTopSitesPermission } from '../browser-permissions';
+import Link from './link';
 
 
 /**
@@ -362,6 +363,48 @@ class GeneralStore extends Store {
     this.setCalendarEnabled(true);
 
     return events;
+  }
+
+
+  isTopSitesEnabled() {
+    if (!isBrowserExtension) return false;
+
+    return localStorage.getItem('topSites.enabled') === 'true';
+  }
+
+  /** @param {Boolean} value */
+  setTopSitesEnabled(value) {
+    localStorage.setItem('topSites.enabled', value.toString());
+  }
+
+
+  /**
+   * @return {Promise<Link[]>} Weather Data for give lat long
+   */
+  async findTopSites({ limit }) {
+    if (!isBrowserExtension) {
+      throw new Error('Top Sites can work only in Browser Extension');
+    }
+
+    await addTopSitesPermission();
+
+    const topSites = await new Promise((resolve, reject) => {
+      if (Browser && Browser.topSites) {
+        Browser.topSites.get((sites) => {
+          const links = sites
+            .slice(0, limit)
+            .map((site) => getLinkFromUrl(site.url));
+
+          resolve(links);
+        });
+      } else {
+        reject(new Error('Cannot access browser top sites'));
+      }
+    });
+
+    this.setTopSitesEnabled(true);
+
+    return topSites;
   }
 }
 

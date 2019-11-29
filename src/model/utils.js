@@ -1,3 +1,5 @@
+import Link from './link';
+
 function convertImageUrlToBase64(url) {
   return new Promise((resolve) => {
     const tempImage = new Image();
@@ -25,4 +27,37 @@ function convertImageUrlToBase64(url) {
 }
 
 
-export { convertImageUrlToBase64 };
+function isIP(address) {
+  const r = RegExp('^http[s]?:\/\/((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])');
+  return r.test(address);
+}
+
+
+function getLinkFromUrl(url) {
+  if (!url) {
+    return null;
+  }
+
+  let hostname;
+
+  try {
+    ({ hostname } = new URL(url));
+  } catch (e) {
+    // eslint-disable-next-line no-alert
+    return null;
+  }
+
+  const hostNamePortions = hostname.split('.');
+  let siteName = hostNamePortions[hostNamePortions.length - 2];
+
+  if (isIP(url) || hostname === 'localhost') {
+    siteName = hostname;
+  }
+
+  return new Link({
+    siteName, hostname, url,
+  });
+}
+
+
+export { convertImageUrlToBase64, getLinkFromUrl };

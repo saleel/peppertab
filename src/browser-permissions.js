@@ -25,3 +25,27 @@ export function addIdentityPermission() {
     });
   });
 }
+
+
+export function addTopSitesPermission() {
+  // Get permission
+  return new Promise((resolve, reject) => {
+    Browser.permissions.contains({
+      permissions: ['topSites'],
+    }, (result) => {
+      if (result) {
+        resolve();
+      } else {
+        Browser.permissions.request({
+          permissions: ['topSites'],
+        }, (granted) => {
+          if (granted) {
+            resolve();
+          } else {
+            reject(new Error('Browser History permission is required to display top sites'));
+          }
+        });
+      }
+    });
+  });
+}

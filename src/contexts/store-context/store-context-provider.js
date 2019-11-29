@@ -8,6 +8,7 @@ import TodoStore from '../../model/todo-store';
 import NoteStore from '../../model/note-store';
 import GeneralStore from '../../model/general-store';
 import AuthContext from '../auth-context';
+import LinkStore from '../../model/link-store';
 import { debounce } from '../../utils';
 
 
@@ -15,6 +16,7 @@ function StoreContextProvider({ children }) {
   const todoStore = new TodoStore();
   const noteStore = new NoteStore();
   const generalStore = new GeneralStore();
+  const linkStore = new LinkStore();
 
   const { userSession, isLoggedIn } = React.useContext(AuthContext);
 
@@ -91,6 +93,7 @@ function StoreContextProvider({ children }) {
     generalStore,
     todoStore,
     noteStore,
+    linkStore,
     isSyncing,
     lastSyncTime,
     syncError,

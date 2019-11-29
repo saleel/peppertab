@@ -10,6 +10,7 @@ import Time from './components/time';
 import Weather from './components/weather';
 import Links from './components/links';
 import SyncInfo from './components/sync-info';
+import { Themes } from './constants';
 import './home.scss';
 
 
@@ -35,9 +36,24 @@ function Home() {
             </div>
           </div>
 
-          <div className="home__links flex mb-10">
+          <div className="home__links flex">
             <Links />
           </div>
+
+
+          {theme === Themes.inspire && (
+            <div className="home__scroll">
+              <button
+                type="button"
+                onClick={() => {
+                  const todosDiv = document.getElementsByClassName('home__scroll')[0];
+                  todosDiv.scrollIntoView();
+                }}
+              >
+                <span />
+              </button>
+            </div>
+          )}
 
           <div className="home__todos flex mb-10">
             <div className="w-1/2 px-5">

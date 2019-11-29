@@ -16,9 +16,10 @@ function TodoList() {
   const [todos, { isFetching, reFetch }] = usePromise(() => todoStore.findTodos(), { defaultValue: [] });
 
   const componentRenderedAt = React.useRef(new Date());
+  const todoListRef = React.useRef(null);
+
   const [newTodo, setNewTodo] = React.useState({ title: '' });
   const [showCompleted, setShowCompleted] = React.useState(false);
-  const todoListRef = React.useRef(null);
 
   const hasCompleted = todos && todos.some((t) => t.isCompleted);
 
