@@ -26,6 +26,10 @@
     background-size: cover;
   }
 
+  &__footer-icons {
+    opacity: var(--bg-opacity);
+  }
+
   &__content {
     position: relative;
     width: 100%;
