@@ -7,6 +7,7 @@ import Store from './store';
 import { convertImageUrlToBase64, getLinkFromUrl } from './utils';
 import { addIdentityPermission, addTopSitesPermission } from '../browser-permissions';
 import Link from './link';
+import { loadScript } from '../utils';
 
 
 /**
@@ -254,10 +255,7 @@ class GeneralStore extends Store {
             }
           };
 
-          const script = document.createElement('script');
-          script.src = 'https://apis.google.com/js/api.js';
-          script.async = true;
-          script.onload = () => {
+          loadScript('https://apis.google.com/js/api.js').then(() => {
             // @ts-ignore
             gapi = window.gapi;
 
@@ -280,9 +278,7 @@ class GeneralStore extends Store {
                 reject(error);
               });
             });
-          };
-
-          document.body.appendChild(script);
+          });
         } else {
           let redirectURL = Browser.identity.getRedirectURL();
           redirectURL = redirectURL.endsWith('/') ? redirectURL.slice(0, -1) : redirectURL;

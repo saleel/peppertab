@@ -1,7 +1,8 @@
-import PouchDB from 'pouchdb';
-import replicationStream from 'pouchdb-replication-stream';
+import PouchDB from 'pouchdb/lib/index.es';
 import load from 'pouchdb-load';
 import EventEmitter from 'nanoevents';
+import replicationStream from 'pouchdb-replication-stream/dist/pouchdb.replication-stream.min';
+import { loadScript } from '../utils';
 
 
 PouchDB.plugin({
@@ -39,21 +40,8 @@ class Store {
   async dump() {
     let MemoryStream = window.memorystream;
     if (!MemoryStream) {
-      await new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        script.src = '/memorystream.js';
-        script.async = true;
-        script.onload = () => {
-          MemoryStream = window.memorystream;
-          resolve();
-        };
-
-        script.onerror = () => {
-          reject(new Error('Unable to load memory stream'));
-        };
-
-        document.body.appendChild(script);
-      });
+      await loadScript('/memorystream.js');
+      MemoryStream = window.memorystream;
     }
 
     const stream = new MemoryStream();

@@ -1,6 +1,8 @@
 import React from 'react';
-import PouchDB from 'pouchdb';
 import { differenceInSeconds } from 'date-fns';
+
+
+const PouchDB = require('pouchdb').default;
 
 
 const defaultBackgroundCache = {

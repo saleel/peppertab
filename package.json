@@ -7,7 +7,7 @@
     "@iconscout/react-unicons": "0.0.1",
     "@saleel/ckeditor5-build-balloon-base64": "^1.2.0",
     "blockstack": "^19.3.0",
-    "date-fns": "^2.5.1",
+    "date-fns": "^2.8.1",
     "lodash": "^4.17.15",
     "nanoevents": "^2.0.0",
     "pouchdb": "^7.1.1",
@@ -15,10 +15,10 @@
     "pouchdb-replication-stream": "^1.2.9",
     "pretty-checkbox": "^3.0.3",
     "prop-types": "^15.7.2",
-    "react": "^16.10.2",
-    "react-dom": "^16.10.2",
-    "react-modal": "^3.10.1",
-    "tailwindcss": "^1.1.2"
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-modal": "^3.11.1",
+    "tailwindcss": "^1.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -46,13 +46,13 @@
   "devDependencies": {
     "copy-webpack-plugin": "^5.0.5",
     "cra-build-watch": "^3.0.0",
-    "eslint": "^6.5.1",
+    "eslint": "^6.7.1",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-react-hooks": "^1.7.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.13.0",
     "react-scripts": "^3.2.0"
   }
 }
