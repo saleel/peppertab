@@ -6,7 +6,6 @@ import {
 import Store from './store';
 import { convertImageUrlToBase64, getLinkFromUrl } from './utils';
 import { addIdentityPermission, addTopSitesPermission } from '../browser-permissions';
-import Link from './link';
 import { loadScript } from '../utils';
 
 
