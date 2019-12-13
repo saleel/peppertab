@@ -128,7 +128,7 @@ function Notes() {
 
   const actions = [
     (
-      <button key="create" type="button" className="notes__create" onClick={onCreateClick}>
+      <button key="create" type="button" className="notes__create" onClick={() => onCreateClick()}>
         <PlusIcon size="22" />
       </button>
     ),

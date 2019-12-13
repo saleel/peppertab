@@ -6,6 +6,7 @@ import format from 'date-fns/format';
 import isToday from 'date-fns/isToday';
 import isTomorrow from 'date-fns/isTomorrow';
 import isAfter from 'date-fns/isAfter';
+import SyncIcon from '@iconscout/react-unicons/icons/uil-sync';
 import StoreContext from '../../contexts/store-context';
 import usePromise from '../../hooks/use-promise';
 import Card from '../card';
@@ -128,9 +129,17 @@ function Calendar() {
     return null;
   }
 
+  const actions = [
+    isCalendarEnabled && !isFetching && (
+      <button key="sync" type="button" className="calendar__sync-btn fade-in" onClick={() => reFetch()}>
+        <SyncIcon size="22" />
+      </button>
+    ),
+  ].filter(Boolean);
+
 
   return (
-    <Card title="Upcoming">
+    <Card title="Upcoming" actions={actions}>
 
       <div className="calendar fade-in">
 

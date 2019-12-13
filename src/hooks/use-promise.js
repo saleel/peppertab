@@ -63,6 +63,16 @@ class Cache {
       return this.cacheDb.put(newDoc);
     }
   }
+
+  async delete(key) {
+    try {
+      const originalDoc = await this.cacheDb.get(key);
+      await this.cacheDb.remove(originalDoc);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+    }
+  }
 }
 
 const cache = new Cache();
@@ -164,8 +174,16 @@ function usePromise(promise, options = {}) {
   }, [...dependencies, ...conditions]);
 
 
+  async function reFetch() {
+    if (cacheKey) {
+      await cache.delete(cacheKey);
+    }
+    return fetch();
+  }
+
+
   return [result, {
-    isFetching, reFetch: fetch, error,
+    isFetching, reFetch, error,
   }];
 }
 
