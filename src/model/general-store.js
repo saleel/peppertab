@@ -11,6 +11,18 @@ import { loadScript } from '../utils';
 
 
 /**
+ * @typedef CalendarEvent
+ * @property title {string}
+ * @property link {string}
+ * @property startDateTime {Date}
+ * @property startDate {Date}
+ * @property endDateTime {Date}
+ * @property endDate {Date}
+ * @property location {string}
+ */
+
+
+/**
  * @typedef WeatherInfo
  * @property city {string}
  * @property temperature {number}
@@ -230,7 +242,7 @@ class GeneralStore extends Store {
 
 
   /**
-   * @return {Promise<Array>} events
+   * @return {Promise<CalendarEvent[]>} events
    */
   async getEvents() {
     const clientId = GOOGLE_CLIENT_ID;

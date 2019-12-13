@@ -5,6 +5,7 @@ import groupBy from 'lodash/groupBy';
 import format from 'date-fns/format';
 import isToday from 'date-fns/isToday';
 import isTomorrow from 'date-fns/isTomorrow';
+import isAfter from 'date-fns/isAfter';
 import StoreContext from '../../contexts/store-context';
 import usePromise from '../../hooks/use-promise';
 import Card from '../card';
@@ -35,17 +36,17 @@ function Calendar() {
   );
 
 
-  const hasEvents = events && events.length;
-
-
   async function handleAuthClick() {
     setIsTrying(true);
     await generalStore.getEvents();
+    setIsTrying(false);
     reFetch();
   }
 
+  const filteredEvents = (events || [])
+    .filter((e) => (e.startDateTime ? isAfter(new Date(e.startDateTime), new Date()) : true));
 
-  const groupedEvents = events && groupBy(events, (event) => {
+  const groupedEvents = events && groupBy(filteredEvents, (event) => {
     const start = new Date(event.startDateTime || event.startDate);
     return format(start, 'yyyy-MM-dd');
   });
@@ -72,46 +73,68 @@ function Calendar() {
   }
 
 
+  function renderBody() {
+    if (!isCalendarEnabled && !isTrying) {
+      return (
+        <div className="calendar__enroll">
+          {error && (
+            <div className="calendar__enroll-error">
+              Unexpected error occurred while connecting with your Google account. Please try again later.
+            </div>
+          )}
+
+          {!error && (
+            <div>
+              Integrate with Google Calendar to see upcoming events
+            </div>
+          )}
+
+          <button
+            className="calendar__btn-sign-in"
+            ref={signInButtonRef}
+            type="button"
+            onClick={handleAuthClick}
+            aria-label="Sign in with Google"
+          />
+        </div>
+      );
+    }
+
+    // Calendar is enabled
+    if (isTrying || isFetching) {
+      return (
+        <div className="">
+          <Spinner color="#303133" />
+        </div>
+      );
+    }
+
+    if (Array.isArray(events)) {
+      if (events.length === 0) {
+        return (
+          <div className="calendar__no-events">
+            No upcoming events.
+          </div>
+        );
+      }
+
+      return (
+        <div className="calendar__events">
+          {groupedEvents && Object.keys(groupedEvents).map(renderGroup)}
+        </div>
+      );
+    }
+
+    return null;
+  }
+
+
   return (
     <Card title="Upcoming">
 
       <div className="calendar fade-in">
 
-        {(isTrying || isFetching) && !hasEvents && (
-          <div className="">
-            <Spinner color="#303133" />
-          </div>
-        )}
-
-        {hasEvents && (
-          <div className="calendar__events">
-            {groupedEvents && Object.keys(groupedEvents).map(renderGroup)}
-          </div>
-        )}
-
-        {!isCalendarEnabled && !isTrying && (
-          <div className="calendar__enroll">
-            {error && (
-              <div className="calendar__enroll-error">
-                Unexpected error occurred while connecting with your Google account. Please try again later.
-              </div>
-            )}
-
-            {!error && (
-              <div>
-                Integrate with Google Calendar to see upcoming events
-              </div>
-            )}
-
-            <button
-              className="calendar__btn-sign-in"
-              ref={signInButtonRef}
-              type="button"
-              onClick={handleAuthClick}
-              aria-label="Sign in with Google"
-            />
-          </div>
-        )}
+        {renderBody()}
 
       </div>
 
