@@ -304,8 +304,12 @@ class GeneralStore extends Store {
             interactive: !this.isCalendarEnabled(), // Interactive for the first time
             url: authURL,
           }, (returnUrl) => {
-            const accessToken = returnUrl.split('access_token=')[1].split('&')[0];
-            resolve(accessToken);
+            if (returnUrl) {
+              const accessToken = returnUrl.split('access_token=')[1].split('&')[0];
+              resolve(accessToken);
+            } else {
+              reject(new Error('Cannot get access token'));
+            }
           });
         }
       });

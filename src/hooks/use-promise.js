@@ -149,6 +149,9 @@ function usePromise(promise, options = {}) {
         // eslint-disable-next-line no-console
         console.error('Error on fetching data', e);
         setError(e);
+        if (cacheKey) {
+          cache.delete(cacheKey);
+        }
       }
     }
 

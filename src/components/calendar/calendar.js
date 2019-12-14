@@ -24,6 +24,7 @@ function Calendar() {
   const signInButtonRef = React.useRef(null);
 
   const [isTrying, setIsTrying] = React.useState(false);
+  const [fetchError, setFetchError] = React.useState(null);
 
 
   const [events, { isFetching, error, reFetch }] = usePromise(
@@ -37,11 +38,21 @@ function Calendar() {
   );
 
 
+  React.useEffect(() => {
+    if (error) {
+      setFetchError(error);
+    }
+  }, [error]);
+
+
   async function handleAuthClick() {
     setIsTrying(true);
-    await generalStore.getEvents();
+    try {
+      await generalStore.getEvents();
+    } catch (e) {
+      setFetchError(e);
+    }
     setIsTrying(false);
-    reFetch();
   }
 
   const filteredEvents = (events || [])
@@ -75,21 +86,22 @@ function Calendar() {
 
 
   function renderBody() {
+    if (fetchError) {
+      return (
+        <div className="calendar__enroll">
+          <div className="calendar__enroll-error">
+            Unexpected error occurred while connecting with your Google account. Please try again later.
+          </div>
+        </div>
+      );
+    }
+
     if (!isCalendarEnabled && !isTrying) {
       return (
         <div className="calendar__enroll">
-          {error && (
-            <div className="calendar__enroll-error">
-              Unexpected error occurred while connecting with your Google account. Please try again later.
-            </div>
-          )}
-
-          {!error && (
-            <div>
-              Integrate with Google Calendar to see upcoming events
-            </div>
-          )}
-
+          <div>
+            Integrate with Google Calendar to see upcoming events
+          </div>
           <button
             className="calendar__btn-sign-in"
             ref={signInButtonRef}
