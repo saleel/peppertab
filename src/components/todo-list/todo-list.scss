@@ -10,7 +10,7 @@
   &__items {
     flex-grow: 1;
     padding: 0.5rem 0;
-    overflow-y: scroll;
+    overflow-y: auto;
     background-color: var(--card-item-color);
     scroll-behavior: smooth;
   }
