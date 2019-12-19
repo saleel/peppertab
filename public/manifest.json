@@ -6,6 +6,10 @@
   "chrome_url_overrides": {
     "newtab": "./index.html"
   },
+  "browser_action": {
+    "default_title": "PepperTab - Open a new tab"
+  },
+  "offline_enabled": true,
   "content_security_policy": "script-src 'self' https://apis.google.com/; object-src 'self'",
   "permissions": [
     "geolocation",
