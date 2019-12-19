@@ -20,8 +20,8 @@
   { urls: ['*://peppertab.com/*'], types: ['main_frame'] },
   ['blocking']);
 
+
   browser.browserAction.onClicked.addListener(() => {
-    const extensionUrl = browser.extension.getURL('/index.html');
-    browser.tabs.create({ url: extensionUrl });
+    browser.tabs.create({ });
   });
 })();
