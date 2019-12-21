@@ -4,10 +4,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import CameraIcon from '@iconscout/react-unicons/icons/uil-camera';
 import FocusIcon from '@iconscout/react-unicons/icons/uil-focus';
+import Tooltip from 'rc-tooltip';
 import StoreContext from '../../contexts/store-context';
 import { Themes, CacheKeys } from '../../constants';
 import ThemeContext from '../../contexts/theme-context';
 import usePromise from '../../hooks/use-promise';
+import 'rc-tooltip/assets/bootstrap.css';
 import './background.scss';
 
 
@@ -38,7 +40,9 @@ function Background(props) {
     const windowOffset = window.pageYOffset;
     const contentOffset = window.innerHeight * 0.6;
     const opacity = Math.min(1, windowOffset / contentOffset);
+
     backgroundRef.current.style.setProperty('--bg-opacity', (1 - opacity).toString());
+    backgroundRef.current.style.setProperty('--is-scrolled', windowOffset > 10 ? 'none' : 'initial');
   }
 
 
@@ -59,6 +63,7 @@ function Background(props) {
   //   window.scrollTo(0, 1300);
   // }, []);
 
+  const nextTheme = theme === Themes.inspire ? 'Focus' : 'Inspire';
 
   return (
     <div ref={backgroundRef} className="background">
@@ -70,7 +75,7 @@ function Background(props) {
             style={{ backgroundImage: `url('${background.base64 || background.imageUrl}')` }}
           />
 
-          <div className="background__info">
+          <div className="background__info background__hide-on-scroll fade-in fade-out">
             <div className="background__info-details">
               <div className="background__info-location">
                 {background.location}
@@ -90,20 +95,28 @@ function Background(props) {
         {children}
       </div>
 
-      <div className="background__footer-icons">
+      <div className="background__footer-icons background__hide-on-scroll fade-in fade-out">
 
-        <div className="background__theme-switcher">
-          {(theme === Themes.inspire) && (
+        <Tooltip
+          placement="left"
+          // eslint-disable-next-line react/jsx-one-expression-per-line
+          overlay={<div>Switch to {nextTheme} mode</div>}
+          arrowContent={<div className="rc-tooltip-arrow-inner" />}
+          overlayClassName="background__tooltip"
+        >
+          <div className="background__theme-switcher">
+            {(theme === Themes.inspire) && (
             <button type="button" onClick={() => changeTheme(Themes.focus)}>
               <FocusIcon color="#fff" size="20" />
             </button>
-          )}
-          {(theme === Themes.focus) && (
+            )}
+            {(theme === Themes.focus) && (
             <button type="button" onClick={() => changeTheme(Themes.inspire)}>
               <CameraIcon size="20" />
             </button>
-          )}
-        </div>
+            )}
+          </div>
+        </Tooltip>
 
       </div>
 

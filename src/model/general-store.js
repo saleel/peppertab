@@ -45,6 +45,9 @@ import { loadScript } from '../utils';
  * @property height {string}
  * @property width {string}
  * @property user {string}
+ * @property userUrl {string}
+ * @property source {string}
+ * @property sourceUrl {string}
  * @property location {string}
  * @property link {string}
 */
@@ -109,10 +112,11 @@ class GeneralStore extends Store {
    */
   async getTheme() {
     const theme = window.localStorage.getItem(LocalStorage.theme);
+    const defaultTheme = Themes.focus;
 
     if (!Object.keys(Themes).includes(theme)) {
-      window.localStorage.setItem(LocalStorage.theme, Themes.inspire);
-      return Themes.inspire;
+      window.localStorage.setItem(LocalStorage.theme, defaultTheme);
+      return defaultTheme;
     }
 
     return theme;

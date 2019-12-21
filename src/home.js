@@ -42,7 +42,7 @@ function Home() {
 
 
           {theme === Themes.inspire && (
-            <div className="home__scroll">
+            <div className="home__scroll fade-in background__hide-on-scroll">
               <button
                 type="button"
                 onClick={() => {
@@ -55,7 +55,7 @@ function Home() {
             </div>
           )}
 
-          <div className="home__todos flex mb-10">
+          <div className="home__todos flex mb-10 mt-10">
             <div className="w-1/2 px-5">
               <TodoList />
             </div>
