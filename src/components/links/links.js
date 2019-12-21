@@ -150,7 +150,7 @@ function Links() {
       <div className="links__switch">
         {isBrowserExtension && !generalStore.isTopSitesEnabled() && (
           <button type="button" onClick={onShowTopSitesClick}>
-            Show Top Sites
+            Show most visited sites
           </button>
         )}
 

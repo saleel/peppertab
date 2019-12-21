@@ -1,4 +1,5 @@
 import React from 'react';
+import EnterIcon from '@iconscout/react-unicons/icons/uil-enter';
 import StoreContext from '../../contexts/store-context';
 import { getMessagePrefix } from './welcome.utils';
 import usePromise from '../../hooks/use-promise';
@@ -10,42 +11,68 @@ function Welcome() {
   const message = getMessagePrefix();
 
   const inputRef = React.useRef();
+  const [name, setName] = React.useState('');
 
   const [profile, { isFetching, reFetch }] = usePromise(() => generalStore.getProfile());
 
 
   React.useEffect(() => {
-    setTimeout(() => {
+    const interval = setInterval(() => {
       if (!profile && inputRef.current) {
         inputRef.current.focus();
       }
     }, 1000);
+
+    return () => { clearInterval(interval); };
   }, [profile]);
+
+
+  async function submitProfile() {
+    await generalStore.setProfile({ name });
+    reFetch();
+  }
 
 
   /**
    * @param {React.KeyboardEvent<HTMLInputElement>} e
    */
-  async function onKeyDown(e) {
+  function onKeyDown(e) {
     if (e.keyCode === 13) {
-      await generalStore.setProfile({ name: e.target.value });
-      reFetch();
+      submitProfile();
     }
   }
 
 
   if (isFetching) {
     return (
-      <div className="welcome" />
+      <div className="welcome welcome__no-profile" />
     );
   }
 
 
   if (!profile) {
     return (
-      <div className="welcome fade-in">
+      <div className="welcome welcome__no-profile fade-in">
         <span className="welcome__message">Hello there, what is your name?</span>
-        <input ref={inputRef} onKeyDown={onKeyDown} type="text" className="welcome__inp-name" />
+        <div>
+          <input
+            ref={inputRef}
+            onChange={(e) => setName(e.target.value)}
+            onKeyDown={onKeyDown}
+            type="text"
+            className="welcome__inp-name"
+          />
+
+          <div className="welcome__enter-icon">
+            {name.length > 0 && (
+              <button type="button" onClick={submitProfile} className="fade-in">
+                <EnterIcon />
+              </button>
+            )}
+          </div>
+
+        </div>
+
       </div>
     );
   }
@@ -53,7 +80,7 @@ function Welcome() {
 
   return (
     <div className="welcome fade-in">
-      <div>
+      <div className="welcome__has-profile">
         <div className="welcome__message">
           {message}
           {' '}

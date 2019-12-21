@@ -24,4 +24,8 @@
   browser.browserAction.onClicked.addListener(() => {
     browser.tabs.create({ });
   });
+
+  browser.runtime.onInstalled.addListener(() => {
+    browser.tabs.create({ });
+  });
 })();
