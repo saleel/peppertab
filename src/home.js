@@ -1,17 +1,23 @@
 import React from 'react';
 import packageJson from '../package.json';
 import ThemeContext from './contexts/theme-context/theme-context';
+import Welcome from './components/welcome';
 import Notes from './components/notes';
 import TodoList from './components/todo-list';
-import Welcome from './components/welcome';
 import Calendar from './components/calendar';
+import Links from './components/links';
+import SyncInfo from './components/sync-info';
 import Background from './components/background';
 import Time from './components/time';
 import Weather from './components/weather';
-import Links from './components/links';
-import SyncInfo from './components/sync-info';
 import { Themes } from './constants';
 import './home.scss';
+
+// const Notes = React.lazy(() => import('./components/notes'));
+// const TodoList = React.lazy(() => import('./components/todo-list'));
+// const Calendar = React.lazy(() => import('./components/calendar'));
+// const Links = React.lazy(() => import('./components/links'));
+// const SyncInfo = React.lazy(() => import('./components/sync-info'));
 
 
 function Home() {
@@ -54,6 +60,7 @@ function Home() {
               </button>
             </div>
           )}
+
 
           <div className="home__todos flex mb-10 mt-10">
             <div className="w-1/2 px-5">
