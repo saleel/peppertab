@@ -1,3 +1,5 @@
+// @ts-check
+
 import React from 'react';
 import { differenceInSeconds } from 'date-fns';
 
@@ -19,63 +21,101 @@ const defaultBackgroundCache = {
   sourceUrl: 'https://unsplash.com/?utm_source=PepperTab&utm_medium=referral',
 };
 
-class Cache {
-  constructor() {
-    this.cacheDb = new PouchDB('cache');
-  }
+// class Cache {
+//   constructor() {
+//     this.cacheDb = new PouchDB('cache');
+//   }
 
-  async get(key) {
+//   async get(key) {
+//     let cachedData;
+
+//     try {
+//       cachedData = await this.cacheDb.get(key);
+//     } catch (error) {
+//       if (error.status === 404 && key === 'BACKGROUND') {
+//         cachedData = await this.cacheDb.post({
+//           _id: key,
+//           data: defaultBackgroundCache,
+//           storedAt: new Date('2019-01-01'), // An old date
+//         });
+
+//         cachedData = await this.cacheDb.get(key);
+//       }
+//     }
+
+//     return cachedData;
+//   }
+
+//   async set(key, data) {
+//     const newDoc = {
+//       _id: key,
+//       data,
+//       storedAt: new Date(),
+//     };
+
+//     try {
+//       const originalDoc = await this.cacheDb.get(key);
+//       // eslint-disable-next-line no-param-reassign
+//       newDoc._rev = originalDoc._rev;
+//       return this.cacheDb.put(newDoc);
+//     } catch (err) {
+//       if (err.status === 409) {
+//         return this.updateItem(data);
+//       } // new doc
+//       return this.cacheDb.put(newDoc);
+//     }
+//   }
+
+//   async delete(key) {
+//     try {
+//       const originalDoc = await this.cacheDb.get(key);
+//       await this.cacheDb.remove(originalDoc);
+//     } catch (error) {
+//       // eslint-disable-next-line no-console
+//       console.error(error);
+//     }
+//   }
+// }
+
+// const cache = new Cache();
+
+const cache = {
+  get(key) {
+    if (!key) return undefined;
+
     let cachedData;
 
     try {
-      cachedData = await this.cacheDb.get(key);
-    } catch (error) {
-      if (error.status === 404 && key === 'BACKGROUND') {
-        cachedData = await this.cacheDb.post({
-          _id: key,
-          data: defaultBackgroundCache,
-          storedAt: new Date('2019-01-01'), // An old date
-        });
-
-        cachedData = await this.cacheDb.get(key);
+      cachedData = window.localStorage.getItem(`cache-${key}`);
+      if (cachedData) {
+        cachedData = JSON.parse(cachedData);
       }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Cannot read cache', error);
     }
 
     return cachedData;
-  }
+  },
 
-  async set(key, data) {
+  set(key, data) {
     const newDoc = {
-      _id: key,
       data,
       storedAt: new Date(),
     };
 
     try {
-      const originalDoc = await this.cacheDb.get(key);
-      // eslint-disable-next-line no-param-reassign
-      newDoc._rev = originalDoc._rev;
-      return this.cacheDb.put(newDoc);
+      window.localStorage.setItem(`cache-${key}`, JSON.stringify(newDoc));
     } catch (err) {
-      if (err.status === 409) {
-        return this.updateItem(data);
-      } // new doc
-      return this.cacheDb.put(newDoc);
-    }
-  }
-
-  async delete(key) {
-    try {
-      const originalDoc = await this.cacheDb.get(key);
-      await this.cacheDb.remove(originalDoc);
-    } catch (error) {
       // eslint-disable-next-line no-console
-      console.error(error);
+      console.error('Cannot set cache', err);
     }
-  }
-}
+  },
 
-const cache = new Cache();
+  delete(key) {
+    window.localStorage.removeItem(`cache-${key}`);
+  },
+};
 
 
 /**
@@ -101,7 +141,12 @@ function usePromise(promise, options = {}) {
     conditions = [],
   } = options;
 
-  const [result, setResult] = React.useState(defaultValue);
+  let cachedData;
+  if (cacheKey) {
+    cachedData = cache.get(cacheKey);
+  }
+
+  const [result, setResult] = React.useState(cachedData ? cachedData.data : defaultValue);
   const [isFetching, setIsFetching] = React.useState(false);
   const [error, setError] = React.useState();
 
@@ -109,24 +154,10 @@ function usePromise(promise, options = {}) {
 
 
   async function fetch() {
-    let hasCacheData = false;
-
-    if (cacheKey) {
-      try {
-        const cachedData = await cache.get(cacheKey);
-
-        if (cachedData) {
-          hasCacheData = true;
-          setResult(cachedData.data);
-
-          if (cachedData.storedAt
-            && differenceInSeconds(new Date(), new Date(cachedData.storedAt)) < cachePeriodInSecs) {
-            return;
-          }
-        }
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error(e);
+    if (cachedData) {
+      if (cachedData.storedAt
+        && differenceInSeconds(new Date(), new Date(cachedData.storedAt)) < cachePeriodInSecs) {
+        return;
       }
     }
 
@@ -136,7 +167,7 @@ function usePromise(promise, options = {}) {
       const data = await promise();
       if (!didCancel) {
         // In some cases newly fetched data don't have to be updated (updateWithRevalidated = false)
-        if (updateWithRevalidated || !hasCacheData) {
+        if (updateWithRevalidated || cachedData === undefined) {
           setResult(data);
         }
 
