@@ -4,39 +4,9 @@
 @import './animations.scss';
 
 
-html, body {
-  height: 100%;
-  width: 100%;
-	padding: 0;
-  margin: 0;
-	background-color: var(--bg-color);
-	color: var(--text-color);
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
-	font-weight: 400;
-	font-size: 14px;
-	-webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  scroll-behavior: smooth;
-
-  --bg-color: #303133;
-  --text-color: #fff;
-  --card-bg-color: #fff;
-	--card-item-color: #f7f7f7;
-  --card-item-color-active: rgb(226, 226, 226);
-  --card-text-color: #303133;
-  --danger-color: #c0392b;
-}
-
-#root {
-	height: 100%;
-}
-
-
 button, input {
 	&:focus, &:active {
 		outline: none;
   }
-
-  // color: var(--text-color);
 }
 
