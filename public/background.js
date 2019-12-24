@@ -22,10 +22,10 @@
 
 
   browser.browserAction.onClicked.addListener(() => {
-    browser.tabs.create({ });
+    browser.tabs.create({ url: 'index.html' });
   });
 
   browser.runtime.onInstalled.addListener(() => {
-    browser.tabs.create({ });
+    browser.tabs.create({ url: 'index.html' });
   });
 })();

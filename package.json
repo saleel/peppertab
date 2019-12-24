@@ -28,7 +28,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint src",
     "watch": "cra-build-watch",
-    "package": "npm run build && zip -r peppertab.zip build && zip -r peppertab-src.zip src package.json"
+    "package": "npm run build && zip -r peppertab.zip build/* && zip -r peppertab-src.zip src/* package.json .env"
   },
   "eslintConfig": {
     "extends": "react-app"
