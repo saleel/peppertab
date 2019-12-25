@@ -28,6 +28,7 @@ function Background(props) {
       cacheKey: CacheKeys.background,
       updateWithRevalidated: false,
       cachePeriodInSecs: 60 * 10,
+      conditions: [theme === Themes.inspire],
     },
   );
 
@@ -57,11 +58,6 @@ function Background(props) {
     return () => { window.removeEventListener('scroll', onScroll); };
   }, [showImage]);
 
-
-  // React.useEffect(() => {
-  //   // Scroll to top on load
-  //   window.scrollTo(0, 1300);
-  // }, []);
 
   const nextTheme = theme === Themes.inspire ? 'Focus' : 'Inspire';
 
