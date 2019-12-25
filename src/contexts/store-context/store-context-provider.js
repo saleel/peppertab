@@ -61,6 +61,7 @@ function StoreContextProvider({ children }) {
       await Promise.all([
         syncDb(todoStore),
         syncDb(noteStore),
+        syncDb(linkStore),
       ]);
 
       setLastSyncTime(new Date());
