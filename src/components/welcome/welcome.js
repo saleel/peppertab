@@ -13,7 +13,12 @@ function Welcome() {
   const inputRef = React.useRef();
   const [name, setName] = React.useState('');
 
-  const [profile, { isFetching, reFetch }] = usePromise(() => generalStore.getProfile());
+  const [profile, { isFetching, reFetch }] = usePromise(
+    () => generalStore.getProfile(),
+    {
+      cacheKey: 'profile',
+    },
+  );
 
 
   React.useEffect(() => {

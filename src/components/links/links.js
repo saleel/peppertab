@@ -26,7 +26,8 @@ function Links() {
     },
     {
       dependencies: [numLinks],
-      cacheKey: 'LINKS',
+      cacheKey: 'links',
+      cachePeriodInSecs: 24 * 60 * 60,
     },
   );
 
