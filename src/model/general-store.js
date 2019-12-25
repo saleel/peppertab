@@ -108,9 +108,9 @@ class GeneralStore extends Store {
 
 
   /**
-   * @return {Promise<string>} theme
+   * @return {string} theme
    */
-  async getTheme() {
+  getTheme() {
     const theme = window.localStorage.getItem(LocalStorage.theme);
     const defaultTheme = Themes.focus;
 
@@ -126,7 +126,7 @@ class GeneralStore extends Store {
   /**
    * @param {string} theme
    */
-  async setTheme(theme) {
+  setTheme(theme) {
     window.localStorage.setItem(LocalStorage.theme, theme);
   }
 

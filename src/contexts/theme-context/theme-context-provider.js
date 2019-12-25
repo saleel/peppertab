@@ -8,25 +8,20 @@ import usePromise from '../../hooks/use-promise';
 function ThemeContextProvider({ children }) {
   const { generalStore } = React.useContext(StoreContext);
 
-  const [theme, { reFetch }] = usePromise(() => generalStore.getTheme());
+  const [updatedTime, setUpdatedTime] = React.useState();
 
-
-  React.useEffect(() => {
-    document.documentElement.className = theme;
-  }, [theme]);
+  const theme = generalStore.getTheme();
+  document.documentElement.className = theme;
 
 
   const value = {
     theme,
     changeTheme: async (newTheme) => {
       await generalStore.setTheme(newTheme);
-      await reFetch();
+      setUpdatedTime(new Date());
     },
   };
 
-  if (!theme) {
-    return null;
-  }
 
   return (
     <ThemeContext.Provider value={value}>
