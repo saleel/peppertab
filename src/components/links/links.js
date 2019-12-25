@@ -24,7 +24,10 @@ function Links() {
       }
       return linkStore.findLinks({ limit: numLinks });
     },
-    { dependencies: [numLinks] },
+    {
+      dependencies: [numLinks],
+      cacheKey: 'LINKS',
+    },
   );
 
   const showAdd = numLinks > (links || []).length;

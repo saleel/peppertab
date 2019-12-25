@@ -133,7 +133,7 @@ const cache = {
  * @template T
  * @param {(() => Promise<T>)} promise
  * @param {UsePromiseOptions} [options]
- * @returns {[T, { isFetching: boolean, isRefetching: boolean, reFetch: Function, error: Error }]}
+ * @returns {[T, { isFetching: boolean, reFetch: Function, error: Error }]}
  */
 function usePromise(promise, options = {}) {
   const {
@@ -208,9 +208,10 @@ function usePromise(promise, options = {}) {
   }, [...dependencies, ...conditions]);
 
 
-  async function reFetch() {
+  function reFetch() {
     if (cacheKey) {
-      await cache.delete(cacheKey);
+      cache.delete(cacheKey);
+      cachedData = undefined;
     }
     return fetch();
   }
