@@ -32,6 +32,7 @@ function Background(props) {
     },
   );
 
+
   const showImage = theme === Themes.inspire && !!background;
 
 
@@ -64,6 +65,10 @@ function Background(props) {
   return (
     <div ref={backgroundRef} className="background">
 
+      <div className="background__content">
+        {children}
+      </div>
+
       {showImage && (
         <>
           <div
@@ -86,10 +91,6 @@ function Background(props) {
           </div>
         </>
       )}
-
-      <div className="background__content">
-        {children}
-      </div>
 
       <div className="background__footer-icons background__hide-on-scroll fade-in fade-out">
 

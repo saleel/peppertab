@@ -17,6 +17,7 @@ function Welcome() {
     () => generalStore.getProfile(),
     {
       cacheKey: 'profile',
+      cachePeriodInSecs: 24 * 60 * 60,
     },
   );
 

@@ -2,13 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ThemeContext from './theme-context';
 import StoreContext from '../store-context';
-import usePromise from '../../hooks/use-promise';
 
 
 function ThemeContextProvider({ children }) {
   const { generalStore } = React.useContext(StoreContext);
 
-  const [updatedTime, setUpdatedTime] = React.useState();
+  const setUpdatedTime = React.useState()[1];
 
   const theme = generalStore.getTheme();
   document.documentElement.className = theme;

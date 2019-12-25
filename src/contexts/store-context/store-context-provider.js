@@ -20,8 +20,6 @@ function StoreContextProvider({ children }) {
 
   const { userSession, isLoggedIn } = React.useContext(AuthContext);
 
-  const isUserLoggedIn = isLoggedIn();
-
   const [isSyncing, setIsSyncing] = React.useState(false);
   const [lastSyncTime, setLastSyncTime] = React.useState(generalStore.getLastSyncTime());
   const [syncError, setSyncError] = React.useState();
@@ -54,7 +52,7 @@ function StoreContextProvider({ children }) {
     try {
       if (isSyncing) return;
 
-      if (!isUserLoggedIn) return;
+      if (!isLoggedIn()) return;
 
       setIsSyncing(true);
 
