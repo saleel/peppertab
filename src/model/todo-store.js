@@ -42,13 +42,18 @@ class TodoStore extends Store {
     return rows
       .map((row) => new Todo(row.doc))
       .sort((a, b) => {
-        // Sort completed items to end
-        const completedDiff = Number(a.isCompleted) - Number(b.isCompleted);
-        if (completedDiff !== 0) {
-          return completedDiff;
+        // If both are complete
+        if (a.isCompleted && b.isCompleted) {
+          return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
         }
 
-        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+        // If neither is complete
+        if (!a.isCompleted && !b.isCompleted) {
+          return new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime();
+        }
+
+        // Sort completed items to end
+        return Number(a.isCompleted) - Number(b.isCompleted);
       });
   }
 

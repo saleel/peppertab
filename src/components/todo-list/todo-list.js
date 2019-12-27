@@ -3,6 +3,7 @@
 import React from 'react';
 import EyeIcon from '@iconscout/react-unicons/icons/uil-eye';
 import EyeSlashIcon from '@iconscout/react-unicons/icons/uil-eye-slash';
+import Tooltip from 'rc-tooltip';
 import StoreContext from '../../contexts/store-context';
 import usePromise from '../../hooks/use-promise';
 import Todo from '../../model/todo';
@@ -19,7 +20,8 @@ function TodoList() {
   const todoListRef = React.useRef(null);
 
   const [newTodo, setNewTodo] = React.useState({ title: '' });
-  const [showCompleted, setShowCompleted] = React.useState(false);
+  const [showCompleted, setShowCompleted] = React.useState(true);
+
 
   const hasCompleted = todos && todos.some((t) => t.isCompleted);
 
@@ -29,7 +31,7 @@ function TodoList() {
       reFetch();
     }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastSyncTime]);
 
 
@@ -68,17 +70,26 @@ function TodoList() {
 
 
   const actions = !hasCompleted ? [] : [
-    showCompleted && (
-      <button key="completed" type="button" onClick={() => setShowCompleted(false)}>
-        <EyeSlashIcon size="20" />
-      </button>
+    (
+      <Tooltip
+        placement="left"
+        // eslint-disable-next-line react/jsx-one-expression-per-line
+        overlay={<div>{showCompleted ? 'Click to hide finished tasks' : 'Click to show finished tasks'}</div>}
+        arrowContent={<div className="rc-tooltip-arrow-inner" />}
+        overlayClassName="background__tooltip"
+      >
+        {showCompleted ? (
+          <button key="completed" type="button" onClick={() => setShowCompleted(false)}>
+            <EyeSlashIcon size="20" />
+          </button>
+        ) : (
+          <button key="completed" type="button" onClick={() => setShowCompleted(true)}>
+            <EyeIcon size="20" />
+          </button>
+        )}
+      </Tooltip>
     ),
-    !showCompleted && (
-      <button key="completed" type="button" onClick={() => setShowCompleted(true)}>
-        <EyeIcon size="20" />
-      </button>
-    ),
-  ].filter(Boolean);
+  ];
 
 
   const filteredTodos = showCompleted ? todos : todos.filter((t) => !t.isCompleted);
