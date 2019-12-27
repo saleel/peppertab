@@ -1,15 +1,24 @@
+@import "./styles/animations.scss";
+
 .home {
+  --bg-opacity: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background: var(--bg-color);
+  position: relative;
+  width: 100%;
+  height: 100%;
 
-  &__content {
+
+  &__widgets {
     // padding-bottom: 5rem;
     max-width: 900px;
     min-width: 800px;
     min-height: 500px;
     width: 85%;
+    margin: 0 auto;
   }
 
   &__welcome {
@@ -21,7 +30,7 @@
   }
 
   &__time {
-    position: absolute;
+    position: fixed;
     top: 0;
     right: 0;
     padding: 1rem 2rem;
@@ -65,7 +74,11 @@
 
   &.inspire {
     .home__welcome {
-      margin: calc(50vh - 5rem - 60px - 1rem) 0;
+      margin: calc(50vh - 5rem - 100px - 1rem) 0;
+    }
+
+    .home__links {
+      min-height: 200px;
     }
   }
 
@@ -82,4 +95,134 @@
   &__spacer {
     height: 100vh;
   }
+
+
+  &__hide-on-scroll {
+    display: var(--is-scrolled) !important;
+  }
+
+  &__image {
+    @include fade-in(0.5s);
+
+    opacity: var(--bg-opacity);
+    // filter: blur(calc((1 - var(--bg-opacity)) * 5px));
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  &__footer-icons {
+    opacity: var(--bg-opacity);
+  }
+
+ 
+  &__content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    transition: opacity 0.25s;
+  }
+
+
+  &__info {
+    position: fixed;
+    opacity: var(--bg-opacity);
+    z-index: 3;
+    bottom: 5px;
+    right: 5px;
+    padding: 5px;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1rem;
+    background-color: rgba(0, 0, 0, 0.5);
+    // min-height: 32px;
+
+    a {
+      text-decoration: underline;
+    }
+
+    .home__info-details {
+      padding: 0 5px;
+      // display: none;
+      flex-grow: 1;
+      max-width: 150px;
+      text-align: right;
+      white-space: nowrap;
+      cursor: default;
+
+      transition: max-width linear 0.1s;
+    }
+
+    .home__info-location {
+      font-size: 0.8rem;
+      text-transform: capitalize;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .home__info-user {
+      text-transform: capitalize;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 0.7rem;
+    }
+
+    &:hover {
+      width: auto;
+      background-color: rgba(0, 0, 0, 0.75);
+      
+      .home__info-details {
+        max-width: 500px;
+      }
+
+      .home__info-location .home__info-user {
+        overflow: auto;
+      }
+
+      & + .home__content {
+        opacity: 0;
+        z-index: 0;
+      }
+
+      & + .home__image {
+        z-index: 2;
+      }
+    }
+  }
+
+  &__image ~ &__content {
+    background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, calc(0.25 * var(--bg-opacity))) 0%,
+      rgba(0, 0, 0, calc(0.25 * var(--bg-opacity))) 50%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+
+  &__footer-icons {
+    display: flex;
+    position: fixed;
+    z-index: 3;
+    bottom: 5px;
+    left: 5px;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 3px;
+    border-radius: 3px;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.75);
+    }
+  }
+ 
 }

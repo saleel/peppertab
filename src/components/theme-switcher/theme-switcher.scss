@@ -1,0 +1,19 @@
+.theme-switcher {
+  &__button {
+    display: flex;
+  }
+
+
+  &__tooltip {
+    .rc-tooltip-inner {
+      font-size: 0.9rem;
+      background-color: rgba(0,0,0,0.9);
+      border-radius: 5px;
+      box-shadow: none;
+    }
+
+    .rc-tooltip-arrow {
+      border-right-color:rgba(0,0,0,0.9);
+    }
+  }
+}

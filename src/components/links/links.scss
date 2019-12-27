@@ -1,6 +1,8 @@
 	.links {
     width: 100%;
     padding: 0 1.25rem;
+    display: flex;
+    align-items: center;
 
 
     &__items {
@@ -8,7 +10,7 @@
       flex-direction: row;
       justify-content: space-between;
       flex-wrap: wrap;
-      margin: 0 -10px;
+      margin: 0 -5px;
 
       &::after {
         content: "";
@@ -22,7 +24,7 @@
       display: flex;
       flex-direction: column;
       height: 100px;
-      width: 100px;
+      width: 98px;
       background-color: var(--card-bg-color);
       font-size: 0.9rem;
       color: var(--card-text-color);
@@ -38,10 +40,6 @@
         .links__item-delete {
           display: block;
         }
-      }
-
-      &:last-child {
-        margin-right: 0;
       }
     }
 

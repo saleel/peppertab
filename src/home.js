@@ -7,11 +7,15 @@ import TodoList from './components/todo-list';
 import Calendar from './components/calendar';
 import Links from './components/links';
 // import SyncInfo from './components/sync-info';
-import Background from './components/background';
+// import Background from './components/background';
 import Time from './components/time';
 import Weather from './components/weather';
-import { Themes } from './constants';
+import { Themes, CacheKeys } from './constants';
+import StoreContext from './contexts/store-context/index';
+import usePromise from './hooks/use-promise';
+import ThemeSwitcher from './components/theme-switcher';
 import './home.scss';
+
 
 const Notes = React.lazy(() => import('./components/notes'));
 // const TodoList = React.lazy(() => import('./components/todo-list'));
@@ -21,20 +25,87 @@ const SyncInfo = React.lazy(() => import('./components/sync-info'));
 
 
 function Home() {
+  const { generalStore } = React.useContext(StoreContext);
   const { theme } = React.useContext(ThemeContext);
 
 
-  return (
-    <Background>
+  /** @type React.MutableRefObject<HTMLDivElement> */
+  const backgroundRef = React.useRef(null);
 
-      <div className={`home ${theme}`}>
+
+  const [background] = usePromise(
+    () => generalStore.getBackground(),
+    {
+      cacheKey: CacheKeys.background,
+      updateWithRevalidated: false,
+      cachePeriodInSecs: 60 * 10,
+      conditions: [theme === Themes.inspire],
+    },
+  );
+
+
+  const showImage = theme === Themes.inspire && !!background;
+
+
+  function onScroll() {
+    if (!backgroundRef.current) return;
+
+    const windowOffset = window.pageYOffset;
+    const contentOffset = window.innerHeight * 0.6;
+    const opacity = Math.min(1, windowOffset / contentOffset);
+
+    backgroundRef.current.style.setProperty('--bg-opacity', (1 - opacity).toString());
+    backgroundRef.current.style.setProperty('--is-scrolled', windowOffset > 10 ? 'none' : 'initial');
+  }
+
+
+  React.useEffect(() => {
+    if (showImage) {
+      window.removeEventListener('scroll', onScroll);
+      window.addEventListener('scroll', onScroll);
+    }
+
+    onScroll();
+
+    return () => { window.removeEventListener('scroll', onScroll); };
+  }, [showImage]);
+
+
+  return (
+    <div ref={backgroundRef} className={`home ${theme}`}>
+
+      {showImage && (
+        <>
+          <div
+            className="home__image"
+            style={{ backgroundImage: `url('${background.base64 || background.imageUrl}')` }}
+          />
+
+          <div className="home__info home__hide-on-scroll fade-in fade-out">
+            <div className="home__info-details">
+              <div className="home__info-location">
+                {background.location}
+              </div>
+              <div className="home__info-user">
+                <span>Photo by </span>
+                <a target="_blank" rel="noopener noreferrer" href={background.userUrl}>{background.user}</a>
+                <span> on </span>
+                <a target="_blank" rel="noopener noreferrer" href={background.sourceUrl}>{background.source}</a>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+
+      <div className="home__content">
 
         <div className="home__time">
           <Time />
           <Weather />
         </div>
 
-        <div className="home__content">
+        <div className="home__widgets">
 
           <div className="home__welcome flex">
             <div className="w-full px-5">
@@ -47,8 +118,8 @@ function Home() {
           </div>
 
 
-          {theme === Themes.inspire && (
-            <div className="home__scroll fade-in background__hide-on-scroll">
+          {/* {theme === Themes.inspire && (
+            <div className="home__scroll fade-in home__hide-on-scroll">
               <button
                 type="button"
                 onClick={() => {
@@ -59,7 +130,7 @@ function Home() {
                 <span />
               </button>
             </div>
-          )}
+          )} */}
 
 
           <div className="home__todos flex mb-10 mt-10">
@@ -91,22 +162,26 @@ function Home() {
 
                 <div>
                   <a target="_blank" rel="noopener noreferrer" href="https://clearbit.com">
-                Logos provided by Clearbit
+                    Logos provided by Clearbit
                   </a>
                   <span>  |  </span>
                   <a target="_blank" rel="noopener noreferrer" href="https://openweathermap.org">
-                Weather by OpenWeatherMap
+                    Weather by OpenWeatherMap
                   </a>
                 </div>
 
               </div>
             </>
           </React.Suspense>
-
         </div>
+
       </div>
 
-    </Background>
+      <div className="home__footer-icons home__hide-on-scroll fade-in fade-out">
+        <ThemeSwitcher />
+      </div>
+
+    </div>
   );
 }
 
