@@ -3,7 +3,9 @@
 import React from 'react';
 import EyeIcon from '@iconscout/react-unicons/icons/uil-eye';
 import EyeSlashIcon from '@iconscout/react-unicons/icons/uil-eye-slash';
+import EnterIcon from '@iconscout/react-unicons/icons/uil-enter';
 import Tooltip from 'rc-tooltip';
+import useLocalStorage from '../../hooks/use-local-storage';
 import StoreContext from '../../contexts/store-context';
 import usePromise from '../../hooks/use-promise';
 import Todo from '../../model/todo';
@@ -20,7 +22,7 @@ function TodoList() {
   const todoListRef = React.useRef(null);
 
   const [newTodo, setNewTodo] = React.useState({ title: '' });
-  const [showCompleted, setShowCompleted] = React.useState(true);
+  const [showCompleted, setShowCompleted] = useLocalStorage('TodoList.showCompleted', true);
 
 
   const hasCompleted = todos && todos.some((t) => t.isCompleted);
@@ -44,17 +46,22 @@ function TodoList() {
   }
 
 
+  async function saveNewTodo() {
+    if (!newTodo.title) return;
+
+    await todoStore.createTodo(new Todo(newTodo));
+    setNewTodo({ title: '' });
+    await reFetch();
+    todoListRef.current.scrollTop = todoListRef.current.scrollHeight;
+  }
+
+
   /**
    * @param {React.KeyboardEvent<HTMLInputElement>} e
    */
   async function onCreateKeyDown(e) {
     if (e.keyCode === 13) {
-      if (!newTodo.title) return;
-
-      await todoStore.createTodo(new Todo(newTodo));
-      setNewTodo({ title: '' });
-      await reFetch();
-      todoListRef.current.scrollTop = todoListRef.current.scrollHeight;
+      await saveNewTodo();
     }
   }
 
@@ -73,6 +80,7 @@ function TodoList() {
     (
       <Tooltip
         placement="left"
+        key="todo-visibility"
         // eslint-disable-next-line react/jsx-one-expression-per-line
         overlay={<div>{showCompleted ? 'Click to hide finished tasks' : 'Click to show finished tasks'}</div>}
         arrowContent={<div className="rc-tooltip-arrow-inner" />}
@@ -111,8 +119,15 @@ function TodoList() {
 
           {!isFetching && (filteredTodos.length === 0) && (
             <div className="todo-list__empty">
-              <div>Looks like everything is sorted out.</div>
-              <div>You can add more tasks in the form below.</div>
+              {hasCompleted ? (
+                <div>
+                  Looks like everything is sorted out.
+                  <br />
+                  You can add more Todos from the box below.
+                </div>
+              ) : (
+                <div>Create a new Todo by typing in the box below.</div>
+              )}
             </div>
           )}
         </div>
@@ -126,6 +141,19 @@ function TodoList() {
             onKeyDown={onCreateKeyDown}
             onChange={onCreateChange}
           />
+
+          <div className="todo-list__enter-icon fade-in">
+            {newTodo.title && newTodo.title.length > 0 && (
+              <button
+                title="Press Enter key to submit"
+                type="button"
+                className="fade-in"
+                onClick={saveNewTodo}
+              >
+                <EnterIcon />
+              </button>
+            )}
+          </div>
         </div>
 
       </div>

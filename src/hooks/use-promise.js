@@ -4,22 +4,22 @@ import React from 'react';
 import { differenceInSeconds } from 'date-fns';
 
 
-const PouchDB = require('pouchdb').default;
+// const PouchDB = require('pouchdb').default;
 
 
-const defaultBackgroundCache = {
-  id: 'oMpAz-DN-9I',
-  imageUrl: '/assets/bg.jpg',
-  color: '#6D4A43',
-  height: 3168,
-  width: 4752,
-  user: 'Greg Rakozy',
-  userUrl: 'https://unsplash.com/@grakozy?utm_source=PepperTab&utm_medium=referral',
-  location: 'Spiral Jetty, United States',
-  link: 'https://unsplash.com/@grakozy?utm_source=PepperTab&utm_medium=referral',
-  source: 'Unsplash',
-  sourceUrl: 'https://unsplash.com/?utm_source=PepperTab&utm_medium=referral',
-};
+// const defaultBackgroundCache = {
+//   id: 'oMpAz-DN-9I',
+//   imageUrl: '/assets/bg.jpg',
+//   color: '#6D4A43',
+//   height: 3168,
+//   width: 4752,
+//   user: 'Greg Rakozy',
+//   userUrl: 'https://unsplash.com/@grakozy?utm_source=PepperTab&utm_medium=referral',
+//   location: 'Spiral Jetty, United States',
+//   link: 'https://unsplash.com/@grakozy?utm_source=PepperTab&utm_medium=referral',
+//   source: 'Unsplash',
+//   sourceUrl: 'https://unsplash.com/?utm_source=PepperTab&utm_medium=referral',
+// };
 
 // class Cache {
 //   constructor() {

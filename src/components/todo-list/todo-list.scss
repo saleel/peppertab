@@ -19,6 +19,7 @@
     width: 100%;
     padding: 0.75rem;
     background-color: var(--card-item-color-active);
+    position: relative;
   }
 
   &__create-input {
@@ -45,5 +46,12 @@
     height: 100%;
     padding: 1rem;
     text-align: center;
+  }
+
+  &__enter-icon {
+    width: 2rem;
+    position: absolute;
+    top: 1.4rem;
+    right: 1rem;
   }
 }
