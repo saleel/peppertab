@@ -22,7 +22,7 @@ function Links() {
       if (generalStore.isTopSitesEnabled()) {
         return generalStore.findTopSites({ limit: numLinks });
       }
-      return linkStore.findLinks({ limit: numLinks });
+      return linkStore.findLinks({ });
     },
     {
       dependencies: [numLinks],
@@ -31,7 +31,8 @@ function Links() {
     },
   );
 
-  const showAdd = numLinks > (links || []).length;
+  console.log(numLinks, links);
+  const showAdd = true; // numLinks > (links || []).length;
 
 
   React.useEffect(() => {
@@ -55,6 +56,11 @@ function Links() {
     } catch (e) {
       // eslint-disable-next-line no-alert
       window.alert('Invalid URL');
+      return;
+    }
+
+    if (links.find((l) => l.url === url)) {
+      window.alert('URL already exist');
       return;
     }
 
@@ -116,18 +122,19 @@ function Links() {
   }
 
 
-  if (!links) {
-    return (
-      <div className="links" />
-    );
-  }
+  // if (!links) {
+  //   return (
+  //     <div className="links" />
+  //   );
+  // }
 
 
   return (
     <div className="links fade-in" ref={containerRef}>
 
-      <div className="links__items">
-        {links.map((link) => (
+      <div className="links__items flex content-start flex-wrap ">
+        
+        {(links || []).map((link) => (
           <a key={link.url} title={link.siteName} href={link.url} className="links__item">
             {renderImage(link)}
 

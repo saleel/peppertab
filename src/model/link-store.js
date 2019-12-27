@@ -41,8 +41,8 @@ class LinkStore extends Store {
     const { rows } = await this.db.allDocs({ include_docs: true });
     return rows
       .map((row) => new Link(row.doc))
-      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
-      .slice(0, limit);
+      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+    // .slice(0, limit);
   }
 
 
