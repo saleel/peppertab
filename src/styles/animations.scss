@@ -42,22 +42,30 @@
 }
 
 
-@mixin fade-in($duration) {
+@mixin fade-in($duration, $delay: 0s) {
   animation: fadeIn ease $duration;
   -webkit-animation: fadeIn ease $duration;
   -moz-animation: fadeIn ease $duration;
   -o-animation: fadeIn ease $duration;
   -ms-animation: fadeIn ease $duration;
+
+  animation-delay: $delay;
 }
 
-@mixin fade-out($duration) {
+@mixin fade-out($duration, $delay: 0s) {
   animation: fadeOut ease $duration;
   -webkit-animation: fadeOut ease $duration;
   -moz-animation: fadeOut ease $duration;
   -o-animation: fadeOut ease $duration;
   -ms-animation: fadeOut ease $duration;
+
+  animation-delay: $delay;
 }
 
 .fade-in {
   @include fade-in(0.25s);
+}
+
+.fade-out {
+  @include fade-out(0.25s);
 }

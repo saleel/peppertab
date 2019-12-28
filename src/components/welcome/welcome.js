@@ -58,7 +58,7 @@ function Welcome() {
 
   if (!profile) {
     return (
-      <div className="welcome welcome__no-profile fade-in">
+      <div className="welcome welcome__no-profile">
         <span className="welcome__message">Hello there, what is your name?</span>
         <div>
           <input
@@ -85,7 +85,7 @@ function Welcome() {
 
 
   return (
-    <div className="welcome fade-in">
+    <div className="welcome">
       <div className="welcome__has-profile">
         <div className="welcome__message">
           {message}

@@ -29,6 +29,9 @@ function Home() {
   const { theme } = React.useContext(ThemeContext);
 
 
+  const [isScrolled, setIsScrolled] = React.useState(window.pageYOffset > 10);
+
+
   /** @type React.MutableRefObject<HTMLDivElement> */
   const backgroundRef = React.useRef(null);
 
@@ -47,28 +50,35 @@ function Home() {
   const showImage = theme === Themes.inspire && !!background;
 
 
-  function onScroll() {
-    if (!backgroundRef.current) return;
-
-    const windowOffset = window.pageYOffset;
-    const contentOffset = window.innerHeight * 0.6;
-    const opacity = Math.min(1, windowOffset / contentOffset);
-
-    backgroundRef.current.style.setProperty('--bg-opacity', (1 - opacity).toString());
-    backgroundRef.current.style.setProperty('--is-scrolled', windowOffset > 10 ? 'none' : 'initial');
-  }
-
-
   React.useEffect(() => {
+    if (!backgroundRef.current) return null;
+
+    function onScroll() {
+      const windowOffset = window.pageYOffset;
+      const contentOffset = window.innerHeight * 0.6;
+      const opacity = Math.min(1, windowOffset / contentOffset);
+
+      backgroundRef.current.style.setProperty('--bg-opacity', (1 - opacity).toString());
+
+      if (windowOffset > 10 && !isScrolled) {
+        setIsScrolled(true);
+      }
+
+      if (windowOffset < 10 && isScrolled) {
+        setIsScrolled(false);
+      }
+    }
+
+
     if (showImage) {
       window.removeEventListener('scroll', onScroll);
       window.addEventListener('scroll', onScroll);
+
+      onScroll();
     }
 
-    onScroll();
-
     return () => { window.removeEventListener('scroll', onScroll); };
-  }, [showImage]);
+  }, [isScrolled, showImage]);
 
 
   return (
@@ -81,19 +91,21 @@ function Home() {
             style={{ backgroundImage: `url('${background.base64 || background.imageUrl}')` }}
           />
 
-          <div className="home__info home__hide-on-scroll fade-in fade-out">
-            <div className="home__info-details">
-              <div className="home__info-location">
-                {background.location}
-              </div>
-              <div className="home__info-user">
-                <span>Photo by </span>
-                <a target="_blank" rel="noopener noreferrer" href={background.userUrl}>{background.user}</a>
-                <span> on </span>
-                <a target="_blank" rel="noopener noreferrer" href={background.sourceUrl}>{background.source}</a>
+          {!isScrolled && (
+            <div className="home__info fade-in">
+              <div className="home__info-details">
+                <div className="home__info-location">
+                  {background.location}
+                </div>
+                <div className="home__info-user">
+                  <span>Photo by </span>
+                  <a target="_blank" rel="noopener noreferrer" href={background.userUrl}>{background.user}</a>
+                  <span> on </span>
+                  <a target="_blank" rel="noopener noreferrer" href={background.sourceUrl}>{background.source}</a>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </>
       )}
 
@@ -107,31 +119,29 @@ function Home() {
 
         <div className="home__widgets">
 
-          <div className="home__welcome flex">
+          <div className="home__welcome">
             <div className="w-full px-5">
               <Welcome />
             </div>
           </div>
 
-          <div className="home__links flex">
+          <div className="home__links">
             <Links />
           </div>
 
-
-          {/* {theme === Themes.inspire && (
-            <div className="home__scroll fade-in home__hide-on-scroll">
+          <div className="home__scroll fade-in">
+            {(theme === Themes.inspire) && !isScrolled && (
               <button
                 type="button"
                 onClick={() => {
-                  const todosDiv = document.getElementsByClassName('home__scroll')[0];
-                  todosDiv.scrollIntoView();
+                  const scrollEl = document.getElementsByClassName('home__scroll')[0];
+                  scrollEl.scrollIntoView();
                 }}
               >
                 <span />
               </button>
-            </div>
-          )} */}
-
+            )}
+          </div>
 
           <div className="home__todos flex mb-10 mt-10">
             <div className="w-1/2 px-5">
@@ -177,9 +187,12 @@ function Home() {
 
       </div>
 
-      <div className="home__footer-icons home__hide-on-scroll fade-in fade-out">
-        <ThemeSwitcher />
-      </div>
+
+      {!isScrolled && (
+        <div className="home__theme-switcher fade-in">
+          <ThemeSwitcher />
+        </div>
+      )}
 
     </div>
   );

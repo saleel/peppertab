@@ -22,7 +22,7 @@ function Links() {
       if (generalStore.isTopSitesEnabled()) {
         return generalStore.findTopSites({ limit: numLinks });
       }
-      return linkStore.findLinks({ });
+      return linkStore.findLinks();
     },
     {
       dependencies: [numLinks],
@@ -31,7 +31,6 @@ function Links() {
     },
   );
 
-  console.log(numLinks, links);
   const showAdd = true; // numLinks > (links || []).length;
 
 
@@ -133,7 +132,7 @@ function Links() {
     <div className="links fade-in" ref={containerRef}>
 
       <div className="links__items flex content-start flex-wrap ">
-        
+
         {(links || []).map((link) => (
           <a key={link.url} title={link.siteName} href={link.url} className="links__item">
             {renderImage(link)}
