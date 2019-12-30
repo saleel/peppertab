@@ -10,7 +10,7 @@ import './sync-info.scss';
 
 
 function Sync() {
-  const { isLoggedIn } = React.useContext(AuthContent);
+  const { userSession, isLoggedIn, logout } = React.useContext(AuthContent);
   const { lastSyncTime, syncError, isSyncing } = React.useContext(StoreContext);
 
 
@@ -38,9 +38,10 @@ function Sync() {
 
   const isUserLoggedIn = isLoggedIn();
 
+  const userName = userSession.isUserSignedIn() && userSession.loadUserData().username;
 
   const syncInfo = (
-    <>
+    <div className="sync-info__time">
       {isSyncing && (
         <>
           <SyncIcon className="sync-info__syncing" size="18" />
@@ -61,33 +62,48 @@ function Sync() {
           <div className="sync-info__message">Error occurred in sync</div>
         </>
       )}
-    </>
+    </div>
   );
 
 
   return (
     <>
-      <Card>
-        <div className="sync-info">
+      {/* <Card> */}
+      <div className="sync-info">
 
-          {!isUserLoggedIn && (
-            <>
-              <span>Store your Notes and Todos securely and sync across browsers.</span>
+        {!isUserLoggedIn && (
+          <>
+            <div>Store your Notes and Todos securely and sync across browsers. Login to get started → </div>
+
+            <button
+              className="sync-info__btn-login"
+              type="button"
+              onClick={() => onButtonClick()}
+            >
+                Login with Blockstack
+            </button>
+          </>
+        )}
+
+        {isUserLoggedIn && (
+          <>
+            {syncInfo}
+
+            <div className="sync-info__user-info">
+              <span>Syncing to </span>
+              <span className="mr-2">{userName}</span>
               <button
                 className="sync-info__btn-login"
                 type="button"
-                onClick={() => onButtonClick()}
+                onClick={() => logout()}
               >
-                Login
+                Logout
               </button>
-              <span>to get started.</span>
-            </>
-          )}
+            </div>
+          </>
+        )}
 
-          {isUserLoggedIn && syncInfo}
-
-        </div>
-      </Card>
+      </div>
 
       <LoginModal isOpen={showLoginPrompt} onRequestClose={() => setShowLoginPrompt(false)} />
     </>

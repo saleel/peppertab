@@ -2,9 +2,12 @@
   font-weight: 500;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   height: 40px;
-  padding: 0 1rem;
-  background-color: var(--card-item-color);
+  padding: 0 0.5rem 0 0.75rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  // background-color: var(--card-item-color);
 
   &__message {
     margin: 0 0.5rem;
@@ -21,13 +24,22 @@
     padding: 0.5rem 1rem;
     font-weight: 500;
     line-height: 1rem;
-    background-color: var(--card-item-color-active);
+    background-color: rgba(255, 255, 255, 0.3);
     border-radius: 3px;
     opacity: 1;
-    margin: 0 0.5rem;
+    // margin-left: 0.5rem;
 
     &:hover {
-      opacity: 0.9;
+     background-color: rgba(255, 255, 255, 0.4);
     }
+  }
+
+  &__time {
+    display: flex;
+    align-items: center;
+  }
+
+  &__user-info {
+    font-size: 0.9rem;
   }
 }

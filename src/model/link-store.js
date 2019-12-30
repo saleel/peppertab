@@ -37,7 +37,7 @@ class LinkStore extends Store {
   /**
    * @returns {Promise<Array<Link>>} All links
    */
-  async findLinks({ limit }) {
+  async findLinks() {
     const { rows } = await this.db.allDocs({ include_docs: true });
     return rows
       .map((row) => new Link(row.doc))
