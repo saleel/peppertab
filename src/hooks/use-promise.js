@@ -86,7 +86,7 @@ const cache = {
     let cachedData;
 
     try {
-      cachedData = window.localStorage.getItem(`cache-${key}`);
+      cachedData = window.localStorage.getItem(`cache.${key}`);
       if (cachedData) {
         cachedData = JSON.parse(cachedData);
       }
@@ -105,7 +105,7 @@ const cache = {
     };
 
     try {
-      window.localStorage.setItem(`cache-${key}`, JSON.stringify(newDoc));
+      window.localStorage.setItem(`cache.${key}`, JSON.stringify(newDoc));
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error('Cannot set cache', err);
@@ -113,7 +113,7 @@ const cache = {
   },
 
   delete(key) {
-    window.localStorage.removeItem(`cache-${key}`);
+    window.localStorage.removeItem(`cache.${key}`);
   },
 };
 

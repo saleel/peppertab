@@ -43,7 +43,7 @@ function Home() {
     () => generalStore.getBackground(),
     {
       cacheKey: CacheKeys.background,
-      updateWithRevalidated: false,
+      updateWithRevalidated: true,
       cachePeriodInSecs: 60 * 10,
       conditions: [theme === Themes.inspire],
     },
@@ -85,7 +85,9 @@ function Home() {
 
 
   function onRefreshClick() {
-    reload();
+    if (!isFetching) {
+      reload();
+    }
   }
 
 
@@ -110,7 +112,7 @@ function Home() {
                 mouseEnterDelay={0.5}
               >
                 <button
-                  disabled={isFetching}
+                  // disabled={isFetching}
                   type="button"
                   onClick={onRefreshClick}
                   className="home__bg-change fade-in"
@@ -119,12 +121,12 @@ function Home() {
                 </button>
               </Tooltip>
 
-              <div className="home__info fade-in" onMouseEnter={() => setShowContent(false)} onMouseLeave={() => setShowContent(true)}>
-                <div className="home__info-details">
-                  <div className="home__info-location">
+              <div className="home__bg-info fade-in" onMouseEnter={() => setShowContent(false)} onMouseLeave={() => setShowContent(true)}>
+                <div className="home__bg-info-details">
+                  <div className="home__bg-info-location">
                     {background.location}
                   </div>
-                  <div className="home__info-user">
+                  <div className="home__bg-info-user">
                     <span>Photo by </span>
                     <a target="_blank" rel="noopener noreferrer" href={background.userUrl}>{background.user}</a>
                     <span> on </span>

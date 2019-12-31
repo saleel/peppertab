@@ -109,33 +109,6 @@
     margin-bottom: 0;
   }
 
-  &.inspire {
-    .home__welcome {
-      // margin: calc(50vh - 5rem - 120px - 1rem) 0;
-      min-height: calc(100vh - 220px - 4rem);
-    }
-
-    .home__links {
-      min-height: 220px;
-      margin-bottom: 1rem;
-    }
-  }
-
-  &.focus {
-    .home__welcome {
-      min-height: 24rem;
-    }
-
-    .home__links {
-      margin-bottom: 2rem;
-    }
-
-    .home__scroll {
-      height: 0;
-      margin-bottom: 0;
-    }
-  }
-
   &__spacer {
     height: 100vh;
   }
@@ -203,7 +176,7 @@
     }
   }
  
-  &__info {
+  &__bg-info {
     opacity: var(--bg-opacity);
     padding: 5px;
     border-radius: 3px;
@@ -212,48 +185,77 @@
     align-items: center;
     line-height: 1rem;
     background-color: rgba(0, 0, 0, 0.5);
+    min-height: 30px;
 
     a {
       text-decoration: underline;
     }
+  }
 
-    .home__info-details {
-      padding: 0 5px;
-      flex-grow: 1;
-      max-width: 150px;
-      text-align: right;
-      white-space: nowrap;
-      cursor: default;
+  &__bg-info-details {
+    padding: 0 5px;
+    flex-grow: 1;
+    max-width: 150px;
+    text-align: right;
+    white-space: nowrap;
+    cursor: default;
 
-      transition: max-width linear 0.1s;
+    transition: max-width linear 0.1s;
+  }
+
+  &__bg-info-location {
+    font-size: 0.8rem;
+    text-transform: capitalize;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__bg-info-user {
+    text-transform: capitalize;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.7rem;
+  }
+
+
+  &.inspire {
+    .home__welcome {
+      // margin: calc(50vh - 5rem - 120px - 1rem) 0;
+      min-height: calc(100vh - 220px - 4rem);
     }
 
-    .home__info-location {
-      font-size: 0.8rem;
-      text-transform: capitalize;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .home__links {
+      min-height: 220px;
+      margin-bottom: 1rem;
+    }
+  }
+
+  &.focus {
+    .home__welcome {
+      min-height: 24rem;
     }
 
-    .home__info-user {
-      text-transform: capitalize;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-size: 0.7rem;
+    .home__links {
+      margin-bottom: 2rem;
+    }
+
+    .home__scroll {
+      height: 0;
+      margin-bottom: 0;
     }
   }
 
   &--hide-content {
-    .home__info {
+    .home__bg-info {
       width: auto;
       background-color: rgba(0, 0, 0, 0.75);
     }
       
-    .home__info-details {
+    .home__bg-info-details {
       max-width: 500px;
     }
 
-    .home__info-location .home__info-user {
+    .home__bg-info-location .home__bg-info-user {
       overflow: auto;
     }
 
