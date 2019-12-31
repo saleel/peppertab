@@ -133,7 +133,7 @@ const cache = {
  * @template T
  * @param {(() => Promise<T>)} promise
  * @param {UsePromiseOptions} [options]
- * @returns {[T, { isFetching: boolean, reFetch: Function, reload: Function, error: Error }]}
+ * @returns {[T, { isFetching: boolean, reFetch: Function, error: Error }]}
  */
 function usePromise(promise, options = {}) {
   const {
@@ -217,16 +217,8 @@ function usePromise(promise, options = {}) {
   }
 
 
-  function reload() {
-    if (cachedData) {
-      setResult(cachedData.data);
-    }
-    return reFetch();
-  }
-
-
   return [result, {
-    isFetching, reFetch, error, reload,
+    isFetching, reFetch, error,
   }];
 }
 

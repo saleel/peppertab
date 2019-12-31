@@ -39,7 +39,7 @@ function Home() {
   const backgroundRef = React.useRef(null);
 
 
-  const [background, { reload, isFetching }] = usePromise(
+  const [background, { reFetch, isFetching }] = usePromise(
     () => generalStore.getBackground(),
     {
       cacheKey: CacheKeys.background,
@@ -86,7 +86,7 @@ function Home() {
 
   function onRefreshClick() {
     if (!isFetching) {
-      reload();
+      reFetch();
     }
   }
 
