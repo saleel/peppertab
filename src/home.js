@@ -1,4 +1,5 @@
 import React from 'react';
+import RefreshIcon from '@iconscout/react-unicons/icons/uil-sync';
 import packageJson from '../package.json';
 import ThemeContext from './contexts/theme-context/theme-context';
 import Welcome from './components/welcome';
@@ -15,6 +16,7 @@ import StoreContext from './contexts/store-context/index';
 import usePromise from './hooks/use-promise';
 import ThemeSwitcher from './components/theme-switcher';
 import './home.scss';
+import Tooltip from 'rc-tooltip';
 
 
 const Notes = React.lazy(() => import('./components/notes'));
@@ -30,13 +32,14 @@ function Home() {
 
 
   const [isScrolled, setIsScrolled] = React.useState(window.pageYOffset > 10);
+  const [showContent, setShowContent] = React.useState(true);
 
 
   /** @type React.MutableRefObject<HTMLDivElement> */
   const backgroundRef = React.useRef(null);
 
 
-  const [background] = usePromise(
+  const [background, { reload, isFetching }] = usePromise(
     () => generalStore.getBackground(),
     {
       cacheKey: CacheKeys.background,
@@ -81,8 +84,13 @@ function Home() {
   }, [isScrolled, showImage]);
 
 
+  function onRefreshClick() {
+    reload();
+  }
+
+
   return (
-    <div ref={backgroundRef} className={`home ${theme}`}>
+    <div ref={backgroundRef} className={`home ${theme} ${!showContent ? 'home--hide-content' : ''}`}>
 
       {showImage && (
         <>
@@ -92,18 +100,39 @@ function Home() {
           />
 
           {!isScrolled && (
-            <div className="home__info fade-in">
-              <div className="home__info-details">
-                <div className="home__info-location">
-                  {background.location}
-                </div>
-                <div className="home__info-user">
-                  <span>Photo by </span>
-                  <a target="_blank" rel="noopener noreferrer" href={background.userUrl}>{background.user}</a>
-                  <span> on </span>
-                  <a target="_blank" rel="noopener noreferrer" href={background.sourceUrl}>{background.source}</a>
+            <div className="home__bg-buttons">
+
+              <Tooltip
+                placement="left"
+                overlay={<div>Change background image</div>}
+                arrowContent={<div className="rc-tooltip-arrow-inner" />}
+                overlayClassName="home__bg-change-tooltip fade-in"
+                mouseEnterDelay={0.5}
+              >
+                <button
+                  disabled={isFetching}
+                  type="button"
+                  onClick={onRefreshClick}
+                  className="home__bg-change fade-in"
+                >
+                  <RefreshIcon className={isFetching ? 'home__bg-change--loading' : ''} size="18" />
+                </button>
+              </Tooltip>
+
+              <div className="home__info fade-in" onMouseEnter={() => setShowContent(false)} onMouseLeave={() => setShowContent(true)}>
+                <div className="home__info-details">
+                  <div className="home__info-location">
+                    {background.location}
+                  </div>
+                  <div className="home__info-user">
+                    <span>Photo by </span>
+                    <a target="_blank" rel="noopener noreferrer" href={background.userUrl}>{background.user}</a>
+                    <span> on </span>
+                    <a target="_blank" rel="noopener noreferrer" href={background.sourceUrl}>{background.source}</a>
+                  </div>
                 </div>
               </div>
+
             </div>
           )}
         </>
@@ -186,7 +215,6 @@ function Home() {
         </div>
 
       </div>
-
 
       {!isScrolled && (
         <div className="home__theme-switcher fade-in">

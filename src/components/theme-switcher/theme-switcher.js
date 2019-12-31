@@ -23,20 +23,21 @@ function ThemeSwitcher() {
         // eslint-disable-next-line react/jsx-one-expression-per-line
       overlay={<div>Switch to {nextTheme} mode</div>}
       arrowContent={<div className="rc-tooltip-arrow-inner" />}
-      overlayClassName="theme-switcher__tooltip"
+      overlayClassName="theme-switcher__tooltip fade-in"
+      mouseEnterDelay={0.25}
     >
       <div className="theme-switcher__button">
 
         {(theme === Themes.inspire) && (
-        <button type="button" onClick={() => changeTheme(Themes.focus)}>
-          <FocusIcon color="#fff" size="20" />
-        </button>
+          <button type="button" onClick={() => changeTheme(Themes.focus)}>
+            <FocusIcon color="#fff" size="20" />
+          </button>
         )}
 
         {(theme === Themes.focus) && (
-        <button type="button" onClick={() => changeTheme(Themes.inspire)}>
-          <CameraIcon size="20" />
-        </button>
+          <button type="button" onClick={() => changeTheme(Themes.inspire)}>
+            <CameraIcon size="20" />
+          </button>
         )}
 
       </div>
