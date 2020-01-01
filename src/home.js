@@ -46,8 +46,8 @@ function Home() {
     {
       cacheKey: CacheKeys.background,
       updateWithRevalidated: true,
-      cachePeriodInSecs: 60 * 10,
-      conditions: [theme === Themes.inspire],
+      cachePeriodInSecs: theme === Themes.inspire ? (60 * 10) : (24 * 60 * 60),
+      // conditions: [theme === Themes.inspire],
     },
   );
 
