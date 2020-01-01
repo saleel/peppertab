@@ -1,41 +1,42 @@
 import React from 'react';
 import EnterIcon from '@iconscout/react-unicons/icons/uil-enter';
-import StoreContext from '../../contexts/store-context';
 import { getMessagePrefix } from './welcome.utils';
-import usePromise from '../../hooks/use-promise';
+import useLocalStorage from '../../hooks/use-local-storage';
+import { SettingKeys } from '../../constants';
 import './welcome.scss';
 
 
 function Welcome() {
-  const { generalStore } = React.useContext(StoreContext);
   const message = getMessagePrefix();
 
   const inputRef = React.useRef();
-  const [name, setName] = React.useState('');
+  const [name, setName] = useLocalStorage(SettingKeys.name, '');
 
-  const [profile, { isFetching, reFetch }] = usePromise(
-    () => generalStore.getProfile(),
-    {
-      cacheKey: 'profile',
-      cachePeriodInSecs: 24 * 60 * 60,
+
+  const setInputFocus = React.useCallback(
+    () => {
+      if (name) return;
+
+      if (inputRef.current) {
+        inputRef.current.focus();
+      } else {
+        setTimeout(() => {
+          setInputFocus();
+        }, 500);
+      }
     },
+    [name],
   );
 
-
   React.useEffect(() => {
-    const interval = setInterval(() => {
-      if (!profile && inputRef.current) {
-        inputRef.current.focus();
-      }
-    }, 1000);
-
-    return () => { clearInterval(interval); };
-  }, [profile]);
+    setInputFocus();
+  }, [setInputFocus, name]);
 
 
-  async function submitProfile() {
-    await generalStore.setProfile({ name });
-    reFetch();
+  function submitProfile() {
+    if (inputRef.current) {
+      setName(inputRef.current.value);
+    }
   }
 
 
@@ -49,21 +50,13 @@ function Welcome() {
   }
 
 
-  if (isFetching) {
-    return (
-      <div className="welcome welcome__no-profile" />
-    );
-  }
-
-
-  if (!profile) {
+  if (!name) {
     return (
       <div className="welcome welcome__no-profile">
         <span className="welcome__message">Hello there, what is your name?</span>
         <div>
           <input
             ref={inputRef}
-            onChange={(e) => setName(e.target.value)}
             onKeyDown={onKeyDown}
             type="text"
             className="welcome__inp-name"
@@ -90,7 +83,7 @@ function Welcome() {
         <div className="welcome__message">
           {message}
           {' '}
-          <span className="welcome__name">{profile.name}</span>
+          <span className="welcome__name">{name}</span>
         </div>
       </div>
     </div>

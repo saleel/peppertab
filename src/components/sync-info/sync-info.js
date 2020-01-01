@@ -5,7 +5,6 @@ import SyncSlashIcon from '@iconscout/react-unicons/icons/uil-sync-slash';
 import AuthContent from '../../contexts/auth-context';
 import StoreContext from '../../contexts/store-context';
 import LoginModal from '../login-modal';
-import Card from '../card';
 import './sync-info.scss';
 
 

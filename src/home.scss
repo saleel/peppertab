@@ -28,6 +28,8 @@
     z-index: 1;
     background-repeat: no-repeat;
     background-size: cover;
+    background-position: center;
+    transition: background-image 0.2s ease-in-out;
   }
 
   &__image ~ &__content {
@@ -113,18 +115,44 @@
     height: 100vh;
   }
 
-  &__theme-switcher {
+  &__settings {
+    cursor: pointer;
+  }
+
+  &__settings-tooltip {
+    opacity: 1;
+    left: 10px !important;
+
+    .rc-tooltip-inner {
+      padding: 0;
+      background-color: transparent;
+      box-shadow: none;
+      border-radius: 5px;
+    }
+
+    .rc-tooltip-arrow {
+      left: 15px;
+      border-top-color: rgba(0, 0, 0, 0.9);
+    }
+  }
+
+  &__theme-switcher, &__settings {
     position: fixed;
     background-color: rgba(0, 0, 0, 0.5);
     padding: 3px;
-    left: 5px;
-    bottom: 5px;
+    left: 10px;
+    bottom: 10px;
     border-radius: 3px;
     z-index: 3;
+    height: 26px;
 
     &:hover {
       background-color: rgba(0, 0, 0, 0.75);
     }
+  }
+
+  &__theme-switcher {
+    left: 3.4rem;
   }
 
   &__bg-buttons {

@@ -2,8 +2,8 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import './todo-item.scss';
 import Todo from '../../model/todo';
+import './todo-item.scss';
 
 
 /**

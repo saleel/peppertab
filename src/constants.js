@@ -13,6 +13,13 @@ export const Themes = { inspire: 'inspire', focus: 'focus' };
 export const LocalStorage = { theme: 'theme', visibility: 'visibility', lastSyncTime: 'last-sync-time' };
 export const CacheKeys = { calendar: 'calendar', background: 'background', weather: 'weather' };
 
+export const SettingKeys = {
+  name: 'settings.name',
+  weatherUnit: 'settings.weatherUnit',
+  weatherLocation: 'settings.weatherLocation',
+  timeFormat: 'settings.timeFormat',
+};
+
 
 export const Browser = window.browser || window.chrome;
 export const isChromeExtension = window.location.protocol === 'chrome-extension:';

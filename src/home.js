@@ -1,9 +1,12 @@
 import React from 'react';
 import RefreshIcon from '@iconscout/react-unicons/icons/uil-sync';
+import SettingsIcon from '@iconscout/react-unicons/icons/uil-cog';
+import Tooltip from 'rc-tooltip';
 import packageJson from '../package.json';
 import ThemeContext from './contexts/theme-context/theme-context';
 import Welcome from './components/welcome';
 // import Notes from './components/notes';
+import Settings from './components/settings';
 import TodoList from './components/todo-list';
 import Calendar from './components/calendar';
 import Links from './components/links';
@@ -16,7 +19,6 @@ import StoreContext from './contexts/store-context/index';
 import usePromise from './hooks/use-promise';
 import ThemeSwitcher from './components/theme-switcher';
 import './home.scss';
-import Tooltip from 'rc-tooltip';
 
 
 const Notes = React.lazy(() => import('./components/notes'));
@@ -112,7 +114,6 @@ function Home() {
                 mouseEnterDelay={0.5}
               >
                 <button
-                  // disabled={isFetching}
                   type="button"
                   onClick={onRefreshClick}
                   className="home__bg-change fade-in"
@@ -221,6 +222,19 @@ function Home() {
       {!isScrolled && (
         <div className="home__theme-switcher fade-in">
           <ThemeSwitcher />
+        </div>
+      )}
+
+      {!isScrolled && (
+        <div className="home__settings fade-in">
+          <Tooltip
+            placement="top"
+            overlay={<Settings />}
+            overlayClassName="home__settings-tooltip fade-in"
+            trigger="click"
+          >
+            <SettingsIcon color="#fff" size="20" />
+          </Tooltip>
         </div>
       )}
 

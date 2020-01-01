@@ -2,7 +2,8 @@ import React from 'react';
 import usePromise from '../../hooks/use-promise';
 import StoreContext from '../../contexts/store-context';
 import './weather.scss';
-import { CacheKeys, isWebApp } from '../../constants';
+import { CacheKeys, isWebApp, SettingKeys } from '../../constants';
+import useLocalStorage from '../../hooks/use-local-storage';
 
 
 function Weather() {
@@ -11,6 +12,8 @@ function Weather() {
   const isWeatherEnabled = generalStore.isWeatherEnabled();
 
   const [tryWeather, setTryWeather] = React.useState();
+
+  const [weatherUnit] = useLocalStorage(SettingKeys.weatherUnit, 'C');
 
 
   const [weatherInfo] = usePromise(
@@ -66,13 +69,22 @@ function Weather() {
     city, temperature, sky,
   } = weatherInfo;
 
+  let tempDisplay = temperature;
+
+
+  if (weatherUnit === 'F') {
+    tempDisplay = `${(temperature * (9 / 5)) + 32} °F`;
+  } else {
+    tempDisplay = `${temperature} °C`;
+  }
+
 
   return (
     <div className="weather fade-in">
 
       <span className="weather__temperature">
-        {temperature.toFixed(1)}
-        {'°C '}
+        {tempDisplay}
+        {' '}
         {sky}
       </span>
 

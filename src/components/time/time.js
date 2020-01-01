@@ -1,11 +1,14 @@
 import React from 'react';
 import { format } from 'date-fns';
 import useInterval from '../../hooks/use-interval';
+import { SettingKeys } from '../../constants';
+import useLocalStorage from '../../hooks/use-local-storage';
 import './time.scss';
 
 
 function Time() {
   const [time, setTime] = React.useState(new Date());
+  const [timeFormat] = useLocalStorage(SettingKeys.timeFormat, '24');
 
 
   useInterval(() => {
@@ -13,8 +16,13 @@ function Time() {
   }, 1000);
 
 
-  const hours = format(time, 'HH:mm');
-  const seconds = format(time, 'ss');
+  let hours = format(time, 'HH:mm');
+  let seconds = format(time, 'ss');
+
+  if (timeFormat === '12') {
+    hours = format(time, 'hh:mm');
+    seconds = format(time, 'a');
+  }
 
 
   return (

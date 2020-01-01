@@ -1,0 +1,46 @@
+.settings {
+  background-color: rgba(0, 0, 0, 0.95);
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  min-width: 400px;
+  padding: 0.5rem;
+  padding: 1.5rem;
+
+
+  &__section {
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    // border-bottom: 1px solid var(--card-text-color);
+
+    h3 {
+      font-size: 1.5rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    &:last-child {
+      margin: 0;
+    }
+  }
+
+  &__form-item {
+    padding: 0 10px;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 5px;
+    margin-bottom: 5px;
+    min-height: 40px;
+    justify-content: space-between;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+
+  &__form-item-value {
+    display: flex;
+  }
+}
