@@ -5,7 +5,7 @@ import EyeIcon from '@iconscout/react-unicons/icons/uil-eye';
 import EyeSlashIcon from '@iconscout/react-unicons/icons/uil-eye-slash';
 import EnterIcon from '@iconscout/react-unicons/icons/uil-enter';
 import Tooltip from 'rc-tooltip';
-import useLocalStorage from '../../hooks/use-local-storage';
+import useSettings from '../../hooks/use-settings';
 import StoreContext from '../../contexts/store-context';
 import usePromise from '../../hooks/use-promise';
 import Todo from '../../model/todo';
@@ -22,7 +22,7 @@ function TodoList() {
   const todoListRef = React.useRef(null);
 
   const [newTodo, setNewTodo] = React.useState({ title: '' });
-  const [showCompleted, setShowCompleted] = useLocalStorage('TodoList.showCompleted', true);
+  const [showCompleted, setShowCompleted] = useSettings('TodoList.showCompleted', true);
 
 
   const hasCompleted = todos && todos.some((t) => t.isCompleted);

@@ -2,13 +2,13 @@ import React from 'react';
 import { format } from 'date-fns';
 import useInterval from '../../hooks/use-interval';
 import { SettingKeys } from '../../constants';
-import useLocalStorage from '../../hooks/use-local-storage';
+import useSettings from '../../hooks/use-settings';
 import './time.scss';
 
 
 function Time() {
   const [time, setTime] = React.useState(new Date());
-  const [timeFormat] = useLocalStorage(SettingKeys.timeFormat, '24');
+  const [timeFormat] = useSettings(SettingKeys.timeFormat, '24');
 
 
   useInterval(() => {

@@ -35,6 +35,7 @@ function Home() {
 
   const [isScrolled, setIsScrolled] = React.useState(window.pageYOffset > 10);
   const [showContent, setShowContent] = React.useState(true);
+  const [isSettingsVisible, setIsSettingsVisible] = React.useState(false);
 
 
   /** @type React.MutableRefObject<HTMLDivElement> */
@@ -47,7 +48,6 @@ function Home() {
       cacheKey: CacheKeys.background,
       updateWithRevalidated: true,
       cachePeriodInSecs: theme === Themes.inspire ? (60 * 10) : (24 * 60 * 60),
-      // conditions: [theme === Themes.inspire],
     },
   );
 
@@ -93,13 +93,22 @@ function Home() {
   }
 
 
+  let classNames = `home home--${theme}`;
+  if (!showContent) {
+    classNames += ' home--content-hidden';
+  }
+  if (isSettingsVisible) {
+    classNames += ' home--settings-visible';
+  }
+
+
   return (
-    <div ref={backgroundRef} className={`home ${theme} ${!showContent ? 'home--hide-content' : ''}`}>
+    <div ref={backgroundRef} className={classNames}>
 
       {showImage && (
         <>
           <div
-            className="home__image"
+            className="home__bg-image"
             style={{ backgroundImage: `url('${background.base64 || background.imageUrl}')` }}
           />
 
@@ -226,14 +235,20 @@ function Home() {
       )}
 
       {!isScrolled && (
-        <div className="home__settings fade-in">
+        <div className="home__settings">
           <Tooltip
+            id="settings"
             placement="top"
             overlay={<Settings />}
-            overlayClassName="home__settings-tooltip fade-in"
+            overlayClassName="home__settings-tooltip"
             trigger="click"
+            onVisibleChange={setIsSettingsVisible}
           >
-            <SettingsIcon color="#fff" size="20" />
+            <SettingsIcon
+              aria-describedby="settings"
+              color="#fff"
+              size="20"
+            />
           </Tooltip>
         </div>
       )}

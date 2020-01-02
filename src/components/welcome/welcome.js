@@ -1,7 +1,7 @@
 import React from 'react';
 import EnterIcon from '@iconscout/react-unicons/icons/uil-enter';
 import { getMessagePrefix } from './welcome.utils';
-import useLocalStorage from '../../hooks/use-local-storage';
+import useSettings from '../../hooks/use-settings';
 import { SettingKeys } from '../../constants';
 import './welcome.scss';
 
@@ -10,7 +10,7 @@ function Welcome() {
   const message = getMessagePrefix();
 
   const inputRef = React.useRef();
-  const [name, setName] = useLocalStorage(SettingKeys.name, '');
+  const [name, setName] = useSettings(SettingKeys.name, '');
 
 
   const setInputFocus = React.useCallback(

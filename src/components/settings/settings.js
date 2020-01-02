@@ -2,21 +2,23 @@
 
 import React from 'react';
 import Switch from 'react-switch';
-import useLocalStorage from '../../hooks/use-local-storage';
+import useSettings from '../../hooks/use-settings';
 import { SettingKeys } from '../../constants';
 import EditableText from '../editable-text';
 import './settings.scss';
 
 
 function Settings() {
-  const [name, setName] = useLocalStorage(SettingKeys.name, '');
-  const [weatherUnit, setWeatherUnit] = useLocalStorage(SettingKeys.weatherUnit, 'C');
-  const [timeFormat, setTimeFormat] = useLocalStorage(SettingKeys.timeFormat, '24');
+  const [name, setName] = useSettings(SettingKeys.name, '');
+  const [weatherUnit, setWeatherUnit] = useSettings(SettingKeys.weatherUnit, 'C');
+  const [timeFormat, setTimeFormat] = useSettings(SettingKeys.timeFormat, '24');
   // const [weatherLocation, setWeatherLocation] = useLocalStorage(SettingKeys.weatherLocation);
 
 
   return (
     <div className="settings">
+
+      <h2 className="settings__title">Settings</h2>
 
       <div className="settings__section">
         <h3>General</h3>
