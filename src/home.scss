@@ -31,7 +31,7 @@
     transition: background-image 0.2s ease-in-out;
   }
 
-  &__image ~ &__content {
+  &__bg-image ~ &__content {
     background-image: linear-gradient(
       to bottom,
       rgba(0, 0, 0, calc(0.25 * var(--bg-opacity))) 0%,
