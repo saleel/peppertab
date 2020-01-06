@@ -2,7 +2,7 @@
   display: block;
   position: relative;
   font-size: 1.1rem;
-  background-color: var(--card-item-color-active);
+  background-color: var(--bg-color-6);
   margin-bottom: 0.5rem;
   border-radius: 4px;
   padding: 0.5rem 1rem;
@@ -19,16 +19,17 @@
     flex-direction: row;
     font-size: 0.85rem;
     justify-content: space-between;
+    color: var(--text-color-2);
   }
 
   &__link {
     position: absolute;
     top: 0.5rem;
     right: 1rem;
-    color: #98BFFA;
+    color: var(--text-color-3);
 
     &:hover {
-      color: #8b75fd;
+      color: var(--text-color-2);
     }
   }
 }

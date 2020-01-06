@@ -3,11 +3,12 @@
 import React from 'react';
 import TrashIcon from '@iconscout/react-unicons/icons/uil-trash';
 import PlusIcon from '@iconscout/react-unicons/icons/uil-plus';
+import { formatDistance } from 'date-fns';
 import StoreContext from '../../contexts/store-context';
 import Note from '../../model/note';
 import Card from '../card';
-import { getNoteTitle } from './notes.utils';
 import usePromise from '../../hooks/use-promise';
+import NoteTitle from './note-title';
 import './notes.scss';
 
 const HtmlEditor = React.lazy(() => import('../html-editor/html-editor'));
@@ -43,8 +44,9 @@ function Notes() {
       await reFetch();
       setActiveNote(createdNote);
     } else {
-      await noteStore.updateNote(activeNote.id, activeNote);
+      const updated = await noteStore.updateNote(activeNote.id, activeNote);
       reFetch();
+      setActiveNote(updated);
     }
   }
 
@@ -53,7 +55,7 @@ function Notes() {
     if (new Date(lastSyncTime).getTime() > componentRenderedAt.current.getTime()) {
       reFetch();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastSyncTime]);
 
 
@@ -69,12 +71,15 @@ function Notes() {
     // Set first note as active if none present
     if (!activeNote || !notes.find((n) => n.id === activeNote.id)) {
       setActiveNote(notes[0]);
-    } else if (activeNote && !isEditing) {
-      // If the active note was updated while sync
-      setActiveNote(notes.find((n) => n.id === activeNote.id));
+    } else if (activeNote) {
+      notes.find((n) => n.id === activeNote.id);
+      if (!isEditing) {
+        // If the active note was updated while sync
+        setActiveNote(notes.find((n) => n.id === activeNote.id));
+      }
     }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notes]);
 
 
@@ -88,8 +93,8 @@ function Notes() {
 
     return () => { clearTimeout(timer); }; // eslint-disable-line consistent-return
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeNote]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeNote && activeNote.content]);
 
 
   /**
@@ -137,19 +142,29 @@ function Notes() {
 
   function renderNoteListItem(note) {
     const isActiveNote = activeNote && (activeNote.id === note.id);
-    const title = isActiveNote ? getNoteTitle(activeNote) : getNoteTitle(note);
+    const noteToRender = isActiveNote ? activeNote : note;
+    // const title = isActiveNote ? getNoteTitle(activeNote) : getNoteTitle(note);
 
-    let className = 'notes__list-item';
-    if (isActiveNote) {
-      className += ' notes__list-item--active';
-    }
+    // let className = 'notes__list-item';
+    // if (isActiveNote) {
+    //   className += ' notes__list-item--active';
+    // }
 
     return (
-      <button key={note.id || title} type="button" className={className} onClick={() => onListItemClick(note)}>
-        <div className="notes__list-item-title">{title}</div>
-        <div className="notes__list-item-date">{new Date(note.createdAt).toDateString()}</div>
-      </button>
+      <NoteTitle
+        key={noteToRender.id}
+        note={noteToRender}
+        onClick={() => onListItemClick(note)}
+        isActive={isActiveNote}
+      />
     );
+
+    // return (
+    //   <button key={note.id || title} type="button" className={className} onClick={() => onListItemClick(note)}>
+    //     <div className="notes__list-item-title">{title}</div>
+    //     <div className="notes__list-item-date">{new Date(note.createdAt).toDateString()}</div>
+    //   </button>
+    // );
   }
 
 
@@ -160,24 +175,30 @@ function Notes() {
         {notesToRender.map(renderNoteListItem)}
       </div>
 
-      <div className="notes__editor">
+      <div className="notes__editor-container">
         {activeNote && (
-          <>
-            <React.Suspense fallback={null}>
-              <HtmlEditor
-                ref={editorEl}
-                className="notes__editor"
-                data={activeNote.content}
-                onChange={onEditorChange}
-                onFocus={() => { setIsEditing(true); }}
-                onBlur={() => { setIsEditing(false); }}
-              />
-            </React.Suspense>
+          <React.Suspense fallback={null}>
+            <HtmlEditor
+              ref={editorEl}
+              className="notes__editor"
+              data={activeNote.content}
+              onChange={onEditorChange}
+              onFocus={() => { setIsEditing(true); }}
+              onBlur={() => { setIsEditing(false); }}
+            />
 
-            <button type="button" className="notes__btn-delete" onClick={onDeleteClick}>
-              <TrashIcon size="16" />
-            </button>
-          </>
+            <div className="notes__editor-footer">
+              <div className="notes__save-info">
+                {'Saved '}
+                {formatDistance(new Date(activeNote.updatedAt), new Date())}
+                {' ago'}
+              </div>
+
+              <button type="button" className="notes__btn-delete" onClick={onDeleteClick}>
+                <TrashIcon size="15" />
+              </button>
+            </div>
+          </React.Suspense>
         )}
       </div>
 

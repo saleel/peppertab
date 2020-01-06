@@ -7,7 +7,11 @@ import './html-editor.scss';
 function HtmlEditor(props, ref) {
   return (
     // eslint-disable-next-line react/jsx-props-no-spreading
-    <CKEditor ref={ref} editor={CKEditorBuild} {...props} />
+    <CKEditor
+      ref={ref}
+      editor={CKEditorBuild}
+      {...props}
+    />
   );
 }
 

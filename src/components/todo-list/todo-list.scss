@@ -11,27 +11,28 @@
     flex-grow: 1;
     padding: 0.5rem 0;
     overflow-y: auto;
-    background-color: var(--card-item-color);
+    background-color: var(--bg-color-3);
     scroll-behavior: smooth;
   }
 
   &__create {
     width: 100%;
     padding: 0.75rem;
-    background-color: var(--card-item-color-active);
+    background-color: var(--bg-color-2);
     position: relative;
   }
 
   &__create-input {
     padding: 0.75rem;
-    background-color: var(--card-item-color);
+    background-color: var(--bg-color-3);
+    color: var(--text-color-3);
     width: 100%;
     font-size: 1.1rem;
     line-height: 1rem;
     border-radius: 3px;
 
     &:focus, &:hover {
-      outline-color: var(--card-item-color);
+      outline-color: var(--bg-color-3);
     }
   }
 
@@ -41,7 +42,7 @@
     flex-grow: 1;
     justify-content: center;
     align-items: center;
-    background-color: var(--card-item-color);
+    background-color: var(--bg-color-3);
     font-size: 1.1rem;
     height: 100%;
     padding: 1rem;

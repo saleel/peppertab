@@ -116,9 +116,7 @@ function Calendar() {
     // Calendar is enabled
     if (isTrying || isFetching) {
       return (
-        <div className="">
-          <Spinner color="#303133" />
-        </div>
+        <Spinner color="var(--text-color-3)" />
       );
     }
 

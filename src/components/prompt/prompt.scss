@@ -1,7 +1,6 @@
 .prompt {
-  background-color: var(--card-bg-color);
+  background-color: var(--bg-color-2);
   border-radius: 5px;
-  box-shadow: rgba(83, 70, 35, 0.15) 0px 2px 8px, rgba(83, 70, 35, 0.15) 0px 1px 3px; 
   overflow: hidden;
   width: 500px;
   min-height: 200px;
@@ -39,6 +38,6 @@
     font-weight: 500;
     color: #fff;
     border-radius: 5px;
-    background-color: var(--card-item-color);
+    background-color: var(--bg-color-3);
   }
 }

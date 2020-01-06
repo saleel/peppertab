@@ -3,12 +3,19 @@
   height: 500px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+
+
+  .card__content {
+    overflow: hidden;
+  }
+
 
   &__list {
     position: relative;
-    background-color: var(--card-item-color);
+    background-color: var(--bg-color-3);
     width: 30%;
-    border-right: 0.5px solid var(--card-item-color-active);
+    border-right: 0.5px solid var(--bg-color-6);
     height: 100%;
     overflow-y: auto;
     padding-bottom: 0.5rem;
@@ -16,35 +23,68 @@
 
   &__list-item {
     padding: 0.5rem 1.5rem;
-    border-bottom: 0.5px solid var(--card-item-color-active);
+    border-bottom: 0.5px solid var(--bg-color-6);
     text-align: left;
     width: 100%;
 
     &--active {
-      background-color: var(--card-item-color-active);
+      background-color: var(--bg-color-6);
     }
   }
 
   &__list-item-title {
     font-weight: 500;
-    font-size: 1.05rem;
+    font-size: 1.1rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   &__list-item-date {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
+    color: var(--text-color-3);
   }
 
-  &__btn-delete {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    padding: 0.75rem;
+ 
+
+  &__editor-container {
+    position: relative;
+    background-color: var(--bg-color-4);
+    cursor: text;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow-y: auto;
+    height: 100%;
   }
 
   &__editor {
-    position: relative;
-    background-color: var(--card-item-color);
-    width: 70%;
-    height: 100%;
+    display: flex;
+    height: calc(100% - 25px);
+  }
+
+  &__editor-footer {
+    background-color: var(--bg-color-3);
+    display: flex;
+    width: 100%;
+    height: 25px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem 0.25rem;
+    color: var(--text-color-3);
+  }
+
+  &__save-info {
+    font-size: 0.75rem;
+    padding: 0 0.25rem;
+  }
+
+  &__btn-delete {
+    padding: 0.25rem;
+
+    &:hover {
+      color: var(--text-color);
+    }
   }
 }

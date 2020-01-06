@@ -25,17 +25,16 @@
       flex-direction: column;
       height: 100px;
       width: 98px;
-      background-color: var(--card-bg-color);
+      background-color: var(--bg-color-2);
       font-size: 0.9rem;
-      color: var(--card-text-color);
+      color: var(--text-color);
       border-radius: 5px;
       justify-content: space-between;
       padding: 0.5rem;
-      opacity: 0.95;
       margin: 0 5px 10px 5px;
 
       &:hover {
-        opacity: 1;
+        background-color: var(--bg-color-2);
 
         .links__item-delete {
           display: block;

@@ -293,7 +293,8 @@ class GeneralStore extends Store {
                 reject(error);
               });
             });
-          });
+          })
+            .catch((e) => reject(e));
         } else {
           let redirectURL = Browser.identity.getRedirectURL();
           redirectURL = redirectURL.endsWith('/') ? redirectURL.slice(0, -1) : redirectURL;

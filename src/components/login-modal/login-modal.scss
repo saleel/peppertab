@@ -29,7 +29,7 @@
 
   &__btn-proceed {
     display: block;
-    background-color: #27ae60;
+    background-color: var(--color-success);
     color: var(--text-color);
     margin: 0 auto;
     padding: 0.5rem 2rem;

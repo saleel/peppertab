@@ -7,7 +7,7 @@
   &__tooltip {
     .rc-tooltip-inner {
       font-size: 0.8rem;
-      background-color: rgba(0, 0, 0, 0.75);
+      background-color: var(--bg-color-3);
       border-radius: 5px;
       box-shadow: none;
       padding: 7px;
@@ -15,7 +15,7 @@
     }
 
     .rc-tooltip-arrow {
-      border-right-color:rgba(0,0,0,0.75);
+      border-right-color:var(--bg-color-3);
     }
   }
 }

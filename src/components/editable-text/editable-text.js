@@ -40,6 +40,7 @@ function EditableText(props) {
         onChange={(e) => setValue(e.target.value)}
         type="text"
         value={value}
+        maxLength={15}
         onKeyDown={onKeyDown}
         onFocus={(e) => e.target.select()}
         readOnly={!isEditMode}

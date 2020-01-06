@@ -167,7 +167,6 @@
     z-index: 3;
     margin-bottom: 5px;
     padding: 5px;
-    cursor: default;
 
     &:hover:enabled {
       cursor: pointer;
@@ -222,8 +221,6 @@
     max-width: 150px;
     text-align: right;
     white-space: nowrap;
-    cursor: default;
-
     transition: max-width linear 0.1s;
   }
 

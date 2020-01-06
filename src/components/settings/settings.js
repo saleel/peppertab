@@ -28,7 +28,7 @@ function Settings() {
             Name
           </div>
           <div className="settings__form-item-value">
-            <EditableText onSubmit={setName} value={name} maxLength={15} />
+            <EditableText onSubmit={setName} value={name} />
           </div>
         </div>
 

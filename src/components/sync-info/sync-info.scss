@@ -5,9 +5,8 @@
   justify-content: space-between;
   height: 40px;
   padding: 0 0.5rem 0 0.75rem;
-  background-color: rgba(0, 0, 0, 0.5);
   border-radius: 5px;
-  // background-color: var(--card-item-color);
+  background-color: var(--bg-color-2);
 
   &__message {
     margin: 0 0.5rem;
@@ -24,13 +23,12 @@
     padding: 0.5rem 1rem;
     font-weight: 500;
     line-height: 1rem;
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: var(--bg-color-4);
     border-radius: 3px;
     opacity: 1;
-    // margin-left: 0.5rem;
 
     &:hover {
-     background-color: rgba(255, 255, 255, 0.4);
+      background-color: var(--bg-color-6);
     }
   }
 

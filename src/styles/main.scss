@@ -1,12 +1,48 @@
 @import "~tailwindcss/dist/base";
 @import "~tailwindcss/dist/utilities";
-@import '~pretty-checkbox/src/pretty-checkbox.scss';
-@import './animations.scss';
+@import "~pretty-checkbox/src/pretty-checkbox.scss";
+@import "./animations.scss";
 
-
-button, input {
-	&:focus, &:active {
-		outline: none;
+button,
+input {
+  &:focus,
+  &:active {
+    outline: none;
   }
 }
 
+html,
+body {
+	--bg-color: #303133;
+	--bg-color-2: #1e1e1e;
+	--bg-color-3: #242424;
+	--bg-color-4: #272727;
+	--bg-color-5: #2a2a2a;
+	--bg-color-6: #2C2C2C;
+	--text-color: #fff;
+	--text-color-2: rgba(255, 255, 255, 0.9);
+	--text-color-3: rgba(255, 255, 255, 0.75);
+	--text-color-4: rgba(255, 255, 255, 0.65);
+	--text-color-5: rgba(255, 255, 255, 0.5);
+	--text-color-6: rgba(255, 255, 255, 0.5);
+
+	--color-primary: #2980b9;
+	--danger-color: #c0392b;
+	--color-success: #27ae60;
+
+	cursor: default;
+
+}
+
+body::-webkit-scrollbar {
+  width: 1em;
+}
+ 
+body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+ 
+body::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}

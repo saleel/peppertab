@@ -7,7 +7,7 @@
   height: 400px;
   justify-content: center;
   align-items: center;
-  background-color: var(--card-item-color);
+  background-color: var(--bg-color-3);
 
   &__events {
     width: 100%;
@@ -28,6 +28,7 @@
   &__group-name {
     font-weight: 500;
     margin-bottom: 0.5rem;
+    color: var(--text-color-3);
   }
 
   &__enroll {
@@ -55,5 +56,9 @@
 
   &__enroll-error {
     color: var(--danger-color);
+  }
+
+  &__spinner {
+    color: red;
   }
 }
