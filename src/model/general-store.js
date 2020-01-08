@@ -1,5 +1,6 @@
 // @ts-check
 
+import addDays from 'date-fns/addDays';
 import {
   OPEN_WEATHER_API_KEY, LocalStorage, Themes, API_URL, Browser, isWebApp, GOOGLE_CLIENT_ID, GOOGLE_API_KEY, isBrowserExtension,
 } from '../constants';
@@ -333,9 +334,10 @@ class GeneralStore extends Store {
     const query = {
       calendarId: 'primary',
       timeMin: (new Date()).toISOString(),
+      timeMax: (addDays(new Date(), 30)).toISOString(),
       showDeleted: false,
       singleEvents: true,
-      maxResults: 4,
+      maxResults: 10,
       orderBy: 'startTime',
       key: apiKey,
     };

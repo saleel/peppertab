@@ -56,7 +56,7 @@ function Calendar() {
   }
 
   const filteredEvents = (events || [])
-    .filter((e) => (e.startDateTime ? isAfter(new Date(e.startDateTime), new Date()) : true));
+    .filter((e) => (e.endDateTime ? isAfter(new Date(e.endDateTime), new Date()) : true));
 
   const groupedEvents = events && groupBy(filteredEvents, (event) => {
     const start = new Date(event.startDateTime || event.startDate);
@@ -119,6 +119,7 @@ function Calendar() {
         <Spinner color="var(--text-color-3)" />
       );
     }
+
 
     if (Array.isArray(events)) {
       if (events.length === 0) {

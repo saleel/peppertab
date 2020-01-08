@@ -19,6 +19,7 @@
     height: 100%;
     overflow-y: auto;
     padding-bottom: 0.5rem;
+    overflow-x: hidden;
   }
 
   &__list-item {
@@ -29,6 +30,7 @@
 
     &--active {
       background-color: var(--bg-color-6);
+      margin-left: 1px;
     }
   }
 

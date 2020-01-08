@@ -67,6 +67,10 @@ function Home() {
 
       if (windowOffset > 10 && !isScrolled) {
         setIsScrolled(true);
+
+        if (isSettingsVisible) {
+          setIsSettingsVisible(false);
+        }
       }
 
       if (windowOffset < 10 && isScrolled) {
@@ -83,7 +87,7 @@ function Home() {
     }
 
     return () => { window.removeEventListener('scroll', onScroll); };
-  }, [isScrolled, showImage]);
+  }, [isScrolled, showImage, isSettingsVisible]);
 
 
   function onRefreshClick() {
@@ -131,7 +135,7 @@ function Home() {
                 </button>
               </Tooltip>
 
-              <div className="home__bg-info fade-in" onMouseEnter={() => setShowContent(false)} onMouseLeave={() => setShowContent(true)}>
+              <div className="home__bg-info" onMouseEnter={() => setShowContent(false)} onMouseLeave={() => setShowContent(true)}>
                 <div className="home__bg-info-details">
                   <div className="home__bg-info-location">
                     {background.location}
@@ -243,6 +247,7 @@ function Home() {
             overlayClassName="home__settings-tooltip"
             trigger="click"
             onVisibleChange={setIsSettingsVisible}
+            visible={isSettingsVisible}
           >
             <SettingsIcon
               aria-describedby="settings"

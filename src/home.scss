@@ -15,7 +15,6 @@
     @include fade-in(0.5s);
 
     opacity: var(--bg-opacity);
-    // filter: blur(calc((1 - var(--bg-opacity)) * 5px));
     display: block;
     position: fixed;
     left: 0;
@@ -127,7 +126,7 @@
 
     .rc-tooltip-arrow {
       left: 15px;
-      border-top-color: rgba(0, 0, 0, 0.9);
+      border-top-color: var(--bg-color-2);
     }
   }
 
@@ -200,7 +199,6 @@
   }
  
   &__bg-info {
-    opacity: var(--bg-opacity);
     padding: 5px;
     border-radius: 3px;
     display: flex;
@@ -248,6 +246,10 @@
     .home__links {
       min-height: 220px;
       margin-bottom: 1rem;
+      display: flex;
+      --bg-color-2: #fff;
+      --bg-color-3: #fff;
+      --text-color: #303133;
     }
   }
 

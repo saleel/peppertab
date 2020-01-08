@@ -2,7 +2,8 @@
     width: 100%;
     padding: 0 1.25rem;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
 
 
     &__items {
@@ -34,7 +35,7 @@
       margin: 0 5px 10px 5px;
 
       &:hover {
-        background-color: var(--bg-color-2);
+        background-color: var(--bg-color-3);
 
         .links__item-delete {
           display: block;

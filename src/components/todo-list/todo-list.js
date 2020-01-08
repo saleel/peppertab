@@ -72,7 +72,7 @@ function TodoList() {
    */
   async function onCompleteClick(todo, isCompleted) {
     await todoStore.updateTodo(todo.id, { ...todo, isCompleted });
-    reFetch();
+    // reFetch();
   }
 
 
