@@ -133,7 +133,7 @@ const cache = {
  * @template T
  * @param {(() => Promise<T>)} promise
  * @param {UsePromiseOptions} [options]
- * @returns {[T, { isFetching: boolean, reFetch: Function, error: Error }]}
+ * @returns {[T, { isFetching: boolean, fetchedAt: Date, reFetch: Function, error: Error }]}
  */
 function usePromise(promise, options = {}) {
   const {
@@ -147,6 +147,7 @@ function usePromise(promise, options = {}) {
   }
 
   const [result, setResult] = React.useState(cachedData ? cachedData.data : defaultValue);
+  const [fetchedAt, setFetchedAt] = React.useState(cachedData ? cachedData.storedAt : undefined);
   const [isFetching, setIsFetching] = React.useState(false);
   const [error, setError] = React.useState();
 
@@ -169,6 +170,7 @@ function usePromise(promise, options = {}) {
         // In some cases newly fetched data don't have to be updated (updateWithRevalidated = false)
         if (updateWithRevalidated || cachedData === undefined) {
           setResult(data);
+          setFetchedAt(new Date());
         }
 
         if (cacheKey && (data !== null || data !== undefined)) {
@@ -218,7 +220,7 @@ function usePromise(promise, options = {}) {
 
 
   return [result, {
-    isFetching, reFetch, error,
+    isFetching, fetchedAt, reFetch, error,
   }];
 }
 

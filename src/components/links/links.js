@@ -31,7 +31,7 @@ function Links() {
     },
   );
 
-  const showAdd = true; // numLinks > (links || []).length;
+  const showAdd = !generalStore.isTopSitesEnabled();
 
 
   React.useEffect(() => {

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import format from 'date-fns/format';
 import LinkIcon from '@iconscout/react-unicons/icons/uil-external-link-alt';
 import './calendar-item.scss';
+import { isSameDay } from 'date-fns';
 
 
 function CalendarItem(props) {
@@ -13,6 +14,19 @@ function CalendarItem(props) {
   const {
     title, startDateTime, endDateTime, location, link,
   } = event;
+
+
+  let endTimeFormat = ' - hh:mm a';
+  if (startDateTime && endDateTime) {
+    if (!isSameDay(new Date(startDateTime), new Date(endDateTime))) {
+      endTimeFormat = ' - MMM dd hh:mm a';
+    }
+  }
+  // if (startTime && endTime) {
+  //   if (!isSameDay(new Date(startTime), new Date(endTime))) {
+  //     endTimeFormat = 'MMM DD hh:mm a';
+  //   }
+  // }
 
 
   return (
@@ -33,7 +47,7 @@ function CalendarItem(props) {
         <div className="calendar-item__time">
           <span>
             {startDateTime && format(new Date(startDateTime), 'hh:mm a')}
-            {endDateTime && format(new Date(endDateTime), ' - hh:mm a')}
+            {endDateTime && format(new Date(endDateTime), endTimeFormat)}
             {!startDateTime && !endDateTime && 'All Day'}
           </span>
         </div>

@@ -7,6 +7,7 @@ import isToday from 'date-fns/isToday';
 import isTomorrow from 'date-fns/isTomorrow';
 import isAfter from 'date-fns/isAfter';
 import SyncIcon from '@iconscout/react-unicons/icons/uil-sync';
+import formatDistance from 'date-fns/formatDistance';
 import StoreContext from '../../contexts/store-context';
 import usePromise from '../../hooks/use-promise';
 import Card from '../card';
@@ -27,7 +28,9 @@ function Calendar() {
   const [fetchError, setFetchError] = React.useState(null);
 
 
-  const [events, { isFetching, error, reFetch }] = usePromise(
+  const [events, {
+    isFetching, error, reFetch, fetchedAt,
+  }] = usePromise(
     () => generalStore.getEvents(),
     {
       cacheKey: CacheKeys.calendar,
@@ -122,18 +125,21 @@ function Calendar() {
 
 
     if (Array.isArray(events)) {
-      if (events.length === 0) {
-        return (
-          <div className="calendar__no-events">
-            No upcoming events.
-          </div>
-        );
-      }
-
       return (
-        <div className="calendar__events">
-          {groupedEvents && Object.keys(groupedEvents).map(renderGroup)}
-        </div>
+        <>
+          <div className="calendar__events">
+            {(events.length === 0) && (<div className="calendar__no-events">No upcoming events in the coming month.</div>)}
+            {(events.length > 0) && groupedEvents && Object.keys(groupedEvents).map(renderGroup)}
+          </div>
+
+          {fetchedAt && (
+            <div className="calendar__footer">
+              {'Updated '}
+              {formatDistance(new Date(fetchedAt), new Date())}
+              {' ago'}
+            </div>
+          )}
+        </>
       );
     }
 
@@ -143,7 +149,7 @@ function Calendar() {
   const actions = [
     isCalendarEnabled && !isFetching && (
       <button key="sync" type="button" className="calendar__sync-btn fade-in" onClick={() => reFetch()}>
-        <SyncIcon size="22" />
+        <SyncIcon size="20" />
       </button>
     ),
   ].filter(Boolean);
