@@ -55,9 +55,11 @@
     width: 200px;
     height: 49px;
     margin: 1rem;
+    opacity: 0.8;
 
     &:hover {
-      background-image: url('/assets/btn_google_signin_light_pressed_web@2x.png');
+      // background-image: url('/assets/btn_google_signin_light_pressed_web@2x.png');
+      opacity: 1;
     }
   }
 
