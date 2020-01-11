@@ -13,14 +13,15 @@ import usePromise from '../../hooks/use-promise';
 import Card from '../card';
 import Spinner from '../spinner';
 import CalendarItem from '../calendar-item';
-import { CacheKeys } from '../../constants';
+import { CacheKeys, SettingKeys } from '../../constants';
+import useSettings from '../../hooks/use-settings';
 import './calendar.scss';
 
 
 function Calendar() {
   const { generalStore } = React.useContext(StoreContext);
 
-  const isCalendarEnabled = generalStore.isCalendarEnabled();
+  const [isCalendarEnabled, setIsCalendarEnabled] = useSettings(SettingKeys.isCalendarEnabled, false);
 
   const signInButtonRef = React.useRef(null);
 
@@ -36,15 +37,16 @@ function Calendar() {
       cacheKey: CacheKeys.calendar,
       cachePeriodInSecs: (60 * 2),
       conditions: [isCalendarEnabled],
-      dependencies: [isCalendarEnabled],
     },
   );
 
 
   React.useEffect(() => {
     if (error) {
+      setIsCalendarEnabled(false);
       setFetchError(error);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 
 
@@ -52,11 +54,14 @@ function Calendar() {
     setIsTrying(true);
     try {
       await generalStore.getEvents();
+      setIsCalendarEnabled(true);
     } catch (e) {
+      setIsCalendarEnabled(false);
       setFetchError(e);
     }
     setIsTrying(false);
   }
+
 
   const filteredEvents = (events || [])
     .filter((e) => (e.endDateTime ? isAfter(new Date(e.endDateTime), new Date()) : true));
@@ -85,6 +90,36 @@ function Calendar() {
         ))}
       </div>
     );
+  }
+
+
+  function renderFooter() {
+    if (!Array.isArray(events)) {
+      return null;
+    }
+
+    if (isFetching) {
+      return (
+        <div className="calendar__footer">
+          <span className="calendar__footer-icon">
+            <SyncIcon size="12" />
+          </span>
+          Updating...
+        </div>
+      );
+    }
+
+    if (fetchedAt) {
+      return (
+        <div className="calendar__footer">
+          {'Updated '}
+          {formatDistance(new Date(fetchedAt), new Date())}
+          {' ago'}
+        </div>
+      );
+    }
+
+    return null;
   }
 
 
@@ -117,7 +152,7 @@ function Calendar() {
     }
 
     // Calendar is enabled
-    if (isTrying || isFetching) {
+    if (isTrying) {
       return (
         <Spinner color="var(--text-color-3)" />
       );
@@ -128,17 +163,16 @@ function Calendar() {
       return (
         <>
           <div className="calendar__events">
-            {(events.length === 0) && (<div className="calendar__no-events">No upcoming events in the coming month.</div>)}
+            {(events.length === 0) && !isFetching && (
+              <div className="calendar__no-events fade-in">
+                No upcoming events in the coming month.
+              </div>
+            )}
+
             {(events.length > 0) && groupedEvents && Object.keys(groupedEvents).map(renderGroup)}
           </div>
 
-          {fetchedAt && (
-            <div className="calendar__footer">
-              {'Updated '}
-              {formatDistance(new Date(fetchedAt), new Date())}
-              {' ago'}
-            </div>
-          )}
+          {renderFooter()}
         </>
       );
     }
@@ -159,9 +193,7 @@ function Calendar() {
     <Card title="Upcoming" actions={actions}>
 
       <div className="calendar fade-in">
-
         {renderBody()}
-
       </div>
 
     </Card>

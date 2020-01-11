@@ -26,10 +26,18 @@ function NoteTitle(props) {
 NoteTitle.propTypes = {
   note: PropTypes.shape({
     id: PropTypes.string,
-    createdAt: PropTypes.instanceOf(Date).isRequired,
+    createdAt: PropTypes.oneOfType([
+      PropTypes.instanceOf(Date),
+      PropTypes.string,
+    ]).isRequired,
   }).isRequired,
-  isActive: PropTypes.bool.isRequired,
+  isActive: PropTypes.bool,
   onClick: PropTypes.func.isRequired,
+};
+
+
+NoteTitle.defaultProps = {
+  isActive: false,
 };
 
 

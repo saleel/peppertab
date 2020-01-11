@@ -1,7 +1,7 @@
 import Link from './link';
 
 function convertImageUrlToBase64(url) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const tempImage = new Image();
     tempImage.crossOrigin = 'Anonymous';
 
@@ -16,6 +16,10 @@ function convertImageUrlToBase64(url) {
       const dataURL = canvas.toDataURL('image/jpeg');
 
       resolve(dataURL);
+    };
+
+    tempImage.onerror = function onError() {
+      reject();
     };
 
     tempImage.src = url;
@@ -33,7 +37,7 @@ function isIP(address) {
 }
 
 
-function getLinkFromUrl(url) {
+async function getLinkFromUrl(url) {
   if (!url) {
     return null;
   }
@@ -54,8 +58,17 @@ function getLinkFromUrl(url) {
     siteName = hostname;
   }
 
+  const logoUrl = `https://logo.clearbit.com/${hostname}`;
+
+  let logoBase64;
+  try {
+    logoBase64 = await convertImageUrlToBase64(logoUrl);
+  } catch (error) {
+    // Ignore
+  }
+
   return new Link({
-    siteName, hostname, url,
+    siteName, hostname, url, logoUrl, logoBase64,
   });
 }
 

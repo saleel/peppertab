@@ -9,11 +9,12 @@ import './weather.scss';
 function Weather() {
   const { generalStore } = React.useContext(StoreContext);
 
-  const isWeatherEnabled = generalStore.isWeatherEnabled();
+  // const isWeatherEnabled = generalStore.isWeatherEnabled();
 
-  const [tryWeather, setTryWeather] = React.useState();
+  const [tryWeather, setTryWeather] = React.useState(false);
 
   const [weatherUnit] = useSettings(SettingKeys.weatherUnit, 'C');
+  const [isWeatherEnabled, setIsWeatherEnabled] = useSettings(SettingKeys.isWeatherEnabled, false);
 
 
   const [weatherInfo] = usePromise(
@@ -34,11 +35,12 @@ function Weather() {
     if (isWebApp) {
       navigator.permissions.query({ name: 'geolocation' }).then((permission) => {
         if (permission.state === 'granted') {
-          generalStore.setWeatherEnabled(true);
+          setIsWeatherEnabled(true);
           setTryWeather(true);
         }
       });
     } else {
+      setIsWeatherEnabled(true);
       setTryWeather(true);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -48,7 +50,6 @@ function Weather() {
   function onEnableClick() {
     setTryWeather(true);
   }
-
 
   if (!isWeatherEnabled && !tryWeather) {
     return (

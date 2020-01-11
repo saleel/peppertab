@@ -2,11 +2,11 @@
 
 class Link {
   /**
-   * @param {{ _id?: string, siteName: string; hostname: string, url: string; createdAt?: Date; }} props
+   * @param {{ _id?: string, siteName: string; hostname: string, url: string; logoBase64: String, createdAt?: Date; }} props
    */
   constructor(props) {
     const {
-      _id, siteName, url, hostname, createdAt = new Date(),
+      _id, siteName, url, hostname, logoBase64, createdAt = new Date(),
     } = props;
 
     if (_id !== undefined) {
@@ -17,6 +17,7 @@ class Link {
     this.siteName = siteName;
     this.url = url;
     this.hostname = hostname;
+    this.logoBase64 = logoBase64;
     this.createdAt = createdAt;
   }
 }

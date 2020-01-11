@@ -152,7 +152,7 @@ function Notes() {
 
     return (
       <NoteTitle
-        key={noteToRender.id}
+        key={noteToRender.id || 'new'}
         note={noteToRender}
         onClick={() => onListItemClick(note)}
         isActive={isActiveNote}

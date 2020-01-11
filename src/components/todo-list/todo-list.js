@@ -11,6 +11,7 @@ import usePromise from '../../hooks/use-promise';
 import Todo from '../../model/todo';
 import TodoItem from '../todo-item';
 import Card from '../card';
+import { SettingKeys } from '../../constants';
 import './todo-list.scss';
 
 
@@ -22,7 +23,7 @@ function TodoList() {
   const todoListRef = React.useRef(null);
 
   const [newTodo, setNewTodo] = React.useState({ title: '' });
-  const [showCompleted, setShowCompleted] = useSettings('TodoList.showCompleted', true);
+  const [showCompleted, setShowCompleted] = useSettings(SettingKeys.showCompletedTodos, true);
 
 
   const hasCompleted = todos && todos.some((t) => t.isCompleted);
@@ -72,7 +73,7 @@ function TodoList() {
    */
   async function onCompleteClick(todo, isCompleted) {
     await todoStore.updateTodo(todo.id, { ...todo, isCompleted });
-    // reFetch();
+    reFetch();
   }
 
 

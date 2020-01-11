@@ -10,14 +10,26 @@ export const GOOGLE_API_KEY = 'AIzaSyBOXuQDGtvOto1RIJpR7ab6aJ4Jk7s7PpM';
 
 
 export const Themes = { inspire: 'inspire', focus: 'focus' };
-export const LocalStorage = { theme: 'theme', visibility: 'visibility', lastSyncTime: 'last-sync-time' };
-export const CacheKeys = { calendar: 'calendar', background: 'background', weather: 'weather' };
+
+export const LocalStorage = { lastSyncTime: 'last-sync-time' };
+
+export const CacheKeys = {
+  calendar: 'calendar',
+  background: 'background',
+  weather: 'weather',
+};
 
 export const SettingKeys = {
   name: 'settings.name',
-  weatherUnit: 'settings.weatherUnit',
-  weatherLocation: 'settings.weatherLocation',
-  timeFormat: 'settings.timeFormat',
+  theme: 'settings.theme',
+  weatherUnit: 'settings.weather.unit',
+  weatherLocation: 'settings.weather.location',
+  timeFormat: 'settings.time.format',
+  showTopSites: 'settings.links.showTopSites',
+  isTopSitesEnabled: 'settings.links.isTopSitesEnabled',
+  isWeatherEnabled: 'settings.weather.isEnabled',
+  isCalendarEnabled: 'settings.calendar.isEnabled',
+  showCompletedTodos: 'settings.todos.showCompleted',
 };
 
 

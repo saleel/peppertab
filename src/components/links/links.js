@@ -4,8 +4,10 @@ import React from 'react';
 import TrashIcon from '@iconscout/react-unicons/icons/uil-trash';
 import usePromise from '../../hooks/use-promise';
 import StoreContext from '../../contexts/store-context';
-import { isBrowserExtension } from '../../constants';
+import { isBrowserExtension, SettingKeys } from '../../constants';
 import { getLinkFromUrl } from '../../model/utils';
+import useSettings from '../../hooks/use-settings';
+import { addTopSitesPermission } from '../../browser-permissions';
 import './links.scss';
 
 
@@ -13,34 +15,44 @@ function Links() {
   const { linkStore, lastSyncTime, generalStore } = React.useContext(StoreContext);
 
   const componentRenderedAt = React.useRef(new Date());
-  const containerRef = React.useRef(null);
 
-  const numLinks = Math.round((containerRef.current || {}).offsetWidth / 115); // 100 width + 15 margin
+  const topSitesCount = 8;
 
-  const [links, { reFetch }] = usePromise(
-    () => {
-      if (generalStore.isTopSitesEnabled()) {
-        return generalStore.findTopSites({ limit: numLinks });
-      }
-      return linkStore.findLinks();
-    },
+  const [isTopSitesEnabled, setIsTopSitesEnabled] = useSettings(SettingKeys.isTopSitesEnabled, false);
+  const [showTopSites, setShowTopSite] = useSettings(SettingKeys.showTopSites, false);
+
+  const [myLinks, { reFetch }] = usePromise(
+    () => linkStore.findLinks(),
     {
-      dependencies: [numLinks],
       cacheKey: 'links',
+      cachePeriodInSecs: 24 * 60 * 60,
+      conditions: [!showTopSites],
+    },
+  );
+
+  const [topSites] = usePromise(
+    () => generalStore.findTopSites({ limit: topSitesCount }),
+    {
+      conditions: [isTopSitesEnabled, showTopSites],
+      cacheKey: 'topSites',
       cachePeriodInSecs: 24 * 60 * 60,
     },
   );
 
-  const showAdd = !generalStore.isTopSitesEnabled();
+  const links = showTopSites ? topSites : myLinks;
 
 
   React.useEffect(() => {
+    if (showTopSites) {
+      return;
+    }
+
     if (new Date(lastSyncTime).getTime() > componentRenderedAt.current.getTime()) {
       reFetch();
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lastSyncTime]);
+  }, [showTopSites, lastSyncTime]);
 
 
   async function onCreateClick() {
@@ -63,7 +75,7 @@ function Links() {
       return;
     }
 
-    const link = getLinkFromUrl(url);
+    const link = await getLinkFromUrl(url);
     await linkStore.createLink(link);
 
     reFetch();
@@ -83,53 +95,41 @@ function Links() {
 
 
   async function onShowTopSitesClick() {
-    await generalStore.findTopSites({ limit: numLinks });
-    reFetch();
+    if (!isTopSitesEnabled) {
+      await addTopSitesPermission();
+      setIsTopSitesEnabled(true);
+    }
+
+    setShowTopSite(true);
   }
 
 
   async function onShowCustomSitesClick() {
-    generalStore.setTopSitesEnabled(false);
-    reFetch();
+    setShowTopSite(false);
   }
 
 
   function renderImage(link) {
-    const { hostname, siteName } = link;
+    const { hostname, siteName, logoBase64 } = link;
 
     if (!hostname || !siteName) {
       return null;
     }
 
-    const logoUrl = `https://logo.clearbit.com/${hostname}`;
-
     return (
       <div className="links__item-image">
-        <img
-          alt=""
-          src={logoUrl}
-          onError={function onError(e) {
-            delete e.target.onerror;
-            delete e.target.onError;
-
-            e.target.className = 'links__item-image not-found';
-          }}
-        />
-        <div className="links__item-image-alphabet">{siteName[0]}</div>
+        {logoBase64 ? (
+          <img alt="" src={logoBase64} />
+        ) : (
+          <div className="links__item-image-alphabet">{siteName[0]}</div>
+        )}
       </div>
     );
   }
 
 
-  // if (!links) {
-  //   return (
-  //     <div className="links" />
-  //   );
-  // }
-
-
   return (
-    <div className="links fade-in" ref={containerRef}>
+    <div className="links fade-in">
 
       <div className="links__items flex content-start flex-wrap ">
 
@@ -150,7 +150,7 @@ function Links() {
           </a>
         ))}
 
-        {showAdd && (
+        {!showTopSites && (
           <button type="button" className="links__create" onClick={onCreateClick}>
             Add Link
           </button>
@@ -158,15 +158,15 @@ function Links() {
       </div>
 
       <div className="links__switch">
-        {isBrowserExtension && !generalStore.isTopSitesEnabled() && (
+        {isBrowserExtension && !showTopSites && (
           <button type="button" onClick={onShowTopSitesClick}>
             Show most visited sites
           </button>
         )}
 
-        {generalStore.isTopSitesEnabled() && (
+        {showTopSites && (
           <button type="button" onClick={onShowCustomSitesClick}>
-            Use Custom Links
+            Show my links
           </button>
         )}
       </div>

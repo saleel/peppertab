@@ -4,15 +4,14 @@ import React from 'react';
 import CameraIcon from '@iconscout/react-unicons/icons/uil-camera';
 import FocusIcon from '@iconscout/react-unicons/icons/uil-focus';
 import Tooltip from 'rc-tooltip';
-import { Themes } from '../../constants';
-import ThemeContext from '../../contexts/theme-context';
+import { Themes, SettingKeys } from '../../constants';
+import useSettings from '../../hooks/use-settings';
 import 'rc-tooltip/assets/bootstrap.css';
 import './theme-switcher.scss';
 
 
 function ThemeSwitcher() {
-  const { theme, changeTheme } = React.useContext(ThemeContext);
-
+  const [theme, changeTheme] = useSettings(SettingKeys.theme, Themes.inspire);
 
   const nextTheme = theme === Themes.inspire ? 'Focus' : 'Inspire';
 

@@ -3,34 +3,29 @@ import RefreshIcon from '@iconscout/react-unicons/icons/uil-sync';
 import SettingsIcon from '@iconscout/react-unicons/icons/uil-cog';
 import Tooltip from 'rc-tooltip';
 import packageJson from '../package.json';
-import ThemeContext from './contexts/theme-context/theme-context';
 import Welcome from './components/welcome';
-// import Notes from './components/notes';
 import Settings from './components/settings';
 import TodoList from './components/todo-list';
 import Calendar from './components/calendar';
 import Links from './components/links';
-// import SyncInfo from './components/sync-info';
-// import Background from './components/background';
 import Time from './components/time';
 import Weather from './components/weather';
-import { Themes, CacheKeys } from './constants';
+import { Themes, CacheKeys, SettingKeys } from './constants';
 import StoreContext from './contexts/store-context/index';
 import usePromise from './hooks/use-promise';
 import ThemeSwitcher from './components/theme-switcher';
+import useSettings from './hooks/use-settings';
 import './home.scss';
 
 
 const Notes = React.lazy(() => import('./components/notes'));
-// const TodoList = React.lazy(() => import('./components/todo-list'));
-// const Calendar = React.lazy(() => import('./components/calendar'));
-// const Links = React.lazy(() => import('./components/links'));
 const SyncInfo = React.lazy(() => import('./components/sync-info'));
 
 
 function Home() {
   const { generalStore } = React.useContext(StoreContext);
-  const { theme } = React.useContext(ThemeContext);
+
+  const [theme] = useSettings(SettingKeys.theme, Themes.inspire);
 
 
   const [isScrolled, setIsScrolled] = React.useState(window.pageYOffset > 10);

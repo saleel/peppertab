@@ -2,11 +2,11 @@
 
 import addDays from 'date-fns/addDays';
 import {
-  OPEN_WEATHER_API_KEY, LocalStorage, Themes, API_URL, Browser, isWebApp, GOOGLE_CLIENT_ID, GOOGLE_API_KEY, isBrowserExtension,
+  OPEN_WEATHER_API_KEY, LocalStorage, API_URL, Browser, isWebApp, GOOGLE_CLIENT_ID, GOOGLE_API_KEY, isBrowserExtension, SettingKeys,
 } from '../constants';
 import Store from './store';
 import { convertImageUrlToBase64, getLinkFromUrl } from './utils';
-import { addIdentityPermission, addTopSitesPermission } from '../browser-permissions';
+import { addIdentityPermission } from '../browser-permissions';
 import { loadScript } from '../utils';
 
 
@@ -54,16 +54,6 @@ import { loadScript } from '../utils';
 */
 
 
-const DbKeys = {
-  profile: 'profile',
-  theme: 'theme',
-  settings: 'settings',
-};
-
-
-// @ts-ignore
-
-
 class GeneralStore extends Store {
   constructor() {
     super('general');
@@ -93,46 +83,6 @@ class GeneralStore extends Store {
 
 
   /**
-   * @param {{ name: string }} time
-   */
-  setProfile({ name }) {
-    return this.updateItem({ _id: DbKeys.profile, name });
-  }
-
-
-  /**
-   * @return {Promise<{ name: string }>} time
-   */
-  getProfile() {
-    return this.db.get(DbKeys.profile);
-  }
-
-
-  /**
-   * @return {string} theme
-   */
-  getTheme() {
-    const theme = window.localStorage.getItem(LocalStorage.theme);
-    const defaultTheme = Themes.focus;
-
-    if (!Object.keys(Themes).includes(theme)) {
-      window.localStorage.setItem(LocalStorage.theme, defaultTheme);
-      return defaultTheme;
-    }
-
-    return theme;
-  }
-
-
-  /**
-   * @param {string} theme
-   */
-  setTheme(theme) {
-    window.localStorage.setItem(LocalStorage.theme, theme);
-  }
-
-
-  /**
    * @return {Promise<Background>} theme
    */
   async getBackground() {
@@ -154,15 +104,6 @@ class GeneralStore extends Store {
     const newBackground = { ...jsonResponse, base64, imageUrl: imageUrlWithWidth };
 
     return newBackground;
-  }
-
-  isWeatherEnabled() {
-    return localStorage.getItem('weather.enabled') === 'true';
-  }
-
-  /** @param {Boolean} value */
-  setWeatherEnabled(value) {
-    localStorage.setItem('weather.enabled', value.toString());
   }
 
 
@@ -205,8 +146,6 @@ class GeneralStore extends Store {
       createdAt: new Date(),
     };
 
-    this.setWeatherEnabled(true);
-
     return weatherInfo;
   }
 
@@ -235,16 +174,6 @@ class GeneralStore extends Store {
   }
 
 
-  isCalendarEnabled() {
-    return localStorage.getItem('calendar.enabled') === 'true';
-  }
-
-  /** @param {Boolean} value */
-  setCalendarEnabled(value) {
-    localStorage.setItem('calendar.enabled', value.toString());
-  }
-
-
   /**
    * @return {Promise<CalendarEvent[]>} events
    */
@@ -254,7 +183,9 @@ class GeneralStore extends Store {
     const scope = 'https://www.googleapis.com/auth/calendar.readonly';
     let token;
 
-    if (!this.isCalendarEnabled() && isBrowserExtension) {
+    const isCalendarEnabled = window.localStorage.getItem(SettingKeys.isCalendarEnabled);
+
+    if (isBrowserExtension) {
       await addIdentityPermission();
     }
 
@@ -307,7 +238,7 @@ class GeneralStore extends Store {
           authURL += `&scope=${encodeURIComponent(scope)}`;
 
           Browser.identity.launchWebAuthFlow({
-            interactive: !this.isCalendarEnabled(), // Interactive for the first time
+            interactive: !isCalendarEnabled, // Interactive for the first time
             url: authURL,
           }, (returnUrl) => {
             if (returnUrl) {
@@ -322,14 +253,8 @@ class GeneralStore extends Store {
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e);
-      this.setCalendarEnabled(false);
       throw e;
     }
-
-    if (!token || !token.length) {
-      this.setCalendarEnabled(false);
-    }
-
 
     const query = {
       calendarId: 'primary',
@@ -375,32 +300,14 @@ class GeneralStore extends Store {
       };
     });
 
-    this.setCalendarEnabled(true);
-
     return events;
   }
 
 
-  isTopSitesEnabled() {
-    if (!isBrowserExtension) return false;
-
-    return localStorage.getItem('topSites.enabled') === 'true';
-  }
-
-  /** @param {Boolean} value */
-  setTopSitesEnabled(value) {
-    localStorage.setItem('topSites.enabled', value.toString());
-  }
-
-
   /**
-   * @return {Promise<Link[]>} Weather Data for give lat long
+   * @return {Promise<import('./link').default[]>} Weather Data for give lat long
    */
   async findTopSites({ limit }) {
-    if (!this.isTopSitesEnabled()) {
-      await addTopSitesPermission();
-    }
-
     const topSites = await new Promise((resolve, reject) => {
       if (Browser && Browser.topSites) {
         Browser.topSites.get((sites) => {
@@ -408,14 +315,14 @@ class GeneralStore extends Store {
             .slice(0, limit)
             .map((site) => getLinkFromUrl(site.url));
 
-          resolve(links);
+          Promise.all(links)
+            .then(resolve)
+            .catch(reject);
         });
       } else {
         reject(new Error('Cannot access browser top sites'));
       }
     });
-
-    this.setTopSitesEnabled(true);
 
     return topSites;
   }
