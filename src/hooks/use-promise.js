@@ -4,81 +4,6 @@ import React from 'react';
 import { differenceInSeconds } from 'date-fns';
 
 
-// const PouchDB = require('pouchdb').default;
-
-
-// const defaultBackgroundCache = {
-//   id: 'oMpAz-DN-9I',
-//   imageUrl: '/assets/bg.jpg',
-//   color: '#6D4A43',
-//   height: 3168,
-//   width: 4752,
-//   user: 'Greg Rakozy',
-//   userUrl: 'https://unsplash.com/@grakozy?utm_source=PepperTab&utm_medium=referral',
-//   location: 'Spiral Jetty, United States',
-//   link: 'https://unsplash.com/@grakozy?utm_source=PepperTab&utm_medium=referral',
-//   source: 'Unsplash',
-//   sourceUrl: 'https://unsplash.com/?utm_source=PepperTab&utm_medium=referral',
-// };
-
-// class Cache {
-//   constructor() {
-//     this.cacheDb = new PouchDB('cache');
-//   }
-
-//   async get(key) {
-//     let cachedData;
-
-//     try {
-//       cachedData = await this.cacheDb.get(key);
-//     } catch (error) {
-//       if (error.status === 404 && key === 'BACKGROUND') {
-//         cachedData = await this.cacheDb.post({
-//           _id: key,
-//           data: defaultBackgroundCache,
-//           storedAt: new Date('2019-01-01'), // An old date
-//         });
-
-//         cachedData = await this.cacheDb.get(key);
-//       }
-//     }
-
-//     return cachedData;
-//   }
-
-//   async set(key, data) {
-//     const newDoc = {
-//       _id: key,
-//       data,
-//       storedAt: new Date(),
-//     };
-
-//     try {
-//       const originalDoc = await this.cacheDb.get(key);
-//       // eslint-disable-next-line no-param-reassign
-//       newDoc._rev = originalDoc._rev;
-//       return this.cacheDb.put(newDoc);
-//     } catch (err) {
-//       if (err.status === 409) {
-//         return this.updateItem(data);
-//       } // new doc
-//       return this.cacheDb.put(newDoc);
-//     }
-//   }
-
-//   async delete(key) {
-//     try {
-//       const originalDoc = await this.cacheDb.get(key);
-//       await this.cacheDb.remove(originalDoc);
-//     } catch (error) {
-//       // eslint-disable-next-line no-console
-//       console.error(error);
-//     }
-//   }
-// }
-
-// const cache = new Cache();
-
 const cache = {
   get(key) {
     if (!key) return undefined;
@@ -182,9 +107,9 @@ function usePromise(promise, options = {}) {
         // eslint-disable-next-line no-console
         console.error('Error on fetching data', e);
         setError(e);
-        if (cacheKey) {
-          cache.delete(cacheKey);
-        }
+        // if (cacheKey) {
+        //   cache.delete(cacheKey);
+        // }
       }
     }
 

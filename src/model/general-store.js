@@ -8,6 +8,7 @@ import Store from './store';
 import { convertImageUrlToBase64, getLinkFromUrl } from './utils';
 import { addIdentityPermission } from '../browser-permissions';
 import { loadScript } from '../utils';
+import { GoogleAuthError } from '../errors';
 
 
 /**
@@ -177,15 +178,13 @@ class GeneralStore extends Store {
   /**
    * @return {Promise<CalendarEvent[]>} events
    */
-  async getEvents() {
+  async getEvents({ isFirstTime }) {
     const clientId = GOOGLE_CLIENT_ID;
     const apiKey = GOOGLE_API_KEY;
     const scope = 'https://www.googleapis.com/auth/calendar.readonly';
     let token;
 
-    const isCalendarEnabled = window.localStorage.getItem(SettingKeys.isCalendarEnabled);
-
-    if (isBrowserExtension) {
+    if (isFirstTime && isBrowserExtension) {
       await addIdentityPermission();
     }
 
@@ -222,7 +221,7 @@ class GeneralStore extends Store {
 
                 onSignIn();
               }, (error) => {
-                reject(error);
+                reject(new GoogleAuthError(error.message));
               });
             });
           })
@@ -230,7 +229,6 @@ class GeneralStore extends Store {
         } else {
           let redirectURL = Browser.identity.getRedirectURL();
           redirectURL = redirectURL.endsWith('/') ? redirectURL.slice(0, -1) : redirectURL;
-
           let authURL = 'https://accounts.google.com/o/oauth2/auth';
           authURL += `?client_id=${clientId}`;
           authURL += '&response_type=token';
@@ -238,14 +236,14 @@ class GeneralStore extends Store {
           authURL += `&scope=${encodeURIComponent(scope)}`;
 
           Browser.identity.launchWebAuthFlow({
-            interactive: !isCalendarEnabled, // Interactive for the first time
+            interactive: isFirstTime, // Interactive for the first time
             url: authURL,
           }, (returnUrl) => {
             if (returnUrl) {
               const accessToken = returnUrl.split('access_token=')[1].split('&')[0];
               resolve(accessToken);
             } else {
-              reject(new Error('Cannot get access token'));
+              reject(new GoogleAuthError('Cannot get access token'));
             }
           });
         }

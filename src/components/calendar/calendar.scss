@@ -44,7 +44,6 @@
     flex-grow: 1;
     justify-content: center;
     align-items: center;
-    font-size: 1.1rem;
     padding: 1rem;
     text-align: center;
   }
@@ -64,7 +63,7 @@
   }
 
   &__enroll-error {
-    color: var(--danger-color);
+    color: var(--color-warning);
   }
 
   &__footer {

@@ -15,6 +15,7 @@ import Spinner from '../spinner';
 import CalendarItem from '../calendar-item';
 import { CacheKeys, SettingKeys } from '../../constants';
 import useSettings from '../../hooks/use-settings';
+import { GoogleAuthError } from '../../errors';
 import './calendar.scss';
 
 
@@ -26,38 +27,36 @@ function Calendar() {
   const signInButtonRef = React.useRef(null);
 
   const [isTrying, setIsTrying] = React.useState(false);
-  const [fetchError, setFetchError] = React.useState(null);
+  const [enrollError, setEnrollError] = React.useState(null);
 
 
   const [events, {
     isFetching, error, reFetch, fetchedAt,
   }] = usePromise(
-    () => generalStore.getEvents(),
+    () => generalStore.getEvents({ isFirstTime: !isCalendarEnabled }),
     {
       cacheKey: CacheKeys.calendar,
-      cachePeriodInSecs: (60 * 2),
+      cachePeriodInSecs: (10 * 1),
       conditions: [isCalendarEnabled],
     },
   );
 
 
   React.useEffect(() => {
-    if (error) {
+    if (error instanceof GoogleAuthError) {
       setIsCalendarEnabled(false);
-      setFetchError(error);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [error]);
+  }, [error, setIsCalendarEnabled]);
 
 
   async function handleAuthClick() {
     setIsTrying(true);
     try {
-      await generalStore.getEvents();
+      await generalStore.getEvents({ isFirstTime: true });
       setIsCalendarEnabled(true);
     } catch (e) {
       setIsCalendarEnabled(false);
-      setFetchError(e);
+      setEnrollError(e);
     }
     setIsTrying(false);
   }
@@ -109,6 +108,16 @@ function Calendar() {
       );
     }
 
+    if (error) {
+      return (
+        <div className="calendar__footer">
+          {'Error while updating. Last update '}
+          {formatDistance(new Date(fetchedAt), new Date())}
+          {' ago.'}
+        </div>
+      );
+    }
+
     if (fetchedAt) {
       return (
         <div className="calendar__footer">
@@ -124,7 +133,7 @@ function Calendar() {
 
 
   function renderBody() {
-    if (fetchError) {
+    if (enrollError) {
       return (
         <div className="calendar__enroll">
           <div className="calendar__enroll-error">
@@ -190,7 +199,7 @@ function Calendar() {
 
 
   return (
-    <Card title="Upcoming" actions={actions}>
+    <Card title="Calendar" actions={actions}>
 
       <div className="calendar fade-in">
         {renderBody()}
