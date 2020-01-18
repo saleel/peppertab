@@ -2,7 +2,7 @@
 
 import addDays from 'date-fns/addDays';
 import {
-  OPEN_WEATHER_API_KEY, LocalStorage, API_URL, Browser, isWebApp, GOOGLE_CLIENT_ID, GOOGLE_API_KEY, isBrowserExtension, SettingKeys,
+  OPEN_WEATHER_API_KEY, LocalStorage, API_URL, Browser, isWebApp, GOOGLE_CLIENT_ID, GOOGLE_API_KEY, isBrowserExtension,
 } from '../constants';
 import Store from './store';
 import { convertImageUrlToBase64, getLinkFromUrl } from './utils';

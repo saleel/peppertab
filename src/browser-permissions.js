@@ -1,7 +1,6 @@
 import {
-  Browser, isChromeExtension, isFirefoxExtension, isBrowserExtension, GOOGLE_CLIENT_ID, GOOGLE_API_KEY, SettingKeys, isWebApp,
+  Browser, isChromeExtension, isFirefoxExtension, isBrowserExtension,
 } from './constants';
-import { loadScript } from './utils';
 
 
 function addPermission(permissionsToAdd) {
