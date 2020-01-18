@@ -9,6 +9,7 @@ import Note from '../../model/note';
 import Card from '../card';
 import usePromise from '../../hooks/use-promise';
 import NoteTitle from './note-title';
+import useInterval from '../../hooks/use-interval';
 import './notes.scss';
 
 const HtmlEditor = React.lazy(() => import('../html-editor/html-editor'));
@@ -16,19 +17,28 @@ const HtmlEditor = React.lazy(() => import('../html-editor/html-editor'));
 
 function Notes() {
   const { noteStore, lastSyncTime } = React.useContext(StoreContext);
-  const [notes, { reFetch, isFetching }] = usePromise(() => noteStore.findNotes(), { defaultValue: [] });
-
-
-  const defaultNote = new Note({ content: '', createdAt: new Date(), updatedAt: new Date() });
-  let notesToRender = notes;
-  if (!isFetching && !(notes && notes.length)) {
-    notesToRender = [defaultNote]; // Render a dummy new note
-  }
 
   const componentRenderedAt = React.useRef(new Date());
   const editorEl = React.useRef(null);
   const [activeNote, setActiveNote] = React.useState();
   const [isEditing, setIsEditing] = React.useState(false);
+  const [currentTime, setCurrentTime] = React.useState(new Date());
+
+
+  useInterval(() => {
+    setCurrentTime(new Date());
+  }, 60 * 1000);
+
+  const [notes, { reFetch, isFetching }] = usePromise(
+    () => noteStore.findNotes(), { defaultValue: [] },
+  );
+
+
+  const defaultNote = new Note({ content: '' });
+  let notesToRender = notes;
+  if (!isFetching && !(notes && notes.length)) {
+    notesToRender = [defaultNote]; // Render a dummy new note
+  }
 
 
   async function createNoteAndSetActive() {
@@ -143,12 +153,6 @@ function Notes() {
   function renderNoteListItem(note) {
     const isActiveNote = activeNote && (activeNote.id === note.id);
     const noteToRender = isActiveNote ? activeNote : note;
-    // const title = isActiveNote ? getNoteTitle(activeNote) : getNoteTitle(note);
-
-    // let className = 'notes__list-item';
-    // if (isActiveNote) {
-    //   className += ' notes__list-item--active';
-    // }
 
     return (
       <NoteTitle
@@ -158,13 +162,6 @@ function Notes() {
         isActive={isActiveNote}
       />
     );
-
-    // return (
-    //   <button key={note.id || title} type="button" className={className} onClick={() => onListItemClick(note)}>
-    //     <div className="notes__list-item-title">{title}</div>
-    //     <div className="notes__list-item-date">{new Date(note.createdAt).toDateString()}</div>
-    //   </button>
-    // );
   }
 
 
@@ -187,17 +184,21 @@ function Notes() {
               onBlur={() => { setIsEditing(false); }}
             />
 
-            <div className="notes__editor-footer">
-              <div className="notes__save-info">
-                {'Saved '}
-                {formatDistance(new Date(activeNote.updatedAt), new Date())}
-                {' ago'}
-              </div>
+              {activeNote.id && (
+              <div className="notes__editor-footer">
+                <>
+                  <div className="notes__save-info">
+                    {'Saved '}
+                    {formatDistance(new Date(activeNote.updatedAt), currentTime)}
+                    {' ago'}
+                  </div>
 
-              <button type="button" className="notes__btn-delete" onClick={onDeleteClick}>
-                <TrashIcon size="15" />
-              </button>
-            </div>
+                  <button type="button" className="notes__btn-delete" onClick={onDeleteClick}>
+                    <TrashIcon size="15" />
+                  </button>
+                </>
+              </div>
+              )}
           </React.Suspense>
         )}
       </div>
