@@ -36,14 +36,14 @@ body {
 
 *::-webkit-scrollbar {
 	width: 0.5rem;
-	background-color: var(--bg-color);
 }
  
 *::-webkit-scrollbar-track {
-	background-color: var(--bg-color);
+	background-color: var(--bg-color-3);
+	box-shadow: none;
 }
  
 *::-webkit-scrollbar-thumb {
 	background-color: var(--bg-color-2);
-	border-radius: 1px;
+	border-radius: 2px;
 }
