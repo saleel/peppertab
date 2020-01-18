@@ -120,6 +120,8 @@ function Home() {
                 arrowContent={<div className="rc-tooltip-arrow-inner" />}
                 overlayClassName="home__bg-change-tooltip fade-in"
                 mouseEnterDelay={0.5}
+                // eslint-disable-next-line react/jsx-props-no-spreading
+                {...isFetching && { popupVisible: false }}
               >
                 <button
                   type="button"
