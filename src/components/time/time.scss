@@ -1,12 +1,14 @@
 .time {
+	color: var(--text-color-2);
+
   &__hours {
     display: inline;
-    font-size: 3rem;
+    font-size: 2.5rem;
 	}
 
   &__seconds {
     display: inline-block;
-    font-size: 1.25rem;
-		width: 2.1rem;
+    font-size: 1.12rem;
+		width: 2rem;
   }
 }
