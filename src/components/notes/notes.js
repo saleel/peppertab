@@ -34,7 +34,7 @@ function Notes() {
   );
 
 
-  const defaultNote = new Note({ content: '' });
+  const defaultNote = new Note({ content: '', createdAt: new Date(), updatedAt: new Date() });
   let notesToRender = notes;
   if (!isFetching && !(notes && notes.length)) {
     notesToRender = [defaultNote]; // Render a dummy new note
