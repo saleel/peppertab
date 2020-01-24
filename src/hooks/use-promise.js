@@ -1,7 +1,7 @@
 // @ts-check
 
 import React from 'react';
-import { differenceInSeconds } from 'date-fns';
+import differenceInSeconds from 'date-fns/differenceInSeconds';
 
 
 const cache = {

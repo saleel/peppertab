@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { UserSession } from 'blockstack';
 import AuthContext from './auth-context';
-import { BlockstackAppConfig, LocalStorage } from '../../constants';
+import { BlockstackAppConfig, SettingKeys } from '../../constants';
 
 
 function AuthContextProvider({ children }) {
@@ -26,7 +26,7 @@ function AuthContextProvider({ children }) {
       userSession.handlePendingSignIn()
         .then(() => {
           // Clear last sync time
-          window.localStorage.removeItem(LocalStorage.lastSyncTime);
+          window.localStorage.removeItem(SettingKeys.lastSyncTime);
 
           window.location.replace('/index.html');
         });

@@ -147,7 +147,7 @@ function Calendar() {
       return (
         <div className="calendar__enroll">
           <div>
-            Integrate with Google Calendar to see upcoming events
+            Connect with Google Calendar to see upcoming events
           </div>
           <button
             className="calendar__btn-sign-in"
@@ -155,7 +155,9 @@ function Calendar() {
             type="button"
             onClick={handleAuthClick}
             aria-label="Sign in with Google"
-          />
+          >
+            Connect Now
+          </button>
         </div>
       );
     }

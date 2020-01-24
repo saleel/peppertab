@@ -12,9 +12,7 @@ import './links.scss';
 
 
 function Links() {
-  const { linkStore, lastSyncTime, generalStore } = React.useContext(StoreContext);
-
-  const componentRenderedAt = React.useRef(new Date());
+  const { linkStore, generalStore } = React.useContext(StoreContext);
 
   const topSitesCount = 8;
 
@@ -39,20 +37,16 @@ function Links() {
     },
   );
 
-  const links = showTopSites ? topSites : myLinks;
-
 
   React.useEffect(() => {
-    if (showTopSites) {
-      return;
-    }
+    const unbind = linkStore.on('sync', () => { reFetch(); });
 
-    if (new Date(lastSyncTime).getTime() > componentRenderedAt.current.getTime()) {
-      reFetch();
-    }
-
+    return () => { unbind(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showTopSites, lastSyncTime]);
+  }, []);
+
+
+  const links = showTopSites ? topSites : myLinks;
 
 
   async function onCreateClick() {
@@ -71,13 +65,12 @@ function Links() {
     }
 
     if (links.find((l) => l.url === url)) {
-      window.alert('URL already exist');
+      window.alert('This link already exist');
       return;
     }
 
     const link = await getLinkFromUrl(url);
     await linkStore.createLink(link);
-
     reFetch();
   }
 
@@ -134,7 +127,7 @@ function Links() {
       <div className="links__items flex content-start flex-wrap ">
 
         {(links || []).map((link) => (
-          <a key={link.url} title={link.siteName} href={link.url} className="links__item">
+          <a key={link.id} title={link.siteName} href={link.url} className="links__item">
             {renderImage(link)}
 
             <div className="links__item-name">
@@ -176,4 +169,4 @@ function Links() {
 }
 
 
-export default Links;
+export default React.memo(Links);

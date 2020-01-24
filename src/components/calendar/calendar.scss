@@ -17,6 +17,7 @@
     scroll-behavior: smooth;
     display: flex;
     // align-items: center;
+    flex-direction: column;
   }
 
   &__no-events {
@@ -49,15 +50,18 @@
   }
 
   &__btn-sign-in {
-    background-image: url('/assets/btn_google_signin_light_normal_web@2x.png');
-    background-size: contain;
-    width: 200px;
-    height: 49px;
+    // background-image: url('/assets/btn_google_signin_light_normal_web@2x.png');
+    // background-size: contain;
+    // width: 200px;
+    // height: 49px;
     margin: 1rem;
     opacity: 0.85;
+    font-size: 1.2rem;
+    text-decoration: underline;
 
     &:hover {
-      // background-image: url('/assets/btn_google_signin_light_pressed_web@2x.png');
+      text-decoration: none;
+    // background-image: url('/assets/btn_google_signin_light_pressed_web@2x.png');
       opacity: 1;
     }
   }

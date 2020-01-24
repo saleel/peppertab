@@ -23,6 +23,12 @@ class LinkStore extends Store {
    * @returns {Promise<Link>} link
    */
   async createLink(link) {
+    const existing = (await this.findLinks()).find((l) => l.url === link.url);
+
+    if (existing) {
+      return existing;
+    }
+
     const response = await this.db.post({
       ...link,
       createdAt: new Date(),
@@ -42,7 +48,6 @@ class LinkStore extends Store {
     return rows
       .map((row) => new Link(row.doc))
       .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
-    // .slice(0, limit);
   }
 
 
@@ -51,8 +56,8 @@ class LinkStore extends Store {
    */
   async deleteLink(id) {
     const link = await this.db.get(id);
-    this.emitter.emit('change', new Date());
     await this.db.remove(link);
+    this.emitter.emit('change', new Date());
   }
 }
 

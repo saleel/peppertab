@@ -34,6 +34,8 @@ class Store {
 
     // DEstroy temp db
     await tempDb.destroy();
+
+    this.emitter.emit('sync', new Date());
   }
 
 

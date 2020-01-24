@@ -16,26 +16,25 @@ import './todo-list.scss';
 
 
 function TodoList() {
-  const { todoStore, lastSyncTime } = React.useContext(StoreContext);
-  const [todos, { isFetching, reFetch }] = usePromise(() => todoStore.findTodos(), { defaultValue: [] });
+  const { todoStore } = React.useContext(StoreContext);
 
-  const componentRenderedAt = React.useRef(new Date());
   const todoListRef = React.useRef(null);
 
   const [newTodo, setNewTodo] = React.useState({ title: '' });
   const [showCompleted, setShowCompleted] = useSettings(SettingKeys.showCompletedTodos, true);
 
 
+  const [todos, { isFetching, reFetch }] = usePromise(() => todoStore.findTodos(), { defaultValue: [] });
+
   const hasCompleted = todos && todos.some((t) => t.isCompleted);
 
 
   React.useEffect(() => {
-    if (new Date(lastSyncTime).getTime() > componentRenderedAt.current.getTime()) {
-      reFetch();
-    }
+    const unbind = todoStore.on('sync', () => { reFetch(); });
 
+    return () => { unbind(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lastSyncTime]);
+  }, []);
 
 
   /**
@@ -164,4 +163,4 @@ function TodoList() {
 }
 
 
-export default TodoList;
+export default React.memo(TodoList);

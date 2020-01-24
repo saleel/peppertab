@@ -4,8 +4,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import format from 'date-fns/format';
 import LinkIcon from '@iconscout/react-unicons/icons/uil-external-link-alt';
+import isSameDay from 'date-fns/isSameDay';
 import './calendar-item.scss';
-import { isSameDay } from 'date-fns';
 
 
 function CalendarItem(props) {

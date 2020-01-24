@@ -2,7 +2,7 @@
 
 import addDays from 'date-fns/addDays';
 import {
-  OPEN_WEATHER_API_KEY, LocalStorage, API_URL, Browser, isWebApp, GOOGLE_CLIENT_ID, GOOGLE_API_KEY, isBrowserExtension,
+  OPEN_WEATHER_API_KEY, API_URL, Browser, isWebApp, GOOGLE_CLIENT_ID, GOOGLE_API_KEY, isBrowserExtension,
 } from '../constants';
 import Store from './store';
 import { convertImageUrlToBase64, getLinkFromUrl } from './utils';
@@ -58,28 +58,6 @@ import { GoogleAuthError } from '../errors';
 class GeneralStore extends Store {
   constructor() {
     super('general');
-  }
-
-
-  /**
-   * @param {Date} time
-   */
-  setLastSyncTime(time) {
-    window.localStorage.setItem(LocalStorage.lastSyncTime, time.getTime().toString());
-  }
-
-
-  /**
-   * @return {Date} time
-   */
-  getLastSyncTime() {
-    const time = window.localStorage.getItem(LocalStorage.lastSyncTime);
-
-    if (!time || Number.isNaN(Number(time))) {
-      return null;
-    }
-
-    return new Date(Number(time));
   }
 
 

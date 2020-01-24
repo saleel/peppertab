@@ -3,7 +3,7 @@
 import React from 'react';
 import TrashIcon from '@iconscout/react-unicons/icons/uil-trash';
 import PlusIcon from '@iconscout/react-unicons/icons/uil-plus';
-import { formatDistance } from 'date-fns';
+import formatDistance from 'date-fns/formatDistance';
 import StoreContext from '../../contexts/store-context';
 import Note from '../../model/note';
 import Card from '../card';
@@ -16,9 +16,8 @@ const HtmlEditor = React.lazy(() => import('../html-editor/html-editor'));
 
 
 function Notes() {
-  const { noteStore, lastSyncTime } = React.useContext(StoreContext);
+  const { noteStore } = React.useContext(StoreContext);
 
-  const componentRenderedAt = React.useRef(new Date());
   const editorEl = React.useRef(null);
   const [activeNote, setActiveNote] = React.useState();
   const [isEditing, setIsEditing] = React.useState(false);
@@ -50,23 +49,20 @@ function Notes() {
   async function updateActiveNoteContent() {
     // Create one if its a default note
     if (!activeNote.id && activeNote.content) {
-      const createdNote = await noteStore.createNote(activeNote);
+      await noteStore.createNote(activeNote);
       await reFetch();
-      setActiveNote(createdNote);
     } else {
-      const updated = await noteStore.updateNote(activeNote.id, activeNote);
-      reFetch();
-      setActiveNote(updated);
+      await noteStore.updateNote(activeNote.id, activeNote);
+      await reFetch();
     }
   }
 
-
   React.useEffect(() => {
-    if (new Date(lastSyncTime).getTime() > componentRenderedAt.current.getTime()) {
-      reFetch();
-    }
+    const unbind = noteStore.on('sync', () => { reFetch(); });
+
+    return () => { unbind(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lastSyncTime]);
+  }, []);
 
 
   // Create a new note if there are no notes
@@ -112,7 +108,7 @@ function Notes() {
    */
   async function onListItemClick(note) {
     await updateActiveNoteContent();
-    reFetch();
+    // reFetch();
     setActiveNote(note);
   }
 
@@ -208,4 +204,4 @@ function Notes() {
 }
 
 
-export default Notes;
+export default React.memo(Notes);

@@ -1,29 +1,101 @@
 import React from 'react';
-import { formatDistance } from 'date-fns';
+import formatDistance from 'date-fns/formatDistance';
+import differenceInMinutes from 'date-fns/differenceInMinutes';
 import SyncIcon from '@iconscout/react-unicons/icons/uil-sync';
 import SyncSlashIcon from '@iconscout/react-unicons/icons/uil-sync-slash';
 import AuthContent from '../../contexts/auth-context';
 import StoreContext from '../../contexts/store-context';
 import LoginModal from '../login-modal';
+import useSettings from '../../hooks/use-settings';
+import { SettingKeys } from '../../constants';
+import { debounce } from '../../utils';
 import './sync-info.scss';
 
 
-function Sync() {
+function SyncInfo() {
   const { userSession, isLoggedIn, logout } = React.useContext(AuthContent);
-  const { lastSyncTime, syncError, isSyncing } = React.useContext(StoreContext);
-
+  const { todoStore, noteStore, linkStore } = React.useContext(StoreContext);
 
   const [lastSyncDistance, setLastSyncDistance] = React.useState();
   const [showLoginPrompt, setShowLoginPrompt] = React.useState(false);
+  const [isSyncing, setIsSyncing] = React.useState(false);
+  const [syncError, setSyncError] = React.useState();
+
+  const [lastSyncTime, setLastSyncTime] = useSettings(SettingKeys.lastSyncTime);
+
+
+  async function syncDb(store) {
+    if (!window.navigator.onLine) return;
+
+    try {
+      // Get backup from blockstack
+      const fileName = `${store.name}-db.json`;
+      const dump = await userSession.getFile(fileName, { decrypt: true });
+
+      // Restore dump
+      await store.merge(dump);
+
+      // Dump the synced DB
+      const dbDump = await store.dump();
+
+      // Push db dump back to blockstack
+      await userSession.putFile(fileName, dbDump, { encrypt: true });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Sync error', error);
+      throw error;
+    }
+  }
+
+  async function syncAll() {
+    try {
+      if (isSyncing) return;
+
+      if (!isLoggedIn()) return;
+
+      setIsSyncing(true);
+
+      await Promise.all([
+        syncDb(todoStore),
+        syncDb(noteStore),
+        syncDb(linkStore),
+      ]);
+
+      setLastSyncTime(new Date());
+      setIsSyncing(false);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error('Error ocurred in sync', e);
+      setIsSyncing(false);
+      setSyncError(e);
+    }
+  }
+
+
+  // Sync once on page load
+  React.useEffect(() => {
+    if (!isLoggedIn()) return;
+
+    if (!lastSyncTime || differenceInMinutes(new Date(), new Date(lastSyncTime)) > 1) {
+      const timeout = setTimeout(() => {
+        syncAll();
+      }, 3000);
+
+      // eslint-disable-next-line consistent-return
+      return () => { timeout(); };
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
 
   React.useEffect(() => {
     if (!lastSyncTime) return;
 
-    setLastSyncDistance(formatDistance(lastSyncTime, new Date()));
+    setLastSyncDistance(formatDistance(new Date(lastSyncTime), new Date()));
 
     const interval = setInterval(() => {
-      setLastSyncDistance(formatDistance(lastSyncTime, new Date()));
+      setLastSyncDistance(formatDistance(new Date(lastSyncTime), new Date()));
     }, 60 * 1000);
 
     return () => { clearInterval(interval); }; // eslint-disable-line consistent-return
@@ -61,13 +133,22 @@ function Sync() {
           <div className="sync-info__message">Error occurred in sync</div>
         </>
       )}
+
+      {!isSyncing && (
+        <button
+          type="button"
+          className="sync-info__btn-login"
+          onClick={() => { syncAll(); }}
+        >
+          Sync now
+        </button>
+      )}
     </div>
   );
 
 
   return (
     <>
-      {/* <Card> */}
       <div className="sync-info">
 
         {!isUserLoggedIn && (
@@ -79,7 +160,7 @@ function Sync() {
               type="button"
               onClick={() => onButtonClick()}
             >
-                Login with Blockstack
+              Login with Blockstack
             </button>
           </>
         )}
@@ -110,4 +191,4 @@ function Sync() {
 }
 
 
-export default Sync;
+export default SyncInfo;
