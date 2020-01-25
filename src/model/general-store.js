@@ -179,7 +179,7 @@ class GeneralStore extends Store {
             }
           };
 
-          loadScript('gapi.js').then(() => {
+          loadScript('https://apis.google.com/js/api.js').then(() => {
             // @ts-ignore
             gapi = window.gapi;
 
