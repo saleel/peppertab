@@ -51,7 +51,6 @@ class LinkStore extends Store {
    * @returns {Promise<Link>} Note created
    */
   async updateLink(id, link) {
-    console.log(id, link);
     await this.updateItem({ ...link, _id: id });
 
     this.emitter.emit('change', new Date());
@@ -65,6 +64,7 @@ class LinkStore extends Store {
    */
   async deleteLink(id) {
     const link = await this.db.get(id);
+    debugger;
     await this.db.remove(link);
     this.emitter.emit('change', new Date());
   }

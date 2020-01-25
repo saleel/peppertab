@@ -48,7 +48,7 @@ function Links() {
 
   const links = showTopSites ? topSites : myLinks;
 
-
+  
   async function onCreateClick() {
     // eslint-disable-next-line no-alert
     const url = window.prompt('Enter the URL of website you want to add', 'https://');

@@ -30,7 +30,7 @@ class Store {
     tempDb.loadIt(dump);
 
     // Sync temp db with current db
-    await this.db.sync(tempDb);
+    await tempDb.sync(this.db);
 
     // DEstroy temp db
     await tempDb.destroy();
