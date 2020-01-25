@@ -137,7 +137,9 @@ function Calendar() {
       return (
         <div className="calendar__enroll">
           <div className="calendar__enroll-error">
-            Unexpected error occurred while connecting with your Google account. Please try again later.
+            Unexpected error occurred while connecting with your Google account.
+            <br />
+            Please make sure popups are enabled and try again later.
           </div>
         </div>
       );
