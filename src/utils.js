@@ -30,7 +30,7 @@ export async function loadScript(path) {
     };
 
     script.onerror = () => {
-      reject(new Error('Unable to load memory stream'));
+      reject(new Error(`Unable to load script ${path}`));
     };
 
     document.body.appendChild(script);

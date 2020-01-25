@@ -28,7 +28,7 @@ function AuthContextProvider({ children }) {
           // Clear last sync time
           window.localStorage.removeItem(SettingKeys.lastSyncTime);
 
-          window.location.replace('/index.html');
+          window.location.replace('index.html');
         });
     }
   }, [userSession]);

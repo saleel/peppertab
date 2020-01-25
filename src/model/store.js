@@ -42,7 +42,7 @@ class Store {
   async dump() {
     let MemoryStream = window.memorystream;
     if (!MemoryStream) {
-      await loadScript('/memorystream.js');
+      await loadScript('memorystream.js');
       MemoryStream = window.memorystream;
     }
 
