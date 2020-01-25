@@ -14,6 +14,7 @@ class Link {
       this._id = _id;
     }
 
+
     this.siteName = siteName;
     this.url = url;
     this.hostname = hostname;

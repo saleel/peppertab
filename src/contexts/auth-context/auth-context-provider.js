@@ -17,7 +17,7 @@ function AuthContextProvider({ children }) {
   }
 
   function logout() {
-    userSession.signUserOut('/');
+    userSession.signUserOut('');
   }
 
 
