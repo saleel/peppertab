@@ -6,7 +6,7 @@
   }
 
   browser.webRequest.onBeforeRequest.addListener(({ url }) => {
-    const hostedUrl = 'https://peppertab.com/auth';
+    const hostedUrl = 'https://peppertab.com/app/?auth';
 
     if (url.startsWith(hostedUrl)) {
       const extensionUrl = browser.extension.getURL('/index.html');

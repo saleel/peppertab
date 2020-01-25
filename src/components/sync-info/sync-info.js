@@ -8,7 +8,6 @@ import StoreContext from '../../contexts/store-context';
 import LoginModal from '../login-modal';
 import useSettings from '../../hooks/use-settings';
 import { SettingKeys } from '../../constants';
-import { debounce } from '../../utils';
 import './sync-info.scss';
 
 
@@ -134,7 +133,7 @@ function SyncInfo() {
         </>
       )}
 
-      {!isSyncing && (
+      {!isSyncing && lastSyncDistance && (
         <button
           type="button"
           className="sync-info__btn-login"

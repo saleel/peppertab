@@ -45,7 +45,7 @@ export const isWebApp = !isBrowserExtension;
 export const BlockstackAppConfig = new AppConfig(
   ['store_write', 'publish_data'],
   'https://peppertab.com',
-  `/auth?origin=${window.location.origin}/`,
+  '/app/?auth=true',
   '/blockstack-manifest.json',
 );
 

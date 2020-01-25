@@ -2,6 +2,7 @@
   "name": "pepper-tab",
   "version": "1.5.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@ckeditor/ckeditor5-react": "^1.1.3",
     "@iconscout/react-unicons": "0.0.1",
