@@ -1,5 +1,0 @@
-[[headers]]
-  for = "/*"
-    [headers.values]
-    "can't-be-evil" = "true"
-
