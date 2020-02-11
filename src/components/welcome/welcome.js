@@ -15,7 +15,7 @@ function Welcome() {
 
   const message = getMessagePrefix();
   const endOfToday = endOfDay(time);
-  const percentOfDayRemaining = differenceInMinutes(endOfToday, time) * 0.0694;
+  const percentOfDayRemaining = Math.ceil(differenceInMinutes(endOfToday, time) * 0.0694);
 
 
   return (
