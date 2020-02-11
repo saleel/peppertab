@@ -1,6 +1,6 @@
 {
   "name": "pepper-tab",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "private": true,
   "homepage": ".",
   "dependencies": {
