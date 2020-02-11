@@ -1,17 +1,12 @@
 .quotes {
-  min-height: 3em;
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.1em;
-  line-height: 1.5em;
-
-  &__message {
-    max-width: 500px;
-  }
+  font-size: 1.15rem;
 
   &__author {
-    font-style: oblique;
+    margin-left: 0.5rem;
+    font-style: italic;
   }
 }

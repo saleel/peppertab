@@ -6,22 +6,13 @@
   height: 10rem;
 
   
-  &__has-profile {
+  &__message {
     font-size: 4em; // relative to parent
-  }
-
-  &__no-profile {
-    height: 100vh;
-    font-size: 2.5rem !important;
+    margin-bottom: 0.25rem;
   }
 
   &__name {
     font-weight: 500;
-    text-transform: capitalize;
-
-    &:first-letter {
-      text-transform: uppercase;
-    }
   }
 
   &__inp-name {
@@ -37,5 +28,24 @@
   &__enter-icon {
     width: 2rem;
     display: inline-block;
+  }
+
+  &__remaining {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+  }
+
+  &__remaining-percent {
+    font-size: 1.35rem;
+    padding: 0 0.5rem;
+    font-weight: bold;
+  }
+
+  &__quote {
+    font-size: 1.15rem;
+  }
+
+  &__quote-author {
+    font-style: italic;
   }
 }

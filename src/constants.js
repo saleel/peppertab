@@ -15,6 +15,7 @@ export const Themes = { inspire: 'inspire', focus: 'focus' };
 
 export const CacheKeys = {
   calendar: 'calendar',
+  quote: 'quote',
   background: 'background',
   weather: 'weather',
 };

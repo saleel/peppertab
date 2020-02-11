@@ -133,21 +133,13 @@ class GeneralStore extends Store {
    * @return {Promise<Quote>} Quote of the day
    */
   async getQuote() {
-    const url = 'https://quotes.rest/qod?category=inspire';
+    const url = `${API_URL}/quote`;
 
     const response = await fetch(url, {
       method: 'GET',
       mode: 'cors',
     });
-    const jsonResponse = await response.json();
-    const { contents: { quotes: [quoteRaw] = [] } = {} } = jsonResponse;
-    const { quote: message, author } = quoteRaw;
-
-    const quote = {
-      message,
-      author,
-      createdAt: new Date(),
-    };
+    const quote = await response.json();
 
     return quote;
   }
