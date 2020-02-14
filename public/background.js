@@ -25,7 +25,9 @@
     browser.tabs.create({ url: 'index.html' });
   });
 
-  browser.runtime.onInstalled.addListener(() => {
-    browser.tabs.create({ url: 'index.html' });
+  browser.runtime.onInstalled.addListener(({ reason }) => {
+    if (reason === 'install') {
+      browser.tabs.create({ url: 'index.html' });
+    }
   });
 })();
