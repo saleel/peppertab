@@ -2,16 +2,17 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import TrashIcon from '@iconscout/react-unicons/icons/uil-trash';
 import Todo from '../../model/todo';
 import './todo-item.scss';
 
 
 /**
  *
- * @param {{ todo: Todo, onCompleteClick: (boolean) => (any) }} props
+ * @param {{ todo: Todo, onCompleteClick: (boolean) => (any), onDeleteClick: Function }} props
  */
 function TodoItem(props) {
-  const { todo, onCompleteClick } = props;
+  const { todo, onCompleteClick, onDeleteClick } = props;
 
   const [isCompleted, setIsCompleted] = React.useState(todo.isCompleted);
 
@@ -49,6 +50,10 @@ function TodoItem(props) {
 
       <span className="todo-item__title">{todo.title}</span>
 
+      <button className="todo-item__trash" type="button" onClick={() => { onDeleteClick(); }}>
+        <TrashIcon size="16" />
+      </button>
+
     </div>
   );
 }
@@ -57,6 +62,7 @@ function TodoItem(props) {
 TodoItem.propTypes = {
   todo: PropTypes.instanceOf(Todo).isRequired,
   onCompleteClick: PropTypes.func.isRequired,
+  onDeleteClick: PropTypes.func.isRequired,
 };
 
 

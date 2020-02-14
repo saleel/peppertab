@@ -1,12 +1,28 @@
 .todo-item {
   padding: 0.5rem 1.5rem;
-  display: block;
+  display: flex;
+  align-items: center;
   font-size: 1.1rem;
   background-color: var(--bg-color-3);
+
+  &__title {
+    flex-grow: 1;
+  }
+
+  &__trash {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility .5s linear 0.5s;
+  }
 
   &:hover {
     background-color: var(--bg-color-6);
     cursor: default;
+
+    .todo-item__trash {
+      opacity: 1;
+      visibility: visible;
+    }
   }
 
   &--completed {

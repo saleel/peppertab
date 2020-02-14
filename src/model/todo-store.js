@@ -77,6 +77,15 @@ class TodoStore extends Store {
 
     return this.getTodo(id);
   }
+
+
+  /**
+   * @param {string} id
+   */
+  async deleteTodo(id) {
+    const existingTodo = await this.db.get(id);
+    await this.db.remove(existingTodo);
+  }
 }
 
 

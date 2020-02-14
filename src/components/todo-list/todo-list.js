@@ -76,6 +76,15 @@ function TodoList() {
   }
 
 
+  async function onDeleteClick(todo) {
+    // eslint-disable-next-line no-alert
+    if (window.confirm('Are you sure you want to delete this todo?')) {
+      await todoStore.deleteTodo(todo.id);
+      reFetch();
+    }
+  }
+
+
   const actions = !hasCompleted ? [] : [
     (
       <Tooltip
@@ -114,6 +123,7 @@ function TodoList() {
               key={todo.id}
               todo={todo}
               onCompleteClick={(isCompleted) => onCompleteClick(todo, isCompleted)}
+              onDeleteClick={() => { onDeleteClick(todo); }}
             />
           ))}
 
