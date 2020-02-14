@@ -132,8 +132,8 @@ class GeneralStore extends Store {
   /**
    * @return {Promise<Quote>} Quote of the day
    */
-  async getQuote() {
-    const url = `${API_URL}/quote`;
+  async getQuote({ percentOfDayRemaining }) {
+    const url = `${API_URL}/quote?percentOfDayRemaining=${percentOfDayRemaining}`;
 
     const response = await fetch(url, {
       method: 'GET',

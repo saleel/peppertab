@@ -5,8 +5,8 @@ import { getMessagePrefix } from './welcome.utils';
 import useSettings from '../../hooks/use-settings';
 import { SettingKeys } from '../../constants';
 import useTime from '../../hooks/use-time';
-import './welcome.scss';
 import Quotes from '../quotes';
+import './welcome.scss';
 
 
 function Welcome() {
@@ -37,7 +37,7 @@ function Welcome() {
           <span>of the day left.</span>
         </div>
 
-        <Quotes />
+        <Quotes percentOfDayRemaining={percentOfDayRemaining} />
 
       </div>
     </div>

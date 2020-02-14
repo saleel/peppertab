@@ -1,16 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import StoreContext from '../../contexts/store-context';
 import usePromise from '../../hooks/use-promise';
 import { CacheKeys } from '../../constants';
 import './quotes.scss';
 
 
-function Quotes() {
+function Quotes(props) {
+  const { percentOfDayRemaining } = props;
+
   const { generalStore } = React.useContext(StoreContext);
 
-  const [quote] = usePromise(() => generalStore.getQuote(), {
+  const [quote] = usePromise(() => generalStore.getQuote({ percentOfDayRemaining }), {
     cacheKey: CacheKeys.quote,
-    cachePeriodInSecs: (24 * 60 * 60),
+    cachePeriodInSecs: (60 * 60),
   });
 
   if (!quote) return null;
@@ -28,6 +31,11 @@ function Quotes() {
     </div>
   );
 }
+
+
+Quotes.propTypes = {
+  percentOfDayRemaining: PropTypes.number.isRequired,
+};
 
 
 export default React.memo(Quotes);
