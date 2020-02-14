@@ -3,7 +3,7 @@
   "name": "PepperTab",
   "short_name": "PepperTab",
   "description": "Replace your new tab page with awesome widgets",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "chrome_url_overrides": {
     "newtab": "./index.html"
   },
