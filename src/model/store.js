@@ -24,7 +24,7 @@ class Store {
 
   async merge(dump) {
     // Create temporary DB
-    const tempDb = new PouchDB(`${this.name}-temp-${new Date().getTime()}`);
+    const tempDb = new PouchDB(`temp-${this.name}`);
 
     // Load backup
     tempDb.loadIt(dump);
