@@ -12,7 +12,12 @@ function Settings() {
   const [name, setName] = useSettings(SettingKeys.name, '');
   const [weatherUnit, setWeatherUnit] = useSettings(SettingKeys.weatherUnit, 'C');
   const [timeFormat, setTimeFormat] = useSettings(SettingKeys.timeFormat, '24');
-  // const [weatherLocation, setWeatherLocation] = useLocalStorage(SettingKeys.weatherLocation);
+  const [colorMode, setColorMode] = useSettings(SettingKeys.colorMode, 'dark');
+
+
+  React.useEffect(() => {
+    window.updateColors();
+  }, [colorMode]);
 
 
   return (
@@ -29,6 +34,21 @@ function Settings() {
           </div>
           <div className="settings__form-item-value">
             <EditableText onSubmit={setName} value={name} />
+          </div>
+        </div>
+
+        <div className="settings__form-item">
+          <div className="settings__form-item-label">
+            Dark Mode
+          </div>
+          <div className="settings__form-item-value">
+            <Switch
+              onChange={() => {
+                setColorMode((e) => (e === 'dark' ? 'light' : 'dark'));
+              }}
+              checked={colorMode === 'dark'}
+              className="settings__switch"
+            />
           </div>
         </div>
 

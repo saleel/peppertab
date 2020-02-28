@@ -13,24 +13,22 @@
 
   &__list {
     position: relative;
-    background-color: var(--bg-color-3);
     width: 30%;
-    border-right: 0.5px solid var(--bg-color-6);
+    border-right: 0.25px solid var(--bg-color-3);
     height: 100%;
     overflow-y: auto;
     padding-bottom: 0.5rem;
-    overflow-x: hidden;
+    padding-top: 0.5rem;
   }
 
   &__list-item {
     padding: 0.5rem 1.5rem;
-    border-bottom: 0.5px solid var(--bg-color-6);
+    border-bottom: 0.25px solid var(--bg-color-3);
     text-align: left;
     width: 100%;
 
     &--active {
-      background-color: var(--bg-color-6);
-      margin-left: 1px;
+      background-color: var(--bg-color-3);
     }
   }
 
@@ -47,11 +45,9 @@
     color: var(--text-color-3);
   }
 
- 
-
   &__editor-container {
     position: relative;
-    background-color: var(--bg-color-4);
+    background-color: var(--bg-color-5);
     cursor: text;
     width: 70%;
     display: flex;

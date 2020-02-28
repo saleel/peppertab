@@ -9,6 +9,11 @@
   transform: translateY(0);
   transition: transform 0.5s;
 
+  &__content {
+    background-color: var(--bg-color-4);
+    color: var(--text-color-3);
+  }
+
   &.not-visible {
     transform: translateY(300px);
   }

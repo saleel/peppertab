@@ -36,6 +36,7 @@ function Home() {
   const [isScrolled, setIsScrolled] = React.useState(window.pageYOffset > 10);
   const [showContent, setShowContent] = React.useState(true);
   const [isSettingsVisible, setIsSettingsVisible] = React.useState(false);
+  const [colorMode] = useSettings(SettingKeys.colorMode, 'dark');
 
 
   /** @type React.MutableRefObject<HTMLDivElement> */
@@ -137,7 +138,7 @@ function Home() {
   }
 
 
-  let classNames = `home home--${theme}`;
+  let classNames = `home home--${theme} home--${colorMode}`;
   if (!showContent) {
     classNames += ' home--content-hidden';
   }
@@ -256,7 +257,7 @@ function Home() {
                 </div>
               </div>
 
-              <div className="home__attributions mt-20 mb-10">
+              <div className="home__attributions mp-20 pb-10">
                 <div className="px-3 mb-1">{`PepperTab v${packageJson.version}`}</div>
 
                 <div>
@@ -295,7 +296,6 @@ function Home() {
           >
             <SettingsIcon
               aria-describedby="settings"
-              color="#fff"
               size="20"
             />
           </Tooltip>

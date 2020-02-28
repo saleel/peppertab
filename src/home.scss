@@ -2,9 +2,9 @@
 
 .home {
   --bg-opacity: 1;
-  width: 100%;
-  height: 100%;
   position: relative;
+  background-color: var(--bg-color);
+  color: var(--text-color);
 
   &__content {
     position: relative;
@@ -133,7 +133,8 @@
   &__theme-switcher, &__settings {
     position: fixed;
     cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.4);
+    color: #fff;
     padding: 3px;
     left: 10px;
     bottom: 10px;
@@ -142,7 +143,8 @@
     height: 26px;
 
     &:hover {
-      background-color: rgba(0, 0, 0, 0.75);
+      background-color: rgba(0, 0, 0, 0.6);
+    // background-color: var(--bg-color-3);
     }
   }
 
@@ -162,6 +164,7 @@
 
   &__bg-change {
     background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
     border-radius: 3px;
     z-index: 3;
     margin-bottom: 5px;
@@ -207,6 +210,7 @@
     line-height: 1rem;
     background-color: rgba(0, 0, 0, 0.5);
     min-height: 30px;
+    color: #fff;
 
     a {
       text-decoration: underline;
@@ -239,14 +243,18 @@
 
   &--inspire {
     .home__welcome {
-      // margin: calc(50vh - 5rem - 120px - 1rem) 0;
       min-height: calc(100vh - 220px - 4rem);
+      color: #fff;
+    }
+
+    .home__time, .home__weather {
+      color: #fff;
     }
 
     .home__links {
       min-height: 220px;
-      // margin-bottom: 1rem;
       display: flex;
+      color: #fff;
       --bg-color-2: rgba(0, 0, 0, 0.7);
       --bg-color-3: rgba(0, 0, 0, 0.6);
     }
@@ -273,8 +281,10 @@
   }
 
   &--settings-visible {
+    background-color: rgba(0, 0, 0, 0.5);
+
     .home__settings {
-      background-color: rgba(0, 0, 0, 0.75);
+      // background-color: var(--bg-color-2);
     }
 
     .home__bg-image, .home__content, .home__theme-switcher, .home__bg-change {

@@ -4,13 +4,12 @@
   overflow: hidden;
   z-index: 100;
 
-
   &__content {
+    border-radius: 5px;
     min-height: 250px;
-  width: 600px;
-  padding: 2rem;
+    width: 600px;
+    padding: 2rem;
   }
-
 
   &:focus {
     outline: none;

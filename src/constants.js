@@ -23,6 +23,7 @@ export const CacheKeys = {
 export const SettingKeys = {
   name: 'settings.name',
   theme: 'settings.theme',
+  colorMode: 'settings.colorMode',
   weatherUnit: 'settings.weather.unit',
   weatherLocation: 'settings.weather.location',
   timeFormat: 'settings.time.format',
@@ -39,8 +40,8 @@ export const SettingKeys = {
 export const Browser = window.browser || window.chrome;
 export const isChromeExtension = window.location.protocol === 'chrome-extension:';
 export const isFirefoxExtension = window.location.protocol === 'moz-extension:';
-export const isBrowserExtension = isChromeExtension || isFirefoxExtension;
-export const isWebApp = !isBrowserExtension;
+export const isWebApp = window.location.protocol === 'http:' || window.location.protocol === 'https:';
+export const isBrowserExtension = !isWebApp;
 
 
 export const BlockstackAppConfig = new AppConfig(

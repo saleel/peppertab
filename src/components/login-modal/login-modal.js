@@ -41,9 +41,9 @@ function LoginModal(props) {
       className="login-modal fade-in"
       onRequestClose={() => onRequestClose()}
     >
-      <Card className="login-modal__content">
+      <Card contentClassName="login-modal__content">
 
-        < >
+        <>
           <div className="login-modal__title">
             Login with Blockstack
           </div>
