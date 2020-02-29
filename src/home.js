@@ -113,7 +113,7 @@ function Home() {
         }
       }
 
-      if (windowOffset < 10 && isScrolled) {
+      if (windowOffset <= 10 && isScrolled) {
         setIsScrolled(false);
       }
     }
@@ -138,7 +138,7 @@ function Home() {
   }
 
 
-  let classNames = `home home--${theme} home--${colorMode}`;
+  let classNames = `home home--${theme} home--${colorMode} ${isScrolled ? 'home--scrolled' : ''}`;
   if (!showContent) {
     classNames += ' home--content-hidden';
   }

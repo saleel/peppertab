@@ -30,15 +30,6 @@
     transition: background-image 0.2s ease-in-out;
   }
 
-  &__bg-image ~ &__content {
-    background-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, calc(0.25 * var(--bg-opacity))) 0%,
-      rgba(0, 0, 0, calc(0.25 * var(--bg-opacity))) 50%,
-      rgba(0, 0, 0, 0) 100%
-    );
-  }
-
   &__widgets {
     // padding-bottom: 5rem;
     max-width: 900px;
@@ -130,7 +121,8 @@
     }
   }
 
-  &__theme-switcher, &__settings {
+  &__theme-switcher,
+  &__settings {
     position: fixed;
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.4);
@@ -144,7 +136,7 @@
 
     &:hover {
       background-color: rgba(0, 0, 0, 0.6);
-    // background-color: var(--bg-color-3);
+      // background-color: var(--bg-color-3);
     }
   }
 
@@ -200,7 +192,7 @@
       border-left-color: rgba(0, 0, 0, 0.75);
     }
   }
- 
+
   &__bg-info {
     padding: 5px;
     border-radius: 3px;
@@ -240,23 +232,42 @@
     font-size: 0.7rem;
   }
 
-
   &--inspire {
     .home__welcome {
       min-height: calc(100vh - 220px - 4rem);
-      color: #fff;
-    }
-
-    .home__time, .home__weather {
-      color: #fff;
     }
 
     .home__links {
       min-height: 220px;
       display: flex;
+
+      .links__create,
+      .links__item {
+        transition: background-color linear 0.25s, color linear 0.25s;
+      }
+    }
+
+    .home__bg-image ~ .home__content {
+      background-image: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.25) 0%,
+        rgba(0, 0, 0, 0.25) 50%,
+        rgba(0, 0, 0, 0) 100%
+      );
+    }
+
+    .home__time,
+    .home__weather,
+    .home__welcome {
       color: #fff;
-      --bg-color-2: rgba(0, 0, 0, 0.7);
-      --bg-color-3: rgba(0, 0, 0, 0.6);
+    }
+
+    &:not(.home--scrolled) {
+      .home__links {
+        color: #fff;
+        --bg-color-2: rgba(0, 0, 0, 0.6);
+        --bg-color-3: rgba(0, 0, 0, 0.5);
+      }
     }
   }
 
@@ -275,7 +286,10 @@
     }
   }
 
-  .home__content, .home__theme-switcher, .home__bg-change, .home__settings {
+  .home__content,
+  .home__theme-switcher,
+  .home__bg-change,
+  .home__settings {
     opacity: 1;
     transition: opacity 200ms ease-in;
   }
@@ -287,18 +301,20 @@
       // background-color: var(--bg-color-2);
     }
 
-    .home__bg-image, .home__content, .home__theme-switcher, .home__bg-change {
+    .home__bg-image,
+    .home__content,
+    .home__theme-switcher,
+    .home__bg-change {
       opacity: 0.25;
     }
   }
-
 
   &--content-hidden {
     .home__bg-info {
       width: auto;
       background-color: rgba(0, 0, 0, 0.75);
     }
-      
+
     .home__bg-info-details {
       max-width: 500px;
     }
@@ -307,7 +323,10 @@
       overflow: auto;
     }
 
-    .home__content, .home__theme-switcher, .home__bg-change, .home__settings {
+    .home__content,
+    .home__theme-switcher,
+    .home__bg-change,
+    .home__settings {
       opacity: 0;
     }
   }
