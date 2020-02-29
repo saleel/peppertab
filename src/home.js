@@ -101,19 +101,22 @@ function Home() {
     function onScroll() {
       const windowOffset = window.pageYOffset;
       const contentOffset = window.innerHeight * 0.5;
-      const opacity = Math.min(0.97, windowOffset / contentOffset);
+      const opacity = Math.min(0.98, windowOffset / contentOffset);
 
       backgroundRef.current.style.setProperty('--bg-opacity', (1 - opacity).toString());
 
-      if (windowOffset > 10 && !isScrolled) {
-        setIsScrolled(true);
-
-        if (isSettingsVisible) {
-          setIsSettingsVisible(false);
-        }
+      if (windowOffset > 10 && isSettingsVisible) {
+        console.log('ere');
+        setIsSettingsVisible(false);
       }
 
-      if (windowOffset <= 10 && isScrolled) {
+      if (windowOffset > 100 && !isScrolled) {
+        console.log('ere 1');
+        setIsScrolled(true);
+      }
+
+      if (windowOffset <= 100 && isScrolled) {
+        console.log('ere 2');
         setIsScrolled(false);
       }
     }

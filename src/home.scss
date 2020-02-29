@@ -265,8 +265,8 @@
     &:not(.home--scrolled) {
       .home__links {
         color: #fff;
-        --bg-color-2: rgba(0, 0, 0, 0.4);
-        --bg-color-3: rgba(0, 0, 0, 0.3);
+        --bg-color-3: rgba(0, 0, 0, 0.4);
+        --bg-color-4: rgba(0, 0, 0, 0.3);
       }
     }
   }
@@ -305,29 +305,36 @@
     .home__content,
     .home__theme-switcher,
     .home__bg-change {
-      opacity: 0.25;
+      opacity: 0.5;
     }
   }
 
   &--content-hidden {
-    .home__bg-info {
-      width: auto;
-      background-color: rgba(0, 0, 0, 0.75);
-    }
-
-    .home__bg-info-details {
-      max-width: 500px;
-    }
-
-    .home__bg-info-location .home__bg-info-user {
-      overflow: auto;
-    }
-
-    .home__content,
-    .home__theme-switcher,
-    .home__bg-change,
-    .home__settings {
-      opacity: 0;
+    &:not(.home--scrolled) {
+      .home__bg-info {
+        width: auto;
+        background-color: rgba(0, 0, 0, 0.75);
+      }
+  
+      .home__bg-info-details {
+        max-width: 500px;
+      }
+  
+      .home__bg-info-location .home__bg-info-user {
+        overflow: auto;
+      }
+  
+      .home__content {
+        height: 100%;
+        overflow: hidden;
+      }
+  
+      .home__content,
+      .home__theme-switcher,
+      .home__bg-change,
+      .home__settings {
+        opacity: 0;
+      }
     }
   }
 }
