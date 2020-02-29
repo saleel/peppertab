@@ -100,7 +100,7 @@ function Home() {
 
     function onScroll() {
       const windowOffset = window.pageYOffset;
-      const contentOffset = window.innerHeight * 0.6;
+      const contentOffset = window.innerHeight * 0.5;
       const opacity = Math.min(0.97, windowOffset / contentOffset);
 
       backgroundRef.current.style.setProperty('--bg-opacity', (1 - opacity).toString());

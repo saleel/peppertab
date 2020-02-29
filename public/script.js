@@ -2,12 +2,12 @@ function updateColors() {
   const colorMode = JSON.parse(window.localStorage.getItem('settings.colorMode') || '');
 
   if (colorMode === 'light') {
-    document.documentElement.style.setProperty('--bg-color', 'rgb(238, 238, 238)');
+    document.documentElement.style.setProperty('--bg-color', 'rgb(240, 240, 240)');
     document.documentElement.style.setProperty('--bg-color-2', 'rgb(210, 210, 210)');
     document.documentElement.style.setProperty('--bg-color-3', 'rgb(215, 215, 215)');
     document.documentElement.style.setProperty('--bg-color-4', 'rgb(225, 225, 225)');
     document.documentElement.style.setProperty('--bg-color-5', 'rgb(230, 230, 230)');
-    document.documentElement.style.setProperty('--bg-color-6', 'rgb(233, 233, 233)');
+    document.documentElement.style.setProperty('--bg-color-6', 'rgb(235, 235, 235)');
 
     document.documentElement.style.setProperty('--text-color', '#021E2D');
     document.documentElement.style.setProperty('--text-color-2', 'rgba(0, 0, 0, 0.9)');

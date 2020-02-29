@@ -21,7 +21,7 @@
       flex-direction: column;
       height: 100px;
       width: 100px;
-      background-color: var(--bg-color-3);
+      background-color: var(--bg-color-4);
       font-size: 0.9rem;
       border-radius: 5px;
       justify-content: space-between;
@@ -29,7 +29,7 @@
       margin: 0 4.5px 10px 4.5px;
 
       &:hover {
-        background-color: var(--bg-color-2);
+        background-color: var(--bg-color-3);
 
         .links__item-delete {
           visibility: visible;

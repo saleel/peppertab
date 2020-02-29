@@ -47,7 +47,8 @@
 
   &__editor-container {
     position: relative;
-    background-color: var(--bg-color-5);
+    background-color: var(--bg-color-6);
+    border-right: 0.25px solid var(--bg-color-3);
     cursor: text;
     width: 70%;
     display: flex;
