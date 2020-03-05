@@ -9,12 +9,16 @@ import { getLinkFromUrl } from '../../model/utils';
 import useSettings from '../../hooks/use-settings';
 import { addTopSitesPermission } from '../../browser-permissions';
 import './links.scss';
+import Prompt from '../prompt';
+import UilPen from '@iconscout/react-unicons/icons/uil-pen';
 
 
 function Links() {
   const { linkStore, generalStore } = React.useContext(StoreContext);
 
   const topSitesCount = 8;
+
+  const [linkToEdit, setLinkToEdit] = React.useState();
 
   const [isTopSitesEnabled, setIsTopSitesEnabled] = useSettings(SettingKeys.isTopSitesEnabled, false);
   const [showTopSites, setShowTopSite] = useSettings(SettingKeys.showTopSites, false);
@@ -75,13 +79,16 @@ function Links() {
   }
 
 
-  async function onDeleteClick(e, link) {
+  async function onUpdate(id, link) {
+    await linkStore.updateLink(id, link);
+    reFetch();
+  }
+
+
+  async function onDeleteClick(linkId) {
     // eslint-disable-next-line no-alert
     if (window.confirm('Are you sure you want to delete this link?')) {
-      e.preventDefault();
-      e.stopPropagation();
-
-      await linkStore.deleteLink(link.id);
+      await linkStore.deleteLink(linkId);
       reFetch();
     }
   }
@@ -135,8 +142,17 @@ function Links() {
             </div>
 
             {link.id && (
-              <button type="button" className="links__item-delete" onClick={(e) => onDeleteClick(e, link)}>
-                <TrashIcon size="13" />
+              <button
+                className="links__item-edit"
+                type="button"
+                onClick={(e) => {
+                  // e.stopPropagation();
+                  e.preventDefault();
+                  e.nativeEvent.stopImmediatePropagation();
+                  setLinkToEdit(link);
+                }}
+              >
+                <UilPen size="12" />
               </button>
             )}
 
@@ -163,6 +179,24 @@ function Links() {
           </button>
         )}
       </div>
+
+      {linkToEdit && (
+        <Prompt
+          title="Edit Link"
+          isOpen={linkToEdit}
+          properties={{
+            siteName: { type: 'String', title: 'Title' },
+            url: { type: 'String', title: 'URL' },
+          }}
+          value={linkToEdit}
+          onSubmit={(v) => onUpdate(linkToEdit.id, v)}
+          onDelete={async () => {
+            await onDeleteClick(linkToEdit.id);
+            setLinkToEdit(undefined);
+          }}
+          onClose={() => { setLinkToEdit(undefined); }}
+        />
+      )}
 
     </div>
   );

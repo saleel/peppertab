@@ -64,7 +64,6 @@ class LinkStore extends Store {
    */
   async deleteLink(id) {
     const link = await this.db.get(id);
-    debugger;
     await this.db.remove(link);
     this.emitter.emit('change', new Date());
   }
