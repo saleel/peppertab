@@ -28,8 +28,6 @@ function Prompt(props) {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   };
 
-  console.log({ modalOpen, isOpen });
-
 
   React.useEffect(() => {
     setModalOpen(isOpen);
@@ -43,8 +41,8 @@ function Prompt(props) {
   }
 
 
-  function onChange(key, value) {
-    setValue((existing) => ({ ...existing, [key]: value }));
+  function onChange(key, v) {
+    setValue((existing) => ({ ...existing, [key]: v }));
   }
 
 
