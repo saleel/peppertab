@@ -49,6 +49,10 @@ class TodoStore extends Store {
 
         // If neither is complete
         if (!a.isCompleted && !b.isCompleted) {
+          if (Number.isInteger(a.order) && Number.isInteger(b.order)) {
+            return Number(a.order) - Number(b.order);
+          }
+
           return new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime();
         }
 
@@ -60,16 +64,18 @@ class TodoStore extends Store {
 
   /**
    * @param {string} id
-   * @param {Todo} todo
+   * @param {Object} todo
    */
   async updateTodo(id, todo) {
-    const { isCompleted } = todo;
+    const { title, isCompleted, order } = todo;
 
     const existingTodo = await this.db.get(id);
 
     await this.updateItem({
       ...existingTodo,
-      isCompleted,
+      ...(title !== undefined) && { title },
+      ...(isCompleted !== undefined) && { isCompleted },
+      ...(order !== undefined) && { order },
       updatedAt: new Date(),
     });
 

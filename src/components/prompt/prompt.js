@@ -10,41 +10,76 @@ ReactModal.setAppElement('#root');
 
 
 /**
- * @param {{ question: string, isOpen: boolean, onSubmit:Function }} props
+ * @param {{ title, isOpen: boolean, value: Object, properties: Object, onClose: Function, onSubmit: Function, onDelete: Function }} props
  */
 function Prompt(props) {
-  const { question, isOpen, onSubmit } = props;
+  const {
+    title, isOpen, onClose, onSubmit, onDelete, value: defaultValue, properties,
+  } = props;
 
   const [modalOpen, setModalOpen] = React.useState(isOpen);
-  const [answer, setAnswer] = React.useState('');
+  const [value, setValue] = React.useState(defaultValue);
 
   const overlayStyles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    zIndex: 100,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   };
+
+  console.log({ modalOpen, isOpen });
+
+
+  React.useEffect(() => {
+    setModalOpen(isOpen);
+  }, [isOpen]);
 
 
   async function handleSubmit(e) {
     e.preventDefault();
-    await onSubmit(answer);
+    await onSubmit(value);
     setModalOpen(false);
   }
 
 
-  return (
-    <ReactModal isOpen={modalOpen} style={{ overlay: overlayStyles }} className="prompt">
+  function onChange(key, value) {
+    setValue((existing) => ({ ...existing, [key]: value }));
+  }
 
-      <div className="prompt__question">
-        {question}
+
+  return (
+    <ReactModal
+      isOpen={modalOpen}
+      onRequestClose={() => onClose(false)}
+      style={{ overlay: overlayStyles }}
+      className="prompt"
+    >
+
+      <div className="prompt__title">
+        {title}
       </div>
 
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          onChange={(e) => setAnswer(e.target.value)}
-          className="prompt__input"
-        />
+        {Object.keys(properties).map((key) => (
+          <div key={key}>
+            <label className="prompt__label" htmlFor={key}>
+              {/* eslint-disable-next-line react/prop-types */}
+              {properties[key].title}
+            </label>
+            <input
+              id={key}
+              type="text"
+              value={value[key]}
+              onChange={(e) => {
+                onChange(key, e.target.value);
+              }}
+              className="prompt__input"
+              autoComplete="off"
+            />
+          </div>
+        ))}
+
         <button
           type="submit"
           className="prompt__submit"
@@ -53,15 +88,27 @@ function Prompt(props) {
         </button>
       </form>
 
+      <button
+        type="button"
+        className="prompt__delete"
+        onClick={() => onDelete()}
+      >
+        Delete
+      </button>
+
     </ReactModal>
   );
 }
 
 
 Prompt.propTypes = {
-  question: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  properties: PropTypes.shape({}).isRequired,
+  value: PropTypes.shape({}).isRequired,
   isOpen: PropTypes.bool.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 

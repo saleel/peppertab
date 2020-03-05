@@ -19,6 +19,7 @@ function updateColors() {
     document.documentElement.style.setProperty('--color-primary', '#2980b9');
     document.documentElement.style.setProperty('--color-warning', '#e67e22');
     document.documentElement.style.setProperty('--color-success', '#074b23');
+    document.documentElement.style.setProperty('--color-danger', '#e74c3c');
   } else {
     document.documentElement.style.setProperty('--bg-color', 'rgb(47, 48, 50');
     document.documentElement.style.setProperty('--bg-color-2', 'rgb(31, 31, 31');
@@ -37,6 +38,7 @@ function updateColors() {
     document.documentElement.style.setProperty('--color-primary', '#2980b9');
     document.documentElement.style.setProperty('--color-warning', '#e67e22');
     document.documentElement.style.setProperty('--color-success', '#074b23');
+    document.documentElement.style.setProperty('--color-danger', '#e74c3c');
   }
 }
 

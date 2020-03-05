@@ -2,19 +2,28 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import TrashIcon from '@iconscout/react-unicons/icons/uil-trash';
+import { SortableHandle } from 'react-sortable-hoc';
+import UilPen from '@iconscout/react-unicons/icons/uil-pen';
+import DragIcon from '@iconscout/react-unicons/icons/uil-dice-four';
 import Todo from '../../model/todo';
 import './todo-item.scss';
+import Prompt from '../prompt';
+
+
+const DragHandle = SortableHandle(() => <span>::</span>);
 
 
 /**
  *
- * @param {{ todo: Todo, onCompleteClick: (boolean) => (any), onDeleteClick: Function }} props
+ * @param {{ todo: Todo, onUpdate: Function, onDeleteClick: Function }} props
  */
 function TodoItem(props) {
-  const { todo, onCompleteClick, onDeleteClick } = props;
+  const {
+    todo, onUpdate, onDeleteClick,
+  } = props;
 
   const [isCompleted, setIsCompleted] = React.useState(todo.isCompleted);
+  const [isEditOpen, setIsEditOpen] = React.useState(false);
 
 
   React.useEffect(() => {
@@ -35,14 +44,17 @@ function TodoItem(props) {
           type="checkbox"
           checked={isCompleted}
           onChange={async (e) => {
-            await onCompleteClick(e.target.checked);
+            await onUpdate({ isCompleted: e.target.checked });
             setIsCompleted((a) => !a);
           }}
         />
 
         <div className="state">
           <svg className="svg svg-icon" viewBox="0 0 20 20">
-            <path d="M7.629,14.566c0.125,0.125,0.291,0.188,0.456,0.188c0.164,0,0.329-0.062,0.456-0.188l8.219-8.221c0.252-0.252,0.252-0.659,0-0.911c-0.252-0.252-0.659-0.252-0.911,0l-7.764,7.763L4.152,9.267c-0.252-0.251-0.66-0.251-0.911,0c-0.252,0.252-0.252,0.66,0,0.911L7.629,14.566z" style={{ stroke: 'white', fill: 'white' }} />
+            <path
+              d="M7.629,14.566c0.125,0.125,0.291,0.188,0.456,0.188c0.164,0,0.329-0.062,0.456-0.188l8.219-8.221c0.252-0.252,0.252-0.659,0-0.911c-0.252-0.252-0.659-0.252-0.911,0l-7.764,7.763L4.152,9.267c-0.252-0.251-0.66-0.251-0.911,0c-0.252,0.252-0.252,0.66,0,0.911L7.629,14.566z"
+              style={{ stroke: 'var(--text-color-6)', fill: 'var(--text-color-6)' }}
+            />
           </svg>
           <label /> {/* eslint-disable-line */}
         </div>
@@ -50,9 +62,37 @@ function TodoItem(props) {
 
       <span className="todo-item__title">{todo.title}</span>
 
-      <button className="todo-item__trash" type="button" onClick={() => { onDeleteClick(); }}>
-        <TrashIcon size="16" />
-      </button>
+      {!todo.isCompleted && (
+        <>
+          <div className="todo-item__drag-handle">
+            <DragHandle />
+          </div>
+
+          <button
+            className="todo-item__edit"
+            type="button"
+            onClick={() => { setIsEditOpen(true); }}
+          >
+            <UilPen size="16" />
+          </button>
+        </>
+      )}
+
+      {isEditOpen && (
+        <Prompt
+          title="Edit Todo"
+          isOpen={isEditOpen}
+          properties={{
+            title: { type: 'String', title: 'Title' },
+          }}
+          value={{
+            title: todo.title,
+          }}
+          onSubmit={(v) => onUpdate(v)}
+          onDelete={onDeleteClick}
+          onClose={() => { setIsEditOpen(false); }}
+        />
+      )}
 
     </div>
   );
@@ -61,7 +101,7 @@ function TodoItem(props) {
 
 TodoItem.propTypes = {
   todo: PropTypes.instanceOf(Todo).isRequired,
-  onCompleteClick: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func.isRequired,
   onDeleteClick: PropTypes.func.isRequired,
 };
 

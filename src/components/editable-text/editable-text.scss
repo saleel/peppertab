@@ -5,7 +5,19 @@
     background-color: transparent;
     font-size: 1rem;
     color: var(--text-color);
-    text-align: right;
     margin-right: 0.5rem;
+  }
+
+  &__edit {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility .5s linear 0.5s, opacity .1s linear;
+  }
+
+  &:hover {
+    .editable-text__edit {
+      opacity: 1;
+      visibility: visible;
+    }
   }
 }

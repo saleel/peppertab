@@ -1,22 +1,41 @@
 .prompt {
-  background-color: var(--bg-color-2);
+  background-color: var(--bg-color-6);
   border-radius: 5px;
   overflow: hidden;
   width: 500px;
   min-height: 200px;
   padding: 2rem;
-
+  z-index: 100;
 
   &:focus {
     outline: none;
   }
-  
-  &__question {
+
+  &__title {
     text-align: center;
     font-size: 1.5rem;
     font-weight: 500;
-    padding: 1rem;
     margin-bottom: 1.5rem;
+  }
+
+  &__label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  &__delete {
+    padding: 0.5rem 1rem;
+    background-color: var(--bg-color-2);
+    border-radius: 5px;
+    color: var(--color-6);
+    font-weight: 500;
+    transition: color 100ms ease, background-color 100ms ease;
+
+    &:hover {
+      color: #fff;
+      background-color: var(--color-danger);
+      opacity: 1;
+    }
   }
 
   &__input {
@@ -38,6 +57,6 @@
     font-weight: 500;
     color: #fff;
     border-radius: 5px;
-    background-color: var(--bg-color-3);
+    background-color: var(--color-success);
   }
 }

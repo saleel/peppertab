@@ -8,7 +8,9 @@ import './editable-text.scss';
 
 
 function EditableText(props) {
-  const { value: defaultValue = '', onSubmit, ...restProps } = props;
+  const {
+    value: defaultValue = '', onSubmit, className, ...restProps
+  } = props;
 
   const inputRef = React.useRef(null);
   const [value, setValue] = React.useState(defaultValue);
@@ -33,7 +35,7 @@ function EditableText(props) {
 
 
   return (
-    <div className="editable-text">
+    <div className={`editable-text ${className}`}>
       <input
         ref={inputRef}
         className="editable-text__input"
@@ -50,6 +52,7 @@ function EditableText(props) {
       {!isEditMode && (
         <button
           type="button"
+          className="editable-text__edit"
           onClick={() => {
             setIsEditMode(true);
             if (inputRef.current) {
@@ -78,6 +81,12 @@ function EditableText(props) {
 EditableText.propTypes = {
   value: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  className: PropTypes.string,
+};
+
+
+EditableText.defaultProps = {
+  className: '',
 };
 
 

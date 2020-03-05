@@ -1,14 +1,35 @@
 .todo-item {
-  padding: 0.5rem 1.5rem;
+  padding: 0 1.5rem;
   display: flex;
   align-items: center;
   font-size: 1.1rem;
+  z-index: 3;
 
-  &__title {
-    flex-grow: 1;
+  .state {
+    opacity: 0.75;
+
+    label:before {
+      border-color: var(--text-color-6);
+    }
   }
 
-  &__trash {
+  &__title {
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 1;
+    padding: 0.5rem 0;
+    padding-right: 0.5rem;
+  }
+
+  &__drag-handle {
+    margin: 0 0.75rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 2px;
+    cursor: grab;
+  }
+
+  &__edit, &__drag-handle {
     visibility: hidden;
     opacity: 0;
     transition: visibility .5s linear 0.5s;
@@ -18,7 +39,7 @@
     background-color: var(--bg-color-3);
     cursor: default;
 
-    .todo-item__trash {
+    .todo-item__edit, .todo-item__drag-handle {
       opacity: 1;
       visibility: visible;
     }
@@ -29,5 +50,9 @@
       text-decoration: line-through;
       font-style: oblique;
     }
+  }
+
+  &--dragged {
+    background-color: rgba(0, 0, 0, 0.5);
   }
 }

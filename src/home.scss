@@ -240,11 +240,7 @@
     .home__links {
       min-height: 220px;
       display: flex;
-
-      .links__create,
-      .links__item {
-        transition: background-color linear 0.25s, color linear 0.25s;
-      }
+      transition: background-color linear 0.25s, color linear 0.25s;
     }
 
     .home__bg-image ~ .home__content {

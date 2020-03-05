@@ -4,7 +4,9 @@ import React from 'react';
 import EyeIcon from '@iconscout/react-unicons/icons/uil-eye';
 import EyeSlashIcon from '@iconscout/react-unicons/icons/uil-eye-slash';
 import EnterIcon from '@iconscout/react-unicons/icons/uil-enter';
+import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import Tooltip from 'rc-tooltip';
+import arrayMove from 'array-move';
 import useSettings from '../../hooks/use-settings';
 import StoreContext from '../../contexts/store-context';
 import usePromise from '../../hooks/use-promise';
@@ -13,6 +15,10 @@ import TodoItem from '../todo-item';
 import Card from '../card';
 import { SettingKeys } from '../../constants';
 import './todo-list.scss';
+
+
+const SortableTodoItem = SortableElement(TodoItem);
+const SortableList = SortableContainer(({ children }) => <ul>{children}</ul>);
 
 
 function TodoList() {
@@ -24,9 +30,16 @@ function TodoList() {
   const [showCompleted, setShowCompleted] = useSettings(SettingKeys.showCompletedTodos, true);
 
 
-  const [todos, { isFetching, reFetch }] = usePromise(() => todoStore.findTodos(), { defaultValue: [] });
+  const [todosFromStore, { isFetching, reFetch }] = usePromise(() => todoStore.findTodos(), { defaultValue: [] });
+
+  const [todos, setTodos] = React.useState(todosFromStore);
 
   const hasCompleted = todos && todos.some((t) => t.isCompleted);
+
+
+  React.useEffect(() => {
+    setTodos(todosFromStore);
+  }, [todosFromStore]);
 
 
   React.useEffect(() => {
@@ -49,7 +62,8 @@ function TodoList() {
   async function saveNewTodo() {
     if (!newTodo.title) return;
 
-    await todoStore.createTodo(new Todo(newTodo));
+    const order = todos.filter((t) => !t.isCompleted).length;
+    await todoStore.createTodo(new Todo({ ...newTodo, order }));
     setNewTodo({ title: '' });
     await reFetch();
     todoListRef.current.scrollTop = todoListRef.current.scrollHeight;
@@ -67,12 +81,14 @@ function TodoList() {
 
 
   /**
-   * @param {Todo} todo
-   * @param {boolean} isCompleted
+   * @param {String} todoId
+   * @param {Object} data
    */
-  async function onCompleteClick(todo, isCompleted) {
-    await todoStore.updateTodo(todo.id, { ...todo, isCompleted });
-    reFetch();
+  async function onUpdate(todoId, data) {
+    await todoStore.updateTodo(todoId, data);
+    if (data.isCompleted === undefined) {
+      reFetch();
+    }
   }
 
 
@@ -109,7 +125,21 @@ function TodoList() {
   ];
 
 
-  const filteredTodos = showCompleted ? todos : todos.filter((t) => !t.isCompleted);
+  const completedTodos = todos.filter((t) => t.isCompleted);
+  const activeTodos = todos.filter((t) => !t.isCompleted);
+
+
+  async function onSortEnd({ oldIndex, newIndex }) {
+    if (oldIndex === newIndex) {
+      return;
+    }
+
+    const newTodoList = arrayMove(todos, oldIndex, newIndex);
+    setTodos(newTodoList);
+
+    await Promise.all(newTodoList.map((n, i) => todoStore.updateTodo(n.id, { order: i })));
+    reFetch();
+  }
 
 
   return (
@@ -118,16 +148,36 @@ function TodoList() {
       <div className="todo-list fade-in">
 
         <div className="todo-list__items" ref={todoListRef}>
-          {filteredTodos.map((todo) => (
+
+          <SortableList
+            helperClass="todo-item--dragged"
+            onSortEnd={onSortEnd}
+            useDragHandle
+            lockAxis="y"
+            lockToContainerEdges
+            lockOffset="0%"
+          >
+            {activeTodos.map((todo, index) => (
+              <SortableTodoItem
+                key={todo.id}
+                index={index}
+                todo={todo}
+                onUpdate={(data) => onUpdate(todo.id, data)}
+                onDeleteClick={() => { onDeleteClick(todo); }}
+              />
+            ))}
+          </SortableList>
+
+          {showCompleted && completedTodos.map((todo) => (
             <TodoItem
               key={todo.id}
               todo={todo}
-              onCompleteClick={(isCompleted) => onCompleteClick(todo, isCompleted)}
+              onUpdate={(data) => onUpdate(todo.id, data)}
               onDeleteClick={() => { onDeleteClick(todo); }}
             />
           ))}
 
-          {!isFetching && (filteredTodos.length === 0) && (
+          {!isFetching && ((showCompleted ? todos : activeTodos).length === 0) && (
             <div className="todo-list__empty">
               {hasCompleted ? (
                 <div>
