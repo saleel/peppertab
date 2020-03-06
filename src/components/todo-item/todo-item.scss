@@ -22,13 +22,16 @@
   }
 
   &__drag-handle {
-    margin: 0 0.75rem;
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 2px;
     cursor: grab;
   }
 
+  &__edit {
+    margin: 0 0.75rem;
+  }
+  
   &__edit, &__drag-handle {
     visibility: hidden;
     opacity: 0;

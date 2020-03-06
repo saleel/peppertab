@@ -37,7 +37,7 @@ function updateColors() {
 
     document.documentElement.style.setProperty('--color-primary', '#2980b9');
     document.documentElement.style.setProperty('--color-warning', '#e67e22');
-    document.documentElement.style.setProperty('--color-success', '#074b23');
+    document.documentElement.style.setProperty('--color-success', '#2ecc71');
     document.documentElement.style.setProperty('--color-danger', '#e74c3c');
   }
 }

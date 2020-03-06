@@ -106,17 +106,14 @@ function Home() {
       backgroundRef.current.style.setProperty('--bg-opacity', (1 - opacity).toString());
 
       if (windowOffset > 10 && isSettingsVisible) {
-        console.log('ere');
         setIsSettingsVisible(false);
       }
 
       if (windowOffset > 100 && !isScrolled) {
-        console.log('ere 1');
         setIsScrolled(true);
       }
 
       if (windowOffset <= 100 && isScrolled) {
-        console.log('ere 2');
         setIsScrolled(false);
       }
     }

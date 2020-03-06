@@ -6,6 +6,7 @@
   min-height: 200px;
   padding: 2rem;
   z-index: 100;
+  position: relative;
 
   &:focus {
     outline: none;
@@ -34,7 +35,6 @@
     &:hover {
       color: #fff;
       background-color: var(--color-danger);
-      opacity: 1;
     }
   }
 
@@ -61,5 +61,20 @@
     color: #fff;
     border-radius: 5px;
     background-color: var(--color-success);
+    transition: opacity 100ms ease;
+    opacity: 0.9;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &__close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.5rem;
+    transform: rotate(45deg);
+    font-size: 2rem;
+    line-height: 1rem;
   }
 }

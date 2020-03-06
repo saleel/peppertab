@@ -1,16 +1,15 @@
 // @ts-check
 
 import React from 'react';
-import TrashIcon from '@iconscout/react-unicons/icons/uil-trash';
+import UilPen from '@iconscout/react-unicons/icons/uil-pen';
 import usePromise from '../../hooks/use-promise';
 import StoreContext from '../../contexts/store-context';
 import { isBrowserExtension, SettingKeys } from '../../constants';
 import { getLinkFromUrl } from '../../model/utils';
 import useSettings from '../../hooks/use-settings';
 import { addTopSitesPermission } from '../../browser-permissions';
-import './links.scss';
 import Prompt from '../prompt';
-import UilPen from '@iconscout/react-unicons/icons/uil-pen';
+import './links.scss';
 
 
 function Links() {
@@ -54,34 +53,34 @@ function Links() {
 
 
   async function onCreateClick() {
-    // eslint-disable-next-line no-alert
-    const url = window.prompt('Enter the URL of website you want to add', 'https://');
-
-    if (!url) return;
-
-    try {
-      // eslint-disable-next-line no-new
-      new URL(url);
-    } catch (e) {
-      // eslint-disable-next-line no-alert
-      window.alert('Invalid URL');
-      return;
-    }
-
-    if (links.find((l) => l.url === url)) {
-      window.alert('This link already exist');
-      return;
-    }
-
-    const link = await getLinkFromUrl(url);
-    await linkStore.createLink(link);
-    reFetch();
+    setLinkToEdit({
+      id: 'new',
+    });
   }
 
 
-  async function onUpdate(id, link) {
-    await linkStore.updateLink(id, link);
-    reFetch();
+  async function onUpdate(id, data) {
+    try {
+      // eslint-disable-next-line no-new
+      new URL(data.url);
+    } catch (e) {
+      throw new Error('Invalid URL');
+    }
+
+    if (id === 'new') {
+      if (links.find((l) => l.url === data.url)) {
+        throw new Error('This link already exist');
+      }
+
+      const link = await getLinkFromUrl(data.url);
+      await linkStore.createLink(link);
+    } else {
+      await linkStore.updateLink(id, data);
+    }
+
+    await reFetch();
+
+    return true;
   }
 
 
@@ -183,13 +182,16 @@ function Links() {
       {linkToEdit && (
         <Prompt
           title="Edit Link"
-          isOpen={linkToEdit}
+          isOpen={!!linkToEdit}
           properties={{
             siteName: { type: 'String', title: 'Title' },
             url: { type: 'String', title: 'URL' },
           }}
           value={linkToEdit}
-          onSubmit={(v) => onUpdate(linkToEdit.id, v)}
+          onSubmit={async (v) => {
+            await onUpdate(linkToEdit.id, v);
+            setLinkToEdit(undefined);
+          }}
           onDelete={async () => {
             await onDeleteClick(linkToEdit.id);
             setLinkToEdit(undefined);

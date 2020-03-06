@@ -17,8 +17,11 @@ function Prompt(props) {
     title, isOpen, onClose, onSubmit, onDelete, value: defaultValue, properties,
   } = props;
 
+  console.log(defaultValue);
+
   const [modalOpen, setModalOpen] = React.useState(isOpen);
   const [value, setValue] = React.useState(defaultValue);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const overlayStyles = {
     display: 'flex',
@@ -36,8 +39,20 @@ function Prompt(props) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    await onSubmit(value);
-    setModalOpen(false);
+
+    if (isSubmitting) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await onSubmit(value);
+    } catch (error) {
+      // eslint-disable-next-line no-alert
+      window.alert(error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
 
@@ -49,7 +64,7 @@ function Prompt(props) {
   return (
     <ReactModal
       isOpen={modalOpen}
-      onRequestClose={() => onClose(false)}
+      onRequestClose={() => onClose()}
       style={{ overlay: overlayStyles }}
       className="prompt"
     >
@@ -57,6 +72,14 @@ function Prompt(props) {
       <div className="prompt__title">
         {title}
       </div>
+
+      <button
+        type="button"
+        className="prompt__close"
+        onClick={() => onClose()}
+      >
+        +
+      </button>
 
       <form onSubmit={handleSubmit}>
         {Object.keys(properties).map((key) => (
@@ -81,6 +104,7 @@ function Prompt(props) {
         <button
           type="submit"
           className="prompt__submit"
+          // disabled={isSubmitting}
         >
           Submit
         </button>

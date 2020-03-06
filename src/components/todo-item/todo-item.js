@@ -4,7 +4,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { SortableHandle } from 'react-sortable-hoc';
 import UilPen from '@iconscout/react-unicons/icons/uil-pen';
-import DragIcon from '@iconscout/react-unicons/icons/uil-dice-four';
 import Todo from '../../model/todo';
 import './todo-item.scss';
 import Prompt from '../prompt';
@@ -64,10 +63,6 @@ function TodoItem(props) {
 
       {!todo.isCompleted && (
         <>
-          <div className="todo-item__drag-handle">
-            <DragHandle />
-          </div>
-
           <button
             className="todo-item__edit"
             type="button"
@@ -75,6 +70,10 @@ function TodoItem(props) {
           >
             <UilPen size="16" />
           </button>
+
+          <div className="todo-item__drag-handle">
+            <DragHandle />
+          </div>
         </>
       )}
 
