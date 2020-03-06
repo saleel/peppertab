@@ -34,6 +34,7 @@ function Prompt(props) {
 
   React.useEffect(() => {
     setModalOpen(isOpen);
+    setIsSubmitting(false);
   }, [isOpen]);
 
 
@@ -50,8 +51,6 @@ function Prompt(props) {
     } catch (error) {
       // eslint-disable-next-line no-alert
       window.alert(error.message);
-    } finally {
-      setIsSubmitting(false);
     }
   }
 

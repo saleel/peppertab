@@ -58,11 +58,11 @@
     padding: 0.5rem 1rem;
     font-size: 1.1rem;
     font-weight: 500;
-    color: #fff;
     border-radius: 5px;
     background-color: var(--color-success);
     transition: opacity 100ms ease;
     opacity: 0.9;
+    color: var(--text-color-inverted);
 
     &:hover {
       opacity: 1;

@@ -29,11 +29,11 @@
   &__btn-proceed {
     display: block;
     background-color: var(--color-success);
-    color: var(--text-color);
+    color: var(--text-color-inverted);
     margin: 0 auto;
     padding: 0.5rem 2rem;
     border-radius: 5px;
-    font-weight: bold;
+    font-weight: 500;
     font-size: 1.2rem;
     opacity: 0.9;
     text-align: center;

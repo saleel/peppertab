@@ -15,6 +15,7 @@ function updateColors() {
     document.documentElement.style.setProperty('--text-color-4', 'rgba(0, 0, 0, 0.65)');
     document.documentElement.style.setProperty('--text-color-5', 'rgba(0, 0, 0, 0.5)');
     document.documentElement.style.setProperty('--text-color-6', 'rgba(0, 0, 0, 0.5)');
+    document.documentElement.style.setProperty('--text-color-inverted', '#fff');
 
     document.documentElement.style.setProperty('--color-primary', '#2980b9');
     document.documentElement.style.setProperty('--color-warning', '#e67e22');
@@ -34,6 +35,7 @@ function updateColors() {
     document.documentElement.style.setProperty('--text-color-4', 'rgba(255, 255, 255, 0.65');
     document.documentElement.style.setProperty('--text-color-5', 'rgba(255, 255, 255, 0.5');
     document.documentElement.style.setProperty('--text-color-6', 'rgba(255, 255, 255, 0.5');
+    document.documentElement.style.setProperty('--text-color-inverted', '#021E2D');
 
     document.documentElement.style.setProperty('--color-primary', '#2980b9');
     document.documentElement.style.setProperty('--color-warning', '#e67e22');

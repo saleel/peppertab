@@ -55,6 +55,7 @@ function Links() {
   async function onCreateClick() {
     setLinkToEdit({
       id: 'new',
+      url: 'https://',
     });
   }
 
@@ -73,7 +74,7 @@ function Links() {
       }
 
       const link = await getLinkFromUrl(data.url);
-      await linkStore.createLink(link);
+      await linkStore.createLink({ ...link, siteName: data.siteName });
     } else {
       await linkStore.updateLink(id, data);
     }
