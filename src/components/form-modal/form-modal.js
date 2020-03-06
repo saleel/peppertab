@@ -91,6 +91,7 @@ function Prompt(props) {
               id={key}
               required
               type="text"
+              maxLength={properties[key].maxLength || 100}
               value={value[key] !== undefined ? value[key] : ''}
               onChange={(e) => {
                 onChange(key, e.target.value);

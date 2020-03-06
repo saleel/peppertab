@@ -82,7 +82,7 @@ function TodoItem(props) {
           title="Edit Todo"
           isOpen={isEditOpen}
           properties={{
-            title: { type: 'String', title: 'Title' },
+            title: { type: 'String', title: 'Title', maxLength: 50 },
           }}
           values={{
             title: todo.title,

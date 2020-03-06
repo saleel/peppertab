@@ -185,8 +185,8 @@ function Links() {
           title="Edit Link"
           isOpen={!!linkToEdit}
           properties={{
-            siteName: { type: 'String', title: 'Title' },
-            url: { type: 'String', title: 'URL' },
+            siteName: { type: 'String', title: 'Title', maxLength: 25 },
+            url: { type: 'String', title: 'URL', maxLength: 1000 },
           }}
           values={linkToEdit}
           onSubmit={async (v) => {
