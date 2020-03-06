@@ -3,24 +3,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactModal from 'react-modal';
-import './prompt.scss';
+import './form-modal.scss';
 
 
 ReactModal.setAppElement('#root');
 
 
 /**
- * @param {{ title, isOpen: boolean, value: Object, properties: Object, onClose: Function, onSubmit: Function, onDelete: Function }} props
+ * @param {{ title, isOpen: boolean, values: Object, properties: Object, onClose: Function, onSubmit: Function, onDelete: Function }} props
  */
 function Prompt(props) {
   const {
-    title, isOpen, onClose, onSubmit, onDelete, value: defaultValue, properties,
+    title, isOpen, onClose, onSubmit, onDelete, values: defaultValues, properties,
   } = props;
 
-  console.log(defaultValue);
 
   const [modalOpen, setModalOpen] = React.useState(isOpen);
-  const [value, setValue] = React.useState(defaultValue);
+  const [value, setValue] = React.useState(defaultValues);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const overlayStyles = {
@@ -56,6 +55,7 @@ function Prompt(props) {
 
 
   function onChange(key, v) {
+    setIsSubmitting(false);
     setValue((existing) => ({ ...existing, [key]: v }));
   }
 
@@ -65,16 +65,16 @@ function Prompt(props) {
       isOpen={modalOpen}
       onRequestClose={() => onClose()}
       style={{ overlay: overlayStyles }}
-      className="prompt"
+      className="form-modal"
     >
 
-      <div className="prompt__title">
+      <div className="form-modal__title">
         {title}
       </div>
 
       <button
         type="button"
-        className="prompt__close"
+        className="form-modal__close"
         onClick={() => onClose()}
       >
         +
@@ -83,18 +83,19 @@ function Prompt(props) {
       <form onSubmit={handleSubmit}>
         {Object.keys(properties).map((key) => (
           <div key={key}>
-            <label className="prompt__label" htmlFor={key}>
+            <label className="form-modal__label" htmlFor={key}>
               {/* eslint-disable-next-line react/prop-types */}
               {properties[key].title}
             </label>
             <input
               id={key}
+              required
               type="text"
-              value={value[key]}
+              value={value[key] !== undefined ? value[key] : ''}
               onChange={(e) => {
                 onChange(key, e.target.value);
               }}
-              className="prompt__input"
+              className="form-modal__input"
               autoComplete="off"
             />
           </div>
@@ -102,8 +103,8 @@ function Prompt(props) {
 
         <button
           type="submit"
-          className="prompt__submit"
-          // disabled={isSubmitting}
+          className="form-modal__submit"
+          disabled={isSubmitting}
         >
           Submit
         </button>
@@ -111,7 +112,7 @@ function Prompt(props) {
 
       <button
         type="button"
-        className="prompt__delete"
+        className="form-modal__delete"
         onClick={() => onDelete()}
       >
         Delete
@@ -125,7 +126,7 @@ function Prompt(props) {
 Prompt.propTypes = {
   title: PropTypes.string.isRequired,
   properties: PropTypes.shape({}).isRequired,
-  value: PropTypes.shape({}).isRequired,
+  values: PropTypes.shape({}).isRequired,
   isOpen: PropTypes.bool.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,

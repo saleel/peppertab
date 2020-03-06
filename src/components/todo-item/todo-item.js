@@ -6,7 +6,7 @@ import { SortableHandle } from 'react-sortable-hoc';
 import UilPen from '@iconscout/react-unicons/icons/uil-pen';
 import Todo from '../../model/todo';
 import './todo-item.scss';
-import Prompt from '../prompt';
+import FormModal from '../form-modal';
 
 
 const DragHandle = SortableHandle(() => <span>::</span>);
@@ -78,16 +78,19 @@ function TodoItem(props) {
       )}
 
       {isEditOpen && (
-        <Prompt
+        <FormModal
           title="Edit Todo"
           isOpen={isEditOpen}
           properties={{
             title: { type: 'String', title: 'Title' },
           }}
-          value={{
+          values={{
             title: todo.title,
           }}
-          onSubmit={(v) => onUpdate(v)}
+          onSubmit={async (v) => {
+            await onUpdate(v);
+            setIsEditOpen(false);
+          }}
           onDelete={onDeleteClick}
           onClose={() => { setIsEditOpen(false); }}
         />

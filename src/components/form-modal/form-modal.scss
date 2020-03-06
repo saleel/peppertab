@@ -1,4 +1,4 @@
-.prompt {
+.form-modal {
   background-color: var(--bg-color-6);
   border-radius: 5px;
   overflow: hidden;
@@ -66,6 +66,11 @@
 
     &:hover {
       opacity: 1;
+    }
+
+    &:disabled,
+    &[disabled] {
+      opacity: 0.5;
     }
   }
 

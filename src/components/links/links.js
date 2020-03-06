@@ -8,7 +8,7 @@ import { isBrowserExtension, SettingKeys } from '../../constants';
 import { getLinkFromUrl } from '../../model/utils';
 import useSettings from '../../hooks/use-settings';
 import { addTopSitesPermission } from '../../browser-permissions';
-import Prompt from '../prompt';
+import FormModal from '../form-modal';
 import './links.scss';
 
 
@@ -65,7 +65,7 @@ function Links() {
       // eslint-disable-next-line no-new
       new URL(data.url);
     } catch (e) {
-      throw new Error('Invalid URL');
+      throw new Error('Invalid URL. A Valid URL start with http or https');
     }
 
     if (id === 'new') {
@@ -181,14 +181,14 @@ function Links() {
       </div>
 
       {linkToEdit && (
-        <Prompt
+        <FormModal
           title="Edit Link"
           isOpen={!!linkToEdit}
           properties={{
             siteName: { type: 'String', title: 'Title' },
             url: { type: 'String', title: 'URL' },
           }}
-          value={linkToEdit}
+          values={linkToEdit}
           onSubmit={async (v) => {
             await onUpdate(linkToEdit.id, v);
             setLinkToEdit(undefined);
