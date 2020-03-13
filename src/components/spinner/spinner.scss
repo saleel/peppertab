@@ -13,8 +13,8 @@
       height: var(--size);
       margin: 6px;
       border-radius: 50%;
-      border: 3px solid var(--color);
-      border-color: var(--color) transparent var(--color) transparent;
+      border: 3px solid var(--text-color);
+      border-color: var(--text-color) transparent var(--text-color) transparent;
       animation: rotate 0.75s linear infinite;
     }
   }
