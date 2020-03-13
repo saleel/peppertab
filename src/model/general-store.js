@@ -6,7 +6,7 @@ import {
 } from '../constants';
 import Store from './store';
 import { convertImageUrlToBase64, getLinkFromUrl } from './utils';
-import { addIdentityPermission } from '../browser-permissions';
+// import { addIdentityPermission } from '../browser-permissions';
 import { loadScript } from '../utils';
 import { GoogleAuthError } from '../errors';
 
@@ -154,9 +154,9 @@ class GeneralStore extends Store {
     const scope = 'https://www.googleapis.com/auth/calendar.readonly';
     let token;
 
-    if (isFirstTime && isBrowserExtension) {
-      await addIdentityPermission();
-    }
+    // if (isFirstTime && isBrowserExtension) {
+    //   await addIdentityPermission();
+    // }
 
     try {
       token = await new Promise((resolve, reject) => {

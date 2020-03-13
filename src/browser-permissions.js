@@ -34,18 +34,17 @@ function addPermission(permissionsToAdd) {
 }
 
 
-export async function addIdentityPermission() {
-  try {
-    return addPermission({
-      // permissions: ['identity'],
-      origins: ['*://content.googleapis.com/*'],
-    });
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
-    throw error;
-  }
-}
+// export async function addIdentityPermission() {
+//   try {
+//     return addPermission({
+//       origins: ['*://content.googleapis.com/*'],
+//     });
+//   } catch (error) {
+//     // eslint-disable-next-line no-console
+//     console.error(error);
+//     throw error;
+//   }
+// }
 
 
 export async function addTopSitesPermission() {

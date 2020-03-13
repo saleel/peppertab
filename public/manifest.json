@@ -3,7 +3,7 @@
   "name": "PepperTab",
   "short_name": "PepperTab",
   "description": "Replace your new tab page with awesome productivity widgets",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "chrome_url_overrides": {
     "newtab": "./index.html"
   },
@@ -11,7 +11,7 @@
     "default_title": "PepperTab - Open a new tab"
   },
   "offline_enabled": true,
-  "content_security_policy": "script-src 'self' https://apis.google.com/; object-src 'self'",
+  "content_security_policy": "script-src 'self'; object-src 'self'",
   "permissions": [
     "geolocation",
     "webRequest",
@@ -19,7 +19,7 @@
     "identity",
     "*://peppertab.com/*"
   ],
-  "optional_permissions": ["*://content.googleapis.com/*", "topSites"],
+  "optional_permissions": ["topSites"],
   "background": {
     "scripts": [
       "background.js"

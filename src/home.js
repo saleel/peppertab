@@ -213,10 +213,12 @@ function Home() {
             </div>
           </div>
 
-          {isInitialized && (
+          {isInitialized ? (
             <div className="home__links">
               <Links />
             </div>
+          ) : (
+            <div className="home__links" />
           )}
 
           <div className="home__scroll fade-in">
