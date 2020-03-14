@@ -101,7 +101,7 @@ function Home() {
     function onScroll() {
       const windowOffset = window.pageYOffset;
       const contentOffset = window.innerHeight * 0.5;
-      const opacity = Math.min(1, windowOffset / contentOffset);
+      const opacity = Math.min(colorMode === 'dark' ? 0.97 : 1, windowOffset / contentOffset);
 
       backgroundRef.current.style.setProperty('--bg-opacity', (1 - opacity).toString());
 
@@ -128,7 +128,7 @@ function Home() {
 
     // eslint-disable-next-line consistent-return
     return () => { window.removeEventListener('scroll', onScroll); };
-  }, [isScrolled, showImage, isSettingsVisible]);
+  }, [isScrolled, showImage, isSettingsVisible, colorMode]);
 
 
   function onRefreshClick() {

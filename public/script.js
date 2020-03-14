@@ -24,8 +24,8 @@ function updateColors() {
   } else {
     document.documentElement.style.setProperty('--bg-color', '#303133');
     document.documentElement.style.setProperty('--bg-color-2', '#1e1e1e');
-    document.documentElement.style.setProperty('--bg-color-3', '#242424');
-    document.documentElement.style.setProperty('--bg-color-4', '#272727');
+    document.documentElement.style.setProperty('--bg-color-3', '#202020');
+    document.documentElement.style.setProperty('--bg-color-4', '#242424');
     document.documentElement.style.setProperty('--bg-color-5', '#2a2a2a');
     document.documentElement.style.setProperty('--bg-color-6', '#2C2C2C');
 
