@@ -32,4 +32,12 @@
       color: var(--text-color-2);
     }
   }
+
+  &__calendar-marker {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    margin-right: 0.25rem;
+  }
 }

@@ -2,7 +2,7 @@
 
 import addDays from 'date-fns/addDays';
 import {
-  OPEN_WEATHER_API_KEY, API_URL, Browser, isWebApp, GOOGLE_CLIENT_ID, GOOGLE_API_KEY, isBrowserExtension,
+  OPEN_WEATHER_API_KEY, API_URL, Browser, isWebApp, GOOGLE_CLIENT_ID, GOOGLE_API_KEY,
 } from '../constants';
 import Store from './store';
 import { convertImageUrlToBase64, getLinkFromUrl } from './utils';
@@ -224,24 +224,7 @@ class GeneralStore extends Store {
       throw e;
     }
 
-    const query = {
-      calendarId: 'primary',
-      timeMin: (new Date()).toISOString(),
-      timeMax: (addDays(new Date(), 30)).toISOString(),
-      showDeleted: false,
-      singleEvents: true,
-      maxResults: 10,
-      orderBy: 'startTime',
-      key: apiKey,
-    };
-
-    const queryParam = Object.keys(query)
-      .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`)
-      .join('&');
-
-    const url = `https://content.googleapis.com/calendar/v3/calendars/primary/events?${queryParam}`;
-
-    const response = await fetch(url, {
+    const getCalendarRequest = await fetch('https://content.googleapis.com/calendar/v3/users/me/calendarList', {
       method: 'GET',
       mode: 'cors',
       headers: {
@@ -249,12 +232,50 @@ class GeneralStore extends Store {
         'Content-Type': 'application/json',
       },
     });
+    const getCalendarResponse = await getCalendarRequest.json();
+    const calendarsToFetch = getCalendarResponse.items.filter((item) => item.accessRole === 'owner');
 
-    const jsonResponse = await response.json();
+    const calendarEvents = [];
 
-    const events = jsonResponse.items.map((item) => {
+    for (const calendarToFetch of calendarsToFetch) {
+      const query = {
+        calendarId: calendarToFetch.id,
+        timeMin: (new Date()).toISOString(),
+        timeMax: (addDays(new Date(), 30)).toISOString(),
+        showDeleted: false,
+        singleEvents: true,
+        maxResults: 10,
+        orderBy: 'startTime',
+        key: apiKey,
+      };
+
+      const queryParam = Object.keys(query)
+        .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`)
+        .join('&');
+
+      const url = `https://content.googleapis.com/calendar/v3/calendars/primary/events?${queryParam}`;
+
+      // eslint-disable-next-line no-await-in-loop
+      const response = await fetch(url, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      // eslint-disable-next-line no-await-in-loop
+      const jsonResponse = await response.json();
+
+      calendarEvents.push(...jsonResponse.items.map((j) => ({ ...j, calendar: calendarToFetch })));
+    }
+
+    const enableCalendarColor = calendarsToFetch.length > 1;
+
+    const events = calendarEvents.map((item) => {
       const {
-        summary, htmlLink, start, end, location,
+        summary, htmlLink, start, end, location, calendar,
       } = item;
 
       return {
@@ -265,6 +286,10 @@ class GeneralStore extends Store {
         ...end.dateTime && { endDateTime: new Date(end.dateTime) },
         ...end.date && { endDate: new Date(end.date) },
         location,
+        ...enableCalendarColor && {
+          calendarName: calendar.summary,
+          calendarColor: calendar.backgroundColor,
+        },
       };
     });
 

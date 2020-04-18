@@ -12,7 +12,7 @@ function CalendarItem(props) {
   const { event } = props;
 
   const {
-    title, startDateTime, endDateTime, location, link,
+    title, startDateTime, endDateTime, location, link, calendarColor,
   } = event;
 
 
@@ -45,6 +45,13 @@ function CalendarItem(props) {
       <div className="calendar-item__details">
 
         <div className="calendar-item__time">
+          {calendarColor && (
+            <span
+              className="calendar-item__calendar-marker"
+              style={{ backgroundColor: calendarColor }}
+            />
+          )}
+
           <span>
             {startDateTime && format(new Date(startDateTime), 'hh:mm a')}
             {endDateTime && format(new Date(endDateTime), endTimeFormat)}
@@ -69,6 +76,7 @@ CalendarItem.propTypes = {
     startDateTime: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]),
     endDateTime: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]),
     location: PropTypes.string,
+    calendarColor: PropTypes.string,
   }).isRequired,
 };
 
