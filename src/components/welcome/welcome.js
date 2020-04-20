@@ -1,6 +1,7 @@
 import React from 'react';
 import differenceInMinutes from 'date-fns/differenceInMinutes';
 import endOfDay from 'date-fns/endOfDay';
+import getHours from 'date-fns/getHours';
 import { getMessagePrefix } from './welcome.utils';
 import useSettings from '../../hooks/use-settings';
 import { SettingKeys } from '../../constants';
@@ -9,13 +10,20 @@ import Quotes from '../quotes';
 import './welcome.scss';
 
 
+const dayStart = 6;
+const dayDurationInMins = (24 - dayStart) * 60;
+const diffMultiplier = 100 / dayDurationInMins;
+
+
 function Welcome() {
   const [name] = useSettings(SettingKeys.name, '');
   const time = useTime(1000);
 
   const message = getMessagePrefix();
+
+  const showPercentRemaining = getHours(new Date()) >= 6;
   const endOfToday = endOfDay(time);
-  const percentOfDayRemaining = Math.ceil(differenceInMinutes(endOfToday, time) * 0.0694);
+  const percentOfDayRemaining = Math.ceil(differenceInMinutes(endOfToday, time) * diffMultiplier);
 
 
   return (
@@ -29,12 +37,18 @@ function Welcome() {
         </div>
 
         <div className="welcome__remaining fade-in">
-          <span>You have</span>
-          <span className="welcome__remaining-percent">
-            {percentOfDayRemaining.toFixed(0)}
-            %
-          </span>
-          <span>of the day left.</span>
+          {showPercentRemaining ? (
+            <>
+              <span>You have</span>
+              <span className="welcome__remaining-percent">
+                {percentOfDayRemaining.toFixed(0)}
+                %
+              </span>
+              <span>of the day left.</span>
+            </>
+          ) : (
+            <span>Have a good night sleep.</span>
+          )}
         </div>
 
         <Quotes percentOfDayRemaining={percentOfDayRemaining} />
