@@ -1,6 +1,6 @@
 import React from 'react';
 import CKEditor from '@ckeditor/ckeditor5-react';
-import CKEditorBuild from '@saleel/ckeditor5-build-balloon-base64';
+import CKEditorBuild from 'ckeditor5-build-balloon';
 import './html-editor.scss';
 
 
