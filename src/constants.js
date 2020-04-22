@@ -34,6 +34,7 @@ export const SettingKeys = {
   showCompletedTodos: 'settings.todos.showCompleted',
   isInitialized: 'settings.isInitialized',
   lastSyncTime: 'settings.lastSyncTime',
+  isLinksEnabled: 'settings.links.enabled',
 };
 
 

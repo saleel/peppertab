@@ -31,6 +31,7 @@ function Home() {
 
   const [theme] = useSettings(SettingKeys.theme, Themes.inspire);
   const [isInitialized, setIsInitialized] = useSettings(SettingKeys.isInitialized, false);
+  const [isLinksEnabled] = useSettings(SettingKeys.isLinksEnabled, true);
 
 
   const [isScrolled, setIsScrolled] = React.useState(window.pageYOffset > 10);
@@ -207,19 +208,27 @@ function Home() {
 
         <div className="home__widgets">
 
-          <div className="home__welcome">
+          <div
+            className="home__welcome"
+            style={{
+              ...!isLinksEnabled && (theme === Themes.inspire) && { minHeight: 'calc(100vh - 4rem)' },
+            }}
+          >
             <div className="w-full px-5">
               <Welcome />
             </div>
           </div>
 
-          {isInitialized ? (
-            <div className="home__links">
+          <div
+            className="home__links"
+            style={{
+              ...!isLinksEnabled && (theme === Themes.inspire) && { minHeight: 0 },
+            }}
+          >
+            {isInitialized && isLinksEnabled && (
               <Links />
-            </div>
-          ) : (
-            <div className="home__links" />
-          )}
+            )}
+          </div>
 
           <div className="home__scroll fade-in">
             {(theme === Themes.inspire) && !isScrolled && (

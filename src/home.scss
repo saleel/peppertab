@@ -99,6 +99,7 @@
 
   &__links {
     margin-bottom: 0;
+    transition: min-height 200ms linear;
   }
 
   &__spacer {

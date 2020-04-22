@@ -13,6 +13,7 @@ function Settings() {
   const [weatherUnit, setWeatherUnit] = useSettings(SettingKeys.weatherUnit, 'C');
   const [timeFormat, setTimeFormat] = useSettings(SettingKeys.timeFormat, '24');
   const [colorMode, setColorMode] = useSettings(SettingKeys.colorMode, 'dark');
+  const [isLinksEnabled, setIsLinksEnabled] = useSettings(SettingKeys.isLinksEnabled, true);
 
 
   React.useEffect(() => {
@@ -56,7 +57,7 @@ function Settings() {
 
 
       <div className="settings__section">
-        <h3>Weather</h3>
+        <h3>Time / Weather</h3>
 
         <div className="settings__form-item">
           <div className="settings__form-item-label">
@@ -73,12 +74,6 @@ function Settings() {
           </div>
         </div>
 
-      </div>
-
-
-      <div className="settings__section">
-        <h3>Time</h3>
-
         <div className="settings__form-item">
           <div className="settings__form-item-label">
             Use 24 Hour Format
@@ -89,6 +84,34 @@ function Settings() {
                 setTimeFormat((e) => (e === '24' ? '12' : '24'));
               }}
               checked={timeFormat === '24'}
+              className="settings__switch"
+            />
+          </div>
+        </div>
+
+      </div>
+
+      {/*
+      <div className="settings__section">
+        <h3>Greeting</h3>
+
+
+      </div> */}
+
+
+      <div className="settings__section">
+        <h3>Links</h3>
+
+        <div className="settings__form-item">
+          <div className="settings__form-item-label">
+            Enabled
+          </div>
+          <div className="settings__form-item-value">
+            <Switch
+              onChange={() => {
+                setIsLinksEnabled((e) => !e);
+              }}
+              checked={isLinksEnabled === true}
               className="settings__switch"
             />
           </div>
