@@ -13,6 +13,7 @@ import { GoogleAuthError } from '../errors';
 
 /**
  * @typedef CalendarEvent
+ * @property id {string}
  * @property title {string}
  * @property link {string}
  * @property startDateTime {Date}
@@ -275,10 +276,11 @@ class GeneralStore extends Store {
 
     const events = calendarEvents.map((item) => {
       const {
-        summary, htmlLink, start, end, location, calendar,
+        summary, htmlLink, start, end, location, calendar, id,
       } = item;
 
       return {
+        id,
         title: summary,
         link: htmlLink,
         ...start.dateTime && { startDateTime: new Date(start.dateTime) },

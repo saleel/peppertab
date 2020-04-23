@@ -11,7 +11,7 @@
   &__title {
     padding: 0.25rem 0;
     font-weight: 500;
-    line-height: 1.25rem;
+    line-height: 1.3rem;
   }
 
   &__details {
@@ -20,6 +20,7 @@
     font-size: 0.85rem;
     justify-content: space-between;
     color: var(--text-color-2);
+    opacity: 0.9;
   }
 
   &__link {
@@ -31,6 +32,13 @@
     &:hover {
       color: var(--text-color-2);
     }
+  }
+
+  &__location {
+    max-width: 50%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 
   &__calendar-marker {

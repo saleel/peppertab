@@ -85,7 +85,7 @@ function Calendar() {
         <div className="calendar__group-name">{dateLabel}</div>
 
         {eventsInGroup.map((event) => (
-          <CalendarItem key={event.link} event={event} />
+          <CalendarItem key={event.id} event={event} />
         ))}
       </div>
     );
