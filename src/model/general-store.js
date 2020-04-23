@@ -234,7 +234,8 @@ class GeneralStore extends Store {
       },
     });
     const getCalendarResponse = await getCalendarRequest.json();
-    const calendarsToFetch = getCalendarResponse.items.filter((item) => item.accessRole === 'owner');
+    const calendarsToFetch = getCalendarResponse.items
+      .filter((item) => !item.summary.includes('Holidays'));
 
     const calendarEvents = [];
 
