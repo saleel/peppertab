@@ -47,11 +47,13 @@ function Welcome() {
               <span>of the day left.</span>
             </>
           ) : (
-            <span>Have a good night sleep.</span>
+            <span>Have a good sleep!</span>
           )}
         </div>
 
-        <Quotes percentOfDayRemaining={percentOfDayRemaining} />
+        {showPercentRemaining && (
+          <Quotes percentOfDayRemaining={percentOfDayRemaining} />
+        )}
 
       </div>
     </div>
