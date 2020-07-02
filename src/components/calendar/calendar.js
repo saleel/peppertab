@@ -140,6 +140,10 @@ function Calendar() {
             Unexpected error occurred while connecting with your Google account.
             <br />
             Please make sure popups are enabled and try again later.
+            <br />
+            Error:
+            {' '}
+            {JSON.stringify(enrollError.message)}
           </div>
         </div>
       );
