@@ -3,7 +3,7 @@
   "name": "PepperTab",
   "short_name": "PepperTab",
   "description": "Replace your new tab page with awesome productivity widgets",
-  "version": "1.9.3",
+  "version": "1.9.5",
   "chrome_url_overrides": {
     "newtab": "./index.html"
   },
@@ -17,7 +17,8 @@
     "webRequest",
     "webRequestBlocking",
     "identity",
-    "*://peppertab.com/*"
+    "*://peppertab.com/*",
+    "*://content.googleapis.com/*"
   ],
   "optional_permissions": ["topSites"],
   "background": {
